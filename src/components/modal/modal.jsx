@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import Portal from '../portal/portal'
 
-const Modal = (children, accepting, onAccept, onCancel, isOpen, ...attrs) => {
+const Modal = ({children, accepting, onAccept, onCancel, isOpen, ...attrs}) => {
 
     return (
         <>
@@ -11,7 +11,7 @@ const Modal = (children, accepting, onAccept, onCancel, isOpen, ...attrs) => {
                 <Portal>
                     <div className="modal-wrapper" onClick={onCancel}>
                         <div className='modal' {...attrs}> 
-                            <button className="modal-close-btn" onClick={onCancel}></button>
+                            <button className="modal-close-btn" onClick={onCancel}>X</button>
                             <div className="modal-inner">
                                 {children}
                             </div>
