@@ -84,7 +84,6 @@ class ToDo extends Component {
                 checked: false,
             }]
         })
-        console.log(this.state.tasks)
     }
 
     removeList(listId) {

@@ -17,7 +17,7 @@ class ModalAddTask extends Component {
 
     render() {
         const { titleValue } = this.state;
-        const { isOpen, listId, onAccept, onCancel } = this.props;
+        const { isOpen, onAccept, onCancel } = this.props;
         return(
             <Modal
             onCancel={onCancel}
@@ -26,7 +26,7 @@ class ModalAddTask extends Component {
                 <div className="modal-add-task">
                     <div className="add-task-form">
                         <input type="text" className="add-task-title" value={titleValue} onChange={this.handleInputChange.bind(this)}/>
-                        <button onClick={() => onAccept({listId, title: titleValue})}>add</button>
+                        <button onClick={() => onAccept({title: titleValue})}>add</button>
                     </div>
                 </div>
             </Modal>
@@ -35,7 +35,6 @@ class ModalAddTask extends Component {
 }
 
 ModalAddTask.propTypes = {
-    listId: PropTypes.number.isRequired, 
     isOpen: PropTypes.bool, 
     onAccept: PropTypes.func, 
     onCancel: PropTypes.func,

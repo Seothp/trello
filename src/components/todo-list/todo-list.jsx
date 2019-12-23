@@ -26,7 +26,7 @@ const ToDoList = ({listId, title, tasks, onAddTask, removeTask, removeList, chec
 ToDoList.propTypes = {
     listId: PropTypes.number.isRequired, 
     tasks: PropTypes.array.isRequired, 
-    title: PropTypes.func, 
+    title: PropTypes.string, 
     onAddTask: PropTypes.func, 
     removeTask: PropTypes.func, 
     removeList: PropTypes.func, 
