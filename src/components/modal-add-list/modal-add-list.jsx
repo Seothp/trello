@@ -18,4 +18,9 @@ ModalAddList.propTypes = {
     isOpen: PropTypes.bool,
 }
 
+ModalAddList.defaultProps = {
+    addList: () => {},
+    isOpen: false,
+}
+
 export default ModalAddList
