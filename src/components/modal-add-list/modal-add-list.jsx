@@ -14,12 +14,13 @@ class ModalAddList extends Component {
     }
 
     render() {
-        const { onAccept, onCancel, isOpen } = this.props
+        const { handleInputChange, inputValue } = this.state;
+        const { onAccept, onCancel, isOpen } = this.props;
         return (
             <Modal onAccept={onAccept} isOpen={isOpen} onCancel={onCancel}>
                 <div className="modal-add-list">
-                    <input type="text" className="input-title" onChange={this.handleInputChange.bind(this)}/>
-                    <button className="modal-add-list-btn" onClick={() => onAccept(this.state.inputValue)}>add</button>
+                    <input type="text" className="input-title" value={inputValue} onChange={handleInputChange.bind(this)}/>
+                    <button className="modal-add-list-btn" onClick={() => onAccept(inputValue)}>add</button>
                 </div>
             </Modal>
             
