@@ -7,6 +7,7 @@ const ModalAddList = ({onAccept, onCancel, isOpen}) => {
         <Modal onAccept={onAccept} isOpen={isOpen} onCancel={onCancel}>
             <div className="modal-add-list">
                 <input type="text" className="input-title"/>
+                <button className="modal-add-list-btn" onClick={onAccept}>add</button>
             </div>
         </Modal>
         
