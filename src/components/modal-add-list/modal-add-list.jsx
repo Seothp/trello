@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Modal from '../modal/modal'
 
-const ModalAddList = ({addList, isOpen}) => {
+const ModalAddList = ({onAccept, onCancel, isOpen}) => {
     return (
-        <Modal onAccept={addList} isOpen={isOpen}>
+        <Modal onAccept={onAccept} isOpen={isOpen} onCancel={onCancel}>
             <div className="modal-add-list">
                 <input type="text" className="input-title"/>
             </div>
@@ -14,13 +14,15 @@ const ModalAddList = ({addList, isOpen}) => {
 }
 
 ModalAddList.propTypes = {
-    addList: PropTypes.func,
+    onAccept: PropTypes.func,
+    onCancel: PropTypes.func,
     isOpen: PropTypes.bool,
 }
 
 ModalAddList.defaultProps = {
-    addList: () => {},
     isOpen: false,
+    onAccept: () => {},
+    onCancel: () => {},
 }
 
 export default ModalAddList
