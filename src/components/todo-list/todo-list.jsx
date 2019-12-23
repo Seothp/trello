@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 
 import ToDoItem from '../todo-item/todo-item'
 
@@ -20,6 +21,24 @@ const ToDoList = ({listId, title, tasks, onAddTask, removeTask, removeList, chec
             ))}
         </div>
     )
+}
+
+ToDoList.propTypes = {
+    listId: PropTypes.number.isRequired, 
+    tasks: PropTypes.array.isRequired, 
+    title: PropTypes.func, 
+    onAddTask: PropTypes.func, 
+    removeTask: PropTypes.func, 
+    removeList: PropTypes.func, 
+    checkTask: PropTypes.func,
+}
+
+ToDoList.defaultProps = {
+    title: 'Title is not defined', 
+    onAddTask: () => {}, 
+    removeTask: () => {}, 
+    removeList: () => {}, 
+    checkTask: () => {},
 }
 
 export default ToDoList;

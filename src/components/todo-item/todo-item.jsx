@@ -22,10 +22,16 @@ const ToDoItem = ({title, id, checked, checkTask, removeTask}) => {
 ToDoItem.propTypes = {
     id: PropTypes.number.isRequired,
     title: PropTypes.string,
+    checked: PropTypes.bool,
+    checkTask: PropTypes.func,
+    removeTask: PropTypes.func,
 }
 
 ToDoItem.defaultProps = {
-    title: 'Title'
+    title: 'Title',
+    checked: false,
+    checkTask: () => {},
+    removeTask: () => {},
 }
 
 export default ToDoItem;

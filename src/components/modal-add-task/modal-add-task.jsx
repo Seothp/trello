@@ -34,4 +34,18 @@ class ModalAddTask extends Component {
     }
 }
 
+ModalAddTask.propTypes = {
+    listId: PropTypes.number.isRequired, 
+    isOpen: PropTypes.bool, 
+    onAccept: PropTypes.func, 
+    onCancel: PropTypes.func,
+}
+
+ModalAddTask.defaultProps = {
+    isOpen: false, 
+    onAccept: () => {}, 
+    onCancel: () => {},
+}
+
+
 export default ModalAddTask;
