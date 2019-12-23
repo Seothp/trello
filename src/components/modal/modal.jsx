@@ -9,7 +9,7 @@ const Modal = ({children, accepting, onAccept, onCancel, isOpen, ...attrs}) => {
         <>
             { isOpen &&
                 <Portal>
-                    <div className="modal-wrapper" onClick={onCancel}>
+                    <div className="modal-wrapper">
                         <div className='modal' {...attrs}> 
                             <button className="modal-close-btn" onClick={onCancel}>X</button>
                             <div className="modal-inner">
