@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import ToDoList from '../todo-list/todo-list';
 import Header from '../todo-header/todo-header';
 import ModalAddList from '../modal-add-list/modal-add-list';
+import ModalAddTask from '../modal-add-task/modal-add-task'
 
 class ToDo extends Component {
     constructor(props) {
@@ -32,6 +33,7 @@ class ToDo extends Component {
             ],
             openModalAddList: false,
             openModalAddTask: false,
+            curListId: 0,
         }
     }
     showModalAddList() {
@@ -39,9 +41,13 @@ class ToDo extends Component {
             openModalAddList: true,
         })
     }
-
+    onAddTask(listId) {
+        this.showModalAddTask();
+        this.setState({
+            curListId: listId,
+        })
+    }
     hideModalAddList(e) {
-        console.log(e);
         e.stopPropagation();
         this.setState({
             openModalAddList: false,
@@ -49,11 +55,15 @@ class ToDo extends Component {
     }
 
     showModalAddTask() {
-        
+        this.setState({
+            openModalAddTask: true,
+        })
     }
 
     hideModalAddTask(e) {
-        
+        this.setState({
+            openModalAddTask: false,
+        })
     }
 
     addList(value) {
@@ -63,6 +73,18 @@ class ToDo extends Component {
                 title: value,
             }]
         })
+    }
+
+    addTask({title}) {
+        this.setState({
+            tasks: [...this.state.tasks, {
+                id: new Date().getTime(),
+                listId: this.state.curListId,
+                title,
+                checked: false,
+            }]
+        })
+        console.log(this.state.tasks)
     }
 
     removeList(listId) {
@@ -76,19 +98,7 @@ class ToDo extends Component {
             tasks: this.state.tasks.filter((item) => item.id !== id)
         })
     }
-
-    addTask({id, listId, title}) {
-        this.setState({
-            tasks: [...this.state.tasks, {
-                id,
-                listId,
-                title,
-                checked: false,
-            }]
-        })
-        console.log(this.state.tasks)
-    }
-
+    
     checkTask(id) {
         const mappedTasks = this.state.tasks.map((item) => {
             return item.id === id ? {...item, checked: !item.checked} : item;
@@ -98,7 +108,7 @@ class ToDo extends Component {
         })
     }
     render() {
-        const { tasks } = this.state
+        const { tasks, openModalAddList, openModalAddTask } = this.state
         return (
             <div className="to-do-app">
                 <Header>
@@ -110,19 +120,22 @@ class ToDo extends Component {
                     listId={listId} 
                     title={title} 
                     tasks={tasks}
-                    addTask={this.addTask.bind(this)}
+                    onAddTask={this.onAddTask.bind(this)}
                     checkTask={this.checkTask.bind(this)}
                     removeTask={this.removeTask.bind(this)}
                     removeList={this.removeList.bind(this)}
                     />
                 ))}
-                {this.state.openModalAddList && 
-                <ModalAddList 
-                isOpen={this.state.openModalAddList}
+                <ModalAddList
+                isOpen={openModalAddList}
                 onAccept={this.addList.bind(this)}  
                 onCancel={this.hideModalAddList.bind(this)}
                 />
-                }
+                <ModalAddTask 
+                isOpen={openModalAddTask}
+                onAccept={this.addTask.bind(this)}
+                onCancel={this.hideModalAddTask.bind(this)}
+                />
                 
             </div>
         )
