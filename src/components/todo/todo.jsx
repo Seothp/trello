@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
-import ToDoList from '../todo-list/todo-list'
-import Header from '../todo-header/todo-header'
+import ToDoList from '../todo-list/todo-list';
+import Header from '../todo-header/todo-header';
+import ModalAddList from '../modal-add-list/modal-add-list';
 
 class ToDo extends Component {
     constructor(props) {
@@ -29,13 +30,37 @@ class ToDo extends Component {
                     checked: false,
                 }
             ],
+            openModalAddList: false,
+            openModalAddTask: false,
         }
     }
-    addList() {
+    showModalAddList() {
+        this.setState({
+            openModalAddList: true,
+        })
+    }
+
+    hideModalAddList(e) {
+        console.log(e);
+        e.stopPropagation();
+        this.setState({
+            openModalAddList: false,
+        })
+    }
+
+    showModalAddTask() {
+        
+    }
+
+    hideModalAddTask(e) {
+        
+    }
+
+    addList(value) {
         this.setState({
             lists: [...this.state.lists, {
                 listId: new Date().getTime(),
-                title: 'new list',
+                title: value,
             }]
         })
     }
@@ -73,25 +98,32 @@ class ToDo extends Component {
         })
     }
     render() {
-        const { tasks, lists } = this.state
+        const { tasks } = this.state
         return (
-            <div className="to-do-app" onClick={this.incCount}>
+            <div className="to-do-app">
                 <Header>
-                    <button className="to-do-add-list" onClick={() => this.addList()}>add list</button>
+                    <button className="to-do-add-list" onClick={() => this.showModalAddList()}>add list</button>
                 </Header>
                 {this.state.lists.map(({listId, title}) => (
                     <ToDoList 
                     key={listId} 
                     listId={listId} 
                     title={title} 
-                    tasks={tasks} 
-                    lists={lists} 
+                    tasks={tasks}
                     addTask={this.addTask.bind(this)}
                     checkTask={this.checkTask.bind(this)}
                     removeTask={this.removeTask.bind(this)}
                     removeList={this.removeList.bind(this)}
                     />
                 ))}
+                {this.state.openModalAddList && 
+                <ModalAddList 
+                isOpen={this.state.openModalAddList}
+                onAccept={this.addList.bind(this)}  
+                onCancel={this.hideModalAddList.bind(this)}
+                />
+                }
+                
             </div>
         )
     }
