@@ -50,7 +50,6 @@ class ToDo extends Component {
         })
     }
     hideModalAddList(e) {
-        e.stopPropagation();
         this.setState({
             openModalAddList: false,
         })
