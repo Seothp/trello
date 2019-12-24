@@ -1,3 +1,27 @@
-.to-do-item.checked {
-    background-color: #cdcdcd;
+.to-do-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 5px;
+    margin: 10px 0px;
+    
+    box-sizing: border-box;
+    width: 100%;
+
+    background-color: #F9B3FF;
 }
+
+.to-do-item-check {
+    border: 1px solid black;
+    width: 24px;
+    height: 24px;
+    background-color: red;
+    
+}
+.to-do-item.checked {
+    opacity: .7;
+}
+
+.to-do-item.checked .to-do-item-check {
+    background-color: green ;
+}
+

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import Modal from '../modal/modal'
 
+import './modal-add-task.css'
+
 class ModalAddTask extends Component {
     state = {
         titleValue: '',
@@ -26,7 +28,7 @@ class ModalAddTask extends Component {
                 <div className="modal-add-task">
                     <div className="add-task-form">
                         <input type="text" className="add-task-title" value={titleValue} onChange={this.handleInputChange.bind(this)}/>
-                        <button onClick={() => onAccept({title: titleValue})}>add</button>
+                        <button className='modal-add-task-btn' onClick={() => onAccept({title: titleValue})}>add</button>
                     </div>
                 </div>
             </Modal>

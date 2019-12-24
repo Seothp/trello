@@ -12,9 +12,9 @@ const ToDoItem = ({title, id, checked, checkTask, removeTask}) => {
 
     return (
         <div className={classes}>
-            <button className="to-do-item-check" onClick={() => checkTask(id)}>Check</button>
+            <button className="to-do-item-check" onClick={() => checkTask(id)}></button>
             {title}
-            <button className="to-do-item-delete" onClick={() => removeTask(id)}>Delete</button>
+            <button className="to-do-item-delete" onClick={() => removeTask(id)}>X</button>
         </div>
     )
 }

@@ -1,0 +1,10 @@
+.add-task-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-add-task-btn {
+    border: 1px solid black;
+    background-color: #7fe5f0;
+    margin-top: 8px;
+}

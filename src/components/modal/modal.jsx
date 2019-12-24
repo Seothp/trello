@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 
 import Portal from '../portal/portal'
 
+import './modal.css'
+
 const Modal = ({children, accepting, onAccept, onCancel, isOpen, ...attrs}) => {
 
     return (

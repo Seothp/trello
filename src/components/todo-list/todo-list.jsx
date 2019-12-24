@@ -3,12 +3,16 @@ import PropTypes from 'prop-types'
 
 import ToDoItem from '../todo-item/todo-item'
 
+import './todo-list.css';
+
 const ToDoList = ({listId, title, tasks, onAddTask, removeTask, removeList, checkTask, ...attrs}) => {
     return (
         <div className="to-do-list" key={listId} {...attrs}>
             <h3 className="to-do-list-title">{title}</h3>
-            <button className="to-do-add-task" onClick={() => onAddTask(listId)}>add task</button>
-            <button className="to-do-remove-list" onClick={() => removeList(listId)}>remove list</button>
+            <div className="to-do-list-buttons">
+                <button className="to-do-add-task" onClick={() => onAddTask(listId)}>add task</button>
+                <button className="to-do-remove-list" onClick={() => removeList(listId)}>remove list</button>
+            </div>
             {tasks.filter((task) => task.listId === listId).map(({id, title, checked}) => (
                 <ToDoItem 
                 id={id} 

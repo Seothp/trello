@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Modal from '../modal/modal'
 
+import './modal-add-list.css';
+
 class ModalAddList extends Component {
     state = {
         inputValue: '',

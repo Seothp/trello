@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 import ToDoList from '../todo-list/todo-list';
 import Header from '../todo-header/todo-header';
 import ModalAddList from '../modal-add-list/modal-add-list';
-import ModalAddTask from '../modal-add-task/modal-add-task'
+import ModalAddTask from '../modal-add-task/modal-add-task';
+
+import './todo.css';
 
 class ToDo extends Component {
     constructor(props) {
@@ -113,18 +115,20 @@ class ToDo extends Component {
                 <Header>
                     <button className="to-do-add-list" onClick={() => this.showModalAddList()}>add list</button>
                 </Header>
-                {this.state.lists.map(({listId, title}) => (
-                    <ToDoList 
-                    key={listId} 
-                    listId={listId} 
-                    title={title} 
-                    tasks={tasks}
-                    onAddTask={this.onAddTask.bind(this)}
-                    checkTask={this.checkTask.bind(this)}
-                    removeTask={this.removeTask.bind(this)}
-                    removeList={this.removeList.bind(this)}
-                    />
-                ))}
+                <div className="to-do-app-lists">
+                    {this.state.lists.map(({listId, title}) => (
+                        <ToDoList 
+                        key={listId} 
+                        listId={listId} 
+                        title={title} 
+                        tasks={tasks}
+                        onAddTask={this.onAddTask.bind(this)}
+                        checkTask={this.checkTask.bind(this)}
+                        removeTask={this.removeTask.bind(this)}
+                        removeList={this.removeList.bind(this)}
+                        />
+                    ))}
+                </div>
                 <ModalAddList
                 isOpen={openModalAddList}
                 onAccept={this.addList.bind(this)}  

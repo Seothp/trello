@@ -1,0 +1,35 @@
+.modal-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100vw;
+    height: 100vh;
+
+    background-color: rgba(0, 0, 0, .55);
+}
+
+.modal {
+    position: relative;
+    padding: 30px;
+    background-color: #fff;
+}
+
+.modal-close-btn {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    margin: 0;
+
+    position: absolute;
+    top: 5px;
+    right: 5px;
+
+    background-color: red;
+    border: 1px solid black;
+    border-radius: 50%;
+}
