@@ -107,6 +107,19 @@ class ToDo extends Component {
             tasks: mappedTasks,
         })
     }
+    changeItemListId({itemId}, listId) {
+        const tasks = this.state.tasks.map((task) => {
+            if (itemId === task.id) {
+                task.listId = listId;
+                return task
+            } else {
+                return task
+            }
+        })
+        this.setState({
+            tasks
+        })
+    }
     render() {
         const { tasks, openModalAddList, openModalAddTask } = this.state
         return (
@@ -125,6 +138,7 @@ class ToDo extends Component {
                         checkTask={this.checkTask.bind(this)}
                         removeTask={this.removeTask.bind(this)}
                         removeList={this.removeList.bind(this)}
+                        changeItemListId={this.changeItemListId.bind(this)}
                         />
                     ))}
                 </div>

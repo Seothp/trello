@@ -1,13 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
+import { useDrop } from 'react-dnd';
 
-import ToDoItem from '../todo-item/todo-item'
+import ToDoItem from '../todo-item/todo-item';
+import ItemTypes from '../../ItemTypes';
 
 import './todo-list.css';
 
-const ToDoList = ({listId, title, tasks, onAddTask, removeTask, removeList, checkTask, ...attrs}) => {
+const ToDoList = ({listId, title, tasks, onAddTask, removeTask, removeList, checkTask, changeItemListId, ...attrs}) => {
+    const [{ canDrop, isOver }, drop] = useDrop({
+        accept: ItemTypes.ITEM,
+        drop: (id) => changeItemListId(id, listId),
+        collect: monitor => ({
+            isOver: monitor.isOver(),
+            canDrop: monitor.canDrop(),
+          }),
+    })
+
     return (
-        <div className="to-do-list" key={listId} {...attrs}>
+        <div className="to-do-list" key={listId} {...attrs} ref={drop}>
             <h3 className="to-do-list-title">{title}</h3>
             <div className="to-do-list-buttons">
                 <button className="to-do-add-task" onClick={() => onAddTask(listId)}>add task</button>
