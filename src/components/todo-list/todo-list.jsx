@@ -16,7 +16,7 @@ const ToDoList = ({listId, title, tasks, onAddTask, removeTask, removeList, chec
             canDrop: monitor.canDrop(),
           }),
     })
-
+    const plusBackground = canDrop && isOver ? 'green' : 'gray';
     return (
         <div className="to-do-list" key={listId} {...attrs} ref={drop}>
             <h3 className="to-do-list-title">{title}</h3>
@@ -35,7 +35,7 @@ const ToDoList = ({listId, title, tasks, onAddTask, removeTask, removeList, chec
                 />
             ))}
             { canDrop &&
-                <div className="to-do-can-drop-item">
+                <div className="to-do-can-drop-item" style={{background:plusBackground}}>
                 </div>
             }
         </div>

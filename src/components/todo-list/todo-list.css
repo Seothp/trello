@@ -44,3 +44,6 @@
 .to-do-can-drop-item::before {
     transform:  translate(-50%, -50%) rotate(90deg);
 } 
+.to-do-can-drop-item:hover {
+    background-color: greenyellow;
+}
