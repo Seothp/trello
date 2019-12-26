@@ -13,7 +13,7 @@ const ToDoItem = ({title, id, checked, checkTask, removeTask}) => {
         { checked }
     )
     const [{ isDragging }, drag] = useDrag({
-        item: {itemId: id, type: ItemTypes.ITEM },
+        item: { itemId: id, type: ItemTypes.ITEM },
         collect: monitor => ({
             isDragging: monitor.isDragging(),
           }),

@@ -8,9 +8,9 @@ import ItemTypes from '../../ItemTypes';
 import './todo-list.css';
 
 const ToDoList = ({listId, title, tasks, onAddTask, removeTask, removeList, checkTask, changeItemListId, ...attrs}) => {
-    const [{ canDrop, isOver }, drop] = useDrop({
+    const [{ canDrop, isOver, item }, drop] = useDrop({
         accept: ItemTypes.ITEM,
-        drop: (id) => changeItemListId(id, listId),
+        drop: (item) => changeItemListId(item, listId),
         collect: monitor => ({
             isOver: monitor.isOver(),
             canDrop: monitor.canDrop(),
@@ -34,6 +34,10 @@ const ToDoList = ({listId, title, tasks, onAddTask, removeTask, removeList, chec
                 checkTask={checkTask}
                 />
             ))}
+            { canDrop &&
+                <div className="to-do-can-drop-item">
+                </div>
+            }
         </div>
     )
 }
