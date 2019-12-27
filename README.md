@@ -10,6 +10,6 @@ Build for production
 
 Functional
 
-    -add and detelete lists with tasks
+    -add and delete lists with tasks
     
     -moving tasks at another list with drag&drop
