@@ -42,14 +42,12 @@ class ModalAddList extends Component {
 
 ModalAddList.propTypes = {
     isOpen: PropTypes.bool,
-    onAccept: PropTypes.func,
-    onCancel: PropTypes.func,
+    onAccept: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
 }
 
 ModalAddList.defaultProps = {
     isOpen: false,
-    onAccept: () => {},
-    onCancel: () => {},
 }
 
 export default ModalAddList
