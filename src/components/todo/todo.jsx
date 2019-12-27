@@ -11,28 +11,8 @@ class ToDo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            lists: [
-                {
-                    listId: 12312312,
-                    title: 'wdadad'
-                }, {
-                    listId: 12312399,
-                    title: 'wdadad'
-                }
-            ],
-            tasks: [
-                {
-                    id: 1,
-                    listId: 12312312,
-                    title: 'first task',
-                    checked: false,
-                }, {
-                    id: 2,
-                    listId: 12312399,
-                    title: 'second task',
-                    checked: false,
-                }
-            ],
+            lists: localStorage.lists ? JSON.parse(localStorage.lists) : [],
+            tasks: localStorage.tasks ? JSON.parse(localStorage.tasks) : [],
             openModalAddList: false,
             openModalAddTask: false,
             curListId: 0,
@@ -43,12 +23,14 @@ class ToDo extends Component {
             openModalAddList: true,
         })
     }
+
     onAddTask(listId) {
         this.showModalAddTask();
         this.setState({
             curListId: listId,
         })
     }
+
     hideModalAddList(e) {
         this.setState({
             openModalAddList: false,
@@ -67,7 +49,7 @@ class ToDo extends Component {
         })
     }
 
-    addList(value) {
+    async addList(value) {
         this.setState({
             lists: [...this.state.lists, {
                 listId: new Date().getTime(),
@@ -76,7 +58,7 @@ class ToDo extends Component {
         })
     }
 
-    addTask({title}) {
+    async addTask ({title}) {
         this.setState({
             tasks: [...this.state.tasks, {
                 id: new Date().getTime(),
@@ -87,16 +69,18 @@ class ToDo extends Component {
         })
     }
 
-    removeList(listId) {
+    async removeList(listId) {
         this.setState({
             lists: this.state.lists.filter((item) => item.listId !== listId)
         })
+        this.refreshLocalStorage();
     }
 
-    removeTask(id) {
+    async removeTask(id) {
         this.setState({
             tasks: this.state.tasks.filter((item) => item.id !== id)
         })
+        this.refreshLocalStorage();
     }
     
     checkTask(id) {
@@ -107,7 +91,7 @@ class ToDo extends Component {
             tasks: mappedTasks,
         })
     }
-    changeItemListId({itemId}, listId) {
+    async changeItemListId({itemId}, listId) {
         const tasks = this.state.tasks.map((task) => {
             if (itemId === task.id) {
                 task.listId = listId;
@@ -119,6 +103,27 @@ class ToDo extends Component {
         this.setState({
             tasks
         })
+    }
+    refreshLocalStorage() {
+        localStorage.tasks = JSON.stringify(this.state.tasks);
+        localStorage.lists = JSON.stringify(this.state.lists);
+    }
+
+    onListModalAccept(value) {
+        this.addList(value).then(() => this.refreshLocalStorage());
+    }
+
+    onTaskModalAccept(item) {
+        this.addTask(item).then(() => this.refreshLocalStorage());
+    }
+    onRemoveList(listId) {
+        this.removeList(listId).then(() => this.refreshLocalStorage());
+    }
+    onRemoveTask(id) {
+        this.removeTask(id).then(() => this.refreshLocalStorage());
+    }
+    onItemDrop(item, listId) {
+        this.changeItemListId(item, listId).then(() => this.refreshLocalStorage());
     }
     render() {
         const { tasks, openModalAddList, openModalAddTask } = this.state
@@ -137,19 +142,19 @@ class ToDo extends Component {
                         onAddTask={this.onAddTask.bind(this)}
                         checkTask={this.checkTask.bind(this)}
                         removeTask={this.removeTask.bind(this)}
-                        removeList={this.removeList.bind(this)}
-                        changeItemListId={this.changeItemListId.bind(this)}
+                        removeList={this.onRemoveList.bind(this)}
+                        onItemDrop={this.onItemDrop.bind(this)}
                         />
                     ))}
                 </div>
                 <ModalAddList
                 isOpen={openModalAddList}
-                onAccept={this.addList.bind(this)}  
+                onAccept={this.onListModalAccept.bind(this)}  
                 onCancel={this.hideModalAddList.bind(this)}
                 />
                 <ModalAddTask 
                 isOpen={openModalAddTask}
-                onAccept={this.addTask.bind(this)}
+                onAccept={this.onTaskModalAccept.bind(this)}
                 onCancel={this.hideModalAddTask.bind(this)}
                 />
                 
