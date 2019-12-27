@@ -47,19 +47,15 @@ const ToDoList = ({listId, title, tasks, onAddTask, removeTask, removeList, chec
 ToDoList.propTypes = {
     listId: PropTypes.number.isRequired, 
     tasks: PropTypes.array.isRequired, 
+    onAddTask: PropTypes.func.isRequired, 
+    removeTask: PropTypes.func.isRequired, 
+    removeList: PropTypes.func.isRequired, 
+    checkTask: PropTypes.func.isRequired,
     title: PropTypes.string, 
-    onAddTask: PropTypes.func, 
-    removeTask: PropTypes.func, 
-    removeList: PropTypes.func, 
-    checkTask: PropTypes.func,
 }
 
 ToDoList.defaultProps = {
-    title: 'Title is not defined', 
-    onAddTask: () => {}, 
-    removeTask: () => {}, 
-    removeList: () => {}, 
-    checkTask: () => {},
+    title: 'Title is not defined',
 }
 
 export default ToDoList;
