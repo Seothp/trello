@@ -83,7 +83,7 @@ class ToDo extends Component {
         this.refreshLocalStorage();
     }
     
-    checkTask(id) {
+    async checkTask(id) {
         const mappedTasks = this.state.tasks.map((item) => {
             return item.id === id ? {...item, checked: !item.checked} : item;
         })
@@ -116,14 +116,22 @@ class ToDo extends Component {
     onTaskModalAccept(item) {
         this.addTask(item).then(() => this.refreshLocalStorage());
     }
-    onRemoveList(listId) {
+    async onRemoveList(listId) {
         this.removeList(listId).then(() => this.refreshLocalStorage());
+        let thisListTasks = this.state.tasks.filter(item => item.listId === listId);
+        for (let item of thisListTasks) {
+            await this.onRemoveTask(item.id)
+        }
     }
     onRemoveTask(id) {
+        console.log(id)
         this.removeTask(id).then(() => this.refreshLocalStorage());
     }
     onItemDrop(item, listId) {
         this.changeItemListId(item, listId).then(() => this.refreshLocalStorage());
+    }
+    onCheckTask(id) {
+        this.checkTask(id).then(() => this.refreshLocalStorage())
     }
     render() {
         const { tasks, openModalAddList, openModalAddTask } = this.state
@@ -140,8 +148,8 @@ class ToDo extends Component {
                         title={title} 
                         tasks={tasks}
                         onAddTask={this.onAddTask.bind(this)}
-                        checkTask={this.checkTask.bind(this)}
-                        removeTask={this.removeTask.bind(this)}
+                        checkTask={this.onCheckTask.bind(this)}
+                        removeTask={this.onRemoveTask.bind(this)}
                         removeList={this.onRemoveList.bind(this)}
                         onItemDrop={this.onItemDrop.bind(this)}
                         />
