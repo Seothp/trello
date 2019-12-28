@@ -29,6 +29,7 @@ class ModalAddTask extends Component {
         this.clearModal();
     }
 
+   
     render() {
         const { inputValue } = this.state;
         const { isOpen, onCancel } = this.props;

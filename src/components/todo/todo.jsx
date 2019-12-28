@@ -5,19 +5,28 @@ import Header from '../todo-header/todo-header';
 import ModalAddList from '../modal-add-list/modal-add-list';
 import ModalAddTask from '../modal-add-task/modal-add-task';
 
+
 import './todo.css';
 
 class ToDo extends Component {
     constructor(props) {
         super(props);
+
+        // METHODS
+        this.addList = this.props.addList;
+        this.addTask = this.props.addTask;
+        this.removeList = this.props.removeList;
+        this.removeTask = this.props.removeTask;
+        this.checkTask = this.props.checkTask;
+        this.changeItemListId = this.props.changeItemListId;
+        this.changeCurListId = this.props.changeCurListId;
+
         this.state = {
-            lists: localStorage.lists ? JSON.parse(localStorage.lists) : [],
-            tasks: localStorage.tasks ? JSON.parse(localStorage.tasks) : [],
             openModalAddList: false,
             openModalAddTask: false,
-            curListId: 0,
         }
     }
+    
     showModalAddList() {
         this.setState({
             openModalAddList: true,
@@ -26,9 +35,7 @@ class ToDo extends Component {
 
     onAddTask(listId) {
         this.showModalAddTask();
-        this.setState({
-            curListId: listId,
-        })
+        this.changeCurListId(listId);
     }
 
     hideModalAddList(e) {
@@ -49,108 +56,37 @@ class ToDo extends Component {
         })
     }
 
-    async addList(value) {
-        this.setState({
-            lists: [...this.state.lists, {
-                listId: new Date().getTime(),
-                title: value,
-            }]
-        })
-    }
-
-    async addTask ({title}) {
-        this.setState({
-            tasks: [...this.state.tasks, {
-                id: new Date().getTime(),
-                listId: this.state.curListId,
-                title,
-                checked: false,
-            }]
-        })
-    }
-
-    async removeList(listId) {
-        this.setState({
-            lists: this.state.lists.filter((item) => item.listId !== listId)
-        })
-        this.refreshLocalStorage();
-    }
-
-    async removeTask(id) {
-        this.setState({
-            tasks: this.state.tasks.filter((item) => item.id !== id)
-        })
-        this.refreshLocalStorage();
-    }
-    
-    async checkTask(id) {
-        const mappedTasks = this.state.tasks.map((item) => {
-            return item.id === id ? {...item, checked: !item.checked} : item;
-        })
-        this.setState({
-            tasks: mappedTasks,
-        })
-    }
-    async changeItemListId({itemId}, listId) {
-        const tasks = this.state.tasks.map((task) => {
-            if (itemId === task.id) {
-                task.listId = listId;
-                return task
-            } else {
-                return task
-            }
-        })
-        this.setState({
-            tasks
-        })
-    }
-    refreshLocalStorage() {
-        localStorage.tasks = JSON.stringify(this.state.tasks);
-        localStorage.lists = JSON.stringify(this.state.lists);
-    }
-
     onListModalAccept(value) {
-        this.addList(value).then(() => this.refreshLocalStorage());
+        this.addList(value);
     }
 
     onTaskModalAccept(item) {
-        this.addTask(item).then(() => this.refreshLocalStorage());
+        this.props.addTask(item);
     }
-    async onRemoveList(listId) {
-        this.removeList(listId).then(() => this.refreshLocalStorage());
-        let thisListTasks = this.state.tasks.filter(item => item.listId === listId);
-        for (let item of thisListTasks) {
-            await this.onRemoveTask(item.id)
-        }
-    }
-    onRemoveTask(id) {
-        console.log(id)
-        this.removeTask(id).then(() => this.refreshLocalStorage());
-    }
+
     onItemDrop(item, listId) {
-        this.changeItemListId(item, listId).then(() => this.refreshLocalStorage());
+        this.changeItemListId(item, listId);
     }
-    onCheckTask(id) {
-        this.checkTask(id).then(() => this.refreshLocalStorage())
-    }
+
     render() {
-        const { tasks, openModalAddList, openModalAddTask } = this.state
+        const { openModalAddList, openModalAddTask } = this.state
         return (
             <div className="to-do-app">
                 <Header>
                     <button className="to-do-add-list" onClick={() => this.showModalAddList()}>add list</button>
                 </Header>
+                <span className="lists-count">{this.props.lists.length}</span>
                 <div className="to-do-app-lists">
-                    {this.state.lists.map(({listId, title}) => (
+                    {this.props.lists.map(({listId, title}) => (
                         <ToDoList 
                         key={listId} 
                         listId={listId} 
                         title={title} 
-                        tasks={tasks}
+                        tasks={this.props.tasks}
                         onAddTask={this.onAddTask.bind(this)}
-                        checkTask={this.onCheckTask.bind(this)}
-                        removeTask={this.onRemoveTask.bind(this)}
-                        removeList={this.onRemoveList.bind(this)}
+                        checkTask={this.checkTask}
+                        removeTask={this.removeTask}
+                        removeList={this.removeList}
                         onItemDrop={this.onItemDrop.bind(this)}
                         />
                     ))}
