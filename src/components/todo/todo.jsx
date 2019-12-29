@@ -26,33 +26,21 @@ class ToDo extends Component {
             openModalAddTask: false,
         }
     }
-    
-    showModalAddList() {
+
+    switchModalAddListView(e) {
         this.setState({
-            openModalAddList: true,
+            openModalAddList: !this.state.openModalAddList,
         })
     }
 
     onAddTask(listId) {
-        this.showModalAddTask();
+        this.switchModalAddTaskView();
         this.changeCurListId(listId);
     }
 
-    hideModalAddList(e) {
+    switchModalAddTaskView(e) {
         this.setState({
-            openModalAddList: false,
-        })
-    }
-
-    showModalAddTask() {
-        this.setState({
-            openModalAddTask: true,
-        })
-    }
-
-    hideModalAddTask(e) {
-        this.setState({
-            openModalAddTask: false,
+            openModalAddTask: !this.state.openModalAddTask,
         })
     }
 
@@ -60,7 +48,7 @@ class ToDo extends Component {
         this.addList(value);
     }
 
-    onTaskModalAccept(item) {
+    onModalTaskAccept(item) {
         this.props.addTask(item);
     }
 
@@ -73,7 +61,7 @@ class ToDo extends Component {
         return (
             <div className="to-do-app">
                 <Header>
-                    <button className="to-do-add-list" onClick={() => this.showModalAddList()}>add list</button>
+                    <button className="to-do-add-list" onClick={() => this.switchModalAddListView()}>add list</button>
                 </Header>
                 <span className="lists-count">{this.props.lists.length}</span>
                 <div className="to-do-app-lists">
@@ -94,12 +82,12 @@ class ToDo extends Component {
                 <ModalAddList
                 isOpen={openModalAddList}
                 onAccept={this.onListModalAccept.bind(this)}  
-                onCancel={this.hideModalAddList.bind(this)}
+                onCancel={this.switchModalAddListView.bind(this)}
                 />
                 <ModalAddTask 
                 isOpen={openModalAddTask}
-                onAccept={this.onTaskModalAccept.bind(this)}
-                onCancel={this.hideModalAddTask.bind(this)}
+                onAccept={this.onModalTaskAccept.bind(this)}
+                onCancel={this.switchModalAddTaskView.bind(this)}
                 />
                 
             </div>
