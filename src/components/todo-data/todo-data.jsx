@@ -70,7 +70,6 @@ class ToDoData extends Component {
         this.setState({
             tasks: mappedTasks,
         })
-        console.log(id,this)
     }
 
     changeItemListId({itemId}, listId) {
@@ -78,9 +77,8 @@ class ToDoData extends Component {
             if (itemId === task.id) {
                 task.listId = listId;
                 return task
-            } else {
-                return task
             }
+            return task
         })
         this.setState({
             tasks

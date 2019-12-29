@@ -63,7 +63,6 @@ class ToDo extends Component {
                 <Header>
                     <button className="to-do-add-list" onClick={() => this.switchModalAddListView()}>add list</button>
                 </Header>
-                <span className="lists-count">{this.props.lists.length}</span>
                 <div className="to-do-app-lists">
                     {this.props.lists.map(({listId, title}) => (
                         <ToDoList 
