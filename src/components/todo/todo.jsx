@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import { addList, removeList } from '../../actions/actionCreator'
 
 import ToDoList from '../todo-list/todo-list';
 import Header from '../todo-header/todo-header';
@@ -18,7 +21,6 @@ class ToDo extends Component {
             openModalAddList: false,
             openModalAddTask: false,
 
-            lists: [],
             tasks: [],
         }
     }
@@ -105,7 +107,8 @@ class ToDo extends Component {
     }
 
     onListModalAccept(value) {
-        this.addList(value);
+        const listId = Date.now()
+        this.props.addList(listId, value);
     }
 
     onModalTaskAccept(item) {
@@ -117,14 +120,14 @@ class ToDo extends Component {
     }
 
     render() {
-        const { openModalAddList, openModalAddTask, tasks, lists } = this.state
+        const { openModalAddList, openModalAddTask, tasks, } = this.state
         return (
             <div className="to-do-app">
                 <Header>
                     <button className="to-do-add-list" onClick={() => this.switchModalAddListView()}>add list</button>
                 </Header>
                 <div className="to-do-app-lists">
-                    {lists.map(({listId, title}) => (
+                    {this.props.lists.map(({listId, title}) => (
                         <ToDoList 
                         key={listId} 
                         listId={listId} 
@@ -154,4 +157,6 @@ class ToDo extends Component {
     }
 }
 
-export default ToDo;
+export default connect( ({ lists }) => ({
+    lists
+  }), { addList, removeList })(ToDo);

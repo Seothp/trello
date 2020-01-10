@@ -1,10 +1,14 @@
 import { ADD_LIST, REMOVE_LIST } from '../constants';
 
-let LISTS = [];
+let LISTS = [{
+    listId: 213123213,
+    title: 'test'
+}];
 
-const tasks = (state = LISTS, { listId, title }) => {
-    switch (state) {
+const tasks = (state = LISTS, { listId, title, type }) => {
+    switch (type) {
         case ADD_LIST:
+            console.log('reduced')
             return [
                 ...state, {
                     listId,
