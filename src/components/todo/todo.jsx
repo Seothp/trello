@@ -13,18 +13,78 @@ class ToDo extends Component {
         super(props);
 
         // METHODS
-        this.addList = this.props.addList;
-        this.addTask = this.props.addTask;
-        this.removeList = this.props.removeList;
-        this.removeTask = this.props.removeTask;
-        this.checkTask = this.props.checkTask;
-        this.changeItemListId = this.props.changeItemListId;
-        this.changeCurListId = this.props.changeCurListId;
 
         this.state = {
             openModalAddList: false,
             openModalAddTask: false,
+
+            lists: [],
+            tasks: [],
         }
+    }
+
+
+
+    addList(value) {
+        this.setState({
+            lists: [...this.state.lists, {
+                listId: new Date().getTime(),
+                title: value,
+            }]
+        })
+    }
+
+    addTask ({title}) {
+        this.setState({
+            tasks: [...this.state.tasks, {
+                id: new Date().getTime(),
+                listId: this.state.curListId,
+                title,
+                checked: false,
+            }]
+        })
+    }
+
+    removeList (listId) {
+        this.setState({
+            lists: this.state.lists.filter((item) => item.listId !== listId)
+        })
+    }
+
+    removeTask (id) {
+        this.setState({
+            tasks: this.state.tasks.filter((item) => item.id !== id)
+        })
+    }
+
+    checkTask(id) {
+        const mappedTasks = this.state.tasks.map((item) => {
+            return item.id === id ? {...item, checked: !item.checked} : item;
+        })
+        this.setState({
+            tasks: mappedTasks,
+        })
+        console.log(id,this)
+    }
+
+    changeItemListId({itemId}, listId) {
+        const tasks = this.state.tasks.map((task) => {
+            if (itemId === task.id) {
+                task.listId = listId;
+                return task
+            } else {
+                return task
+            }
+        })
+        this.setState({
+            tasks
+        })
+    }
+
+    changeCurListId(curListId) {
+        this.setState({
+            curListId
+        })
     }
 
     switchModalAddListView(e) {
@@ -49,7 +109,7 @@ class ToDo extends Component {
     }
 
     onModalTaskAccept(item) {
-        this.props.addTask(item);
+        this.addTask(item);
     }
 
     onItemDrop(item, listId) {
@@ -57,23 +117,23 @@ class ToDo extends Component {
     }
 
     render() {
-        const { openModalAddList, openModalAddTask } = this.state
+        const { openModalAddList, openModalAddTask, tasks, lists } = this.state
         return (
             <div className="to-do-app">
                 <Header>
                     <button className="to-do-add-list" onClick={() => this.switchModalAddListView()}>add list</button>
                 </Header>
                 <div className="to-do-app-lists">
-                    {this.props.lists.map(({listId, title}) => (
+                    {lists.map(({listId, title}) => (
                         <ToDoList 
                         key={listId} 
                         listId={listId} 
                         title={title} 
-                        tasks={this.props.tasks}
+                        tasks={tasks}
                         onAddTask={this.onAddTask.bind(this)}
-                        checkTask={this.checkTask}
-                        removeTask={this.removeTask}
-                        removeList={this.removeList}
+                        checkTask={this.checkTask.bind(this)}
+                        removeTask={this.removeTask.bind(this)}
+                        removeList={this.removeList.bind(this)}
                         onItemDrop={this.onItemDrop.bind(this)}
                         />
                     ))}
