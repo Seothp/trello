@@ -12,4 +12,4 @@ Functional
 
     -add and delete lists with tasks
     
-    -moving tasks at another list with drag&drop
+    -moving tasks to another list with drag&drop
