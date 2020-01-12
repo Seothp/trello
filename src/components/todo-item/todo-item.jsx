@@ -16,7 +16,7 @@ const ToDoItem = ({title, id, checked, checkTask, removeTask}) => {
         item: { itemId: id, type: ItemTypes.ITEM },
         collect: monitor => ({
             isDragging: monitor.isDragging(),
-          }),
+        }),
     })
     const style = isDragging ? {
         opacity: .7,

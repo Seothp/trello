@@ -1,11 +1,11 @@
 import { ADD_LIST, REMOVE_LIST } from '../constants';
 
 let LISTS = [{
-    listId: 213123213,
+    listId: 213213,
     title: 'test'
 }];
 
-const tasks = (state = LISTS, { listId, title, type }) => {
+const lists = (state = LISTS, { listId, title, type }) => {
     switch (type) {
         case ADD_LIST:
             console.log('reduced')
@@ -22,4 +22,4 @@ const tasks = (state = LISTS, { listId, title, type }) => {
     }
 }
 
-export default tasks;
+export default lists;

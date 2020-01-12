@@ -12,3 +12,16 @@ export const removeList = listId => ({
     type: REMOVE_LIST,
     listId,
 })
+
+export const addTask = ({listId, title, id}) => ({
+    type: ADD_TASK,
+    listId,
+    title,
+    id,
+    checked: false,
+});
+
+export const removeTask = ({ id }) => ({
+    type: REMOVE_TASK,
+    id,
+})

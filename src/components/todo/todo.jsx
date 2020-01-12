@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { addList, removeList } from '../../actions/actionCreator'
+import { addList, removeList, addTask, removeTask } from '../../actions/actionCreator'
 
 import ToDoList from '../todo-list/todo-list';
 import Header from '../todo-header/todo-header';
@@ -20,43 +20,22 @@ class ToDo extends Component {
         this.state = {
             openModalAddList: false,
             openModalAddTask: false,
-
-            tasks: [],
         }
     }
 
 
-
-    addList(value) {
-        this.setState({
-            lists: [...this.state.lists, {
-                listId: new Date().getTime(),
-                title: value,
-            }]
-        })
-    }
-
     addTask ({title}) {
-        this.setState({
-            tasks: [...this.state.tasks, {
-                id: new Date().getTime(),
-                listId: this.state.curListId,
-                title,
-                checked: false,
-            }]
-        })
+        let item = {
+            id: new Date().getTime(),
+            listId: this.state.curListId,
+            title,
+        }
+        this.props.addTask(item);
     }
-
-    removeList (listId) {
-        this.setState({
-            lists: this.state.lists.filter((item) => item.listId !== listId)
-        })
-    }
-
+    
+    
     removeTask (id) {
-        this.setState({
-            tasks: this.state.tasks.filter((item) => item.id !== id)
-        })
+        this.props.removeTask({id});
     }
 
     checkTask(id) {
@@ -120,7 +99,7 @@ class ToDo extends Component {
     }
 
     render() {
-        const { openModalAddList, openModalAddTask, tasks, } = this.state
+        const { openModalAddList, openModalAddTask, } = this.state
         return (
             <div className="to-do-app">
                 <Header>
@@ -132,11 +111,11 @@ class ToDo extends Component {
                         key={listId} 
                         listId={listId} 
                         title={title} 
-                        tasks={tasks}
+                        tasks={this.props.tasks}
                         onAddTask={this.onAddTask.bind(this)}
                         checkTask={this.checkTask.bind(this)}
                         removeTask={this.removeTask.bind(this)}
-                        removeList={this.removeList.bind(this)}
+                        removeList={this.props.removeList.bind(this)}
                         onItemDrop={this.onItemDrop.bind(this)}
                         />
                     ))}
@@ -157,6 +136,7 @@ class ToDo extends Component {
     }
 }
 
-export default connect( ({ lists }) => ({
-    lists
-  }), { addList, removeList })(ToDo);
+export default connect( ({ lists, tasks }) => ({
+    lists,
+    tasks
+  }), { addList, removeList, addTask, removeTask })(ToDo);
