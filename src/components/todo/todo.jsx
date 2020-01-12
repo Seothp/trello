@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { addList, removeList, addTask, removeTask } from '../../actions/actionCreator'
+import { addList, removeList, addTask, removeTask, checkTask } from '../../actions/actionCreator'
 
 import ToDoList from '../todo-list/todo-list';
 import Header from '../todo-header/todo-header';
@@ -39,13 +39,7 @@ class ToDo extends Component {
     }
 
     checkTask(id) {
-        const mappedTasks = this.state.tasks.map((item) => {
-            return item.id === id ? {...item, checked: !item.checked} : item;
-        })
-        this.setState({
-            tasks: mappedTasks,
-        })
-        console.log(id,this)
+        this.props.checkTask({id});
     }
 
     changeItemListId({itemId}, listId) {
@@ -139,4 +133,4 @@ class ToDo extends Component {
 export default connect( ({ lists, tasks }) => ({
     lists,
     tasks
-  }), { addList, removeList, addTask, removeTask })(ToDo);
+  }), { addList, removeList, addTask, removeTask, checkTask })(ToDo);

@@ -21,11 +21,20 @@ const tasks = (state = TASKS, {listId, id, title, checked, type} ) => {
                 }
             ]
         case REMOVE_TASK:
-            console.log('ping')
             return state.filter((item) => {
                 console.log(item.id, id);
                 return item.id !== id;
             });
+        case CHECK_TASK:
+            return state.map((item) => {
+                if (item.id === id) {
+                    return {
+                        ...item,
+                        checked: !item.checked,
+                    }
+                }
+                return item;
+            })
         default:
             return state
     }
