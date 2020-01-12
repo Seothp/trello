@@ -35,6 +35,16 @@ const tasks = (state = TASKS, {listId, id, title, checked, type} ) => {
                 }
                 return item;
             })
+        case MOVE_TASK: 
+            return state.map((item) => {
+                if (item.id === id ) {
+                    return {
+                        ...item, 
+                        listId,
+                    }
+                }
+                return item
+            })
         default:
             return state
     }

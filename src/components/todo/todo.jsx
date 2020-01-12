@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { addList, removeList, addTask, removeTask, checkTask } from '../../actions/actionCreator'
+import { addList, removeList, addTask, removeTask, checkTask, moveTask } from '../../actions/actionCreator'
 
 import ToDoList from '../todo-list/todo-list';
 import Header from '../todo-header/todo-header';
@@ -43,17 +43,8 @@ class ToDo extends Component {
     }
 
     changeItemListId({itemId}, listId) {
-        const tasks = this.state.tasks.map((task) => {
-            if (itemId === task.id) {
-                task.listId = listId;
-                return task
-            } else {
-                return task
-            }
-        })
-        this.setState({
-            tasks
-        })
+        const id = itemId;
+        this.props.moveTask({id, listId})
     }
 
     changeCurListId(curListId) {
@@ -133,4 +124,4 @@ class ToDo extends Component {
 export default connect( ({ lists, tasks }) => ({
     lists,
     tasks
-  }), { addList, removeList, addTask, removeTask, checkTask })(ToDo);
+  }), { addList, removeList, addTask, removeTask, checkTask, moveTask })(ToDo);
