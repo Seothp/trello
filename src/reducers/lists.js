@@ -1,11 +1,16 @@
+import { load } from 'redux-localstorage-simple';
+
 import { ADD_LIST, REMOVE_LIST } from '../constants';
 
-let LISTS = [{
-    listId: 213213,
-    title: 'test'
-}];
+let LISTS = load({namespace: 'todo-data'});
 
-const lists = (state = LISTS, { listId, title, type }) => {
+if (!LISTS && !LISTS.length && !LISTS.lists) {
+    LISTS = {
+        lists: []
+    }
+}
+console.log(LISTS);
+const lists = (state = LISTS.lists, { listId, title, type }) => {
     switch (type) {
         case ADD_LIST:
             return [
