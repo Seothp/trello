@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { useDrop } from 'react-dnd';
 
 import ToDoItem from '../todo-item/todo-item';
-import ItemTypes from '../../ItemTypes';
+import Button from '../button/button';
 
+import ItemTypes from '../../ItemTypes';
 import './todo-list.css';
 
 const ToDoList = ({listId, title, tasks, onAddTask, removeTask, removeList, checkTask, onItemDrop, ...attrs}) => {
@@ -14,17 +15,17 @@ const ToDoList = ({listId, title, tasks, onAddTask, removeTask, removeList, chec
         collect: monitor => ({
             isOver: monitor.isOver(),
             canDrop: monitor.canDrop(),
-          }),
+        }),
     })
 
-    const plusBackground = canDrop && isOver ? 'green' : 'gray';
+    const plusBackground = canDrop && isOver ? '#32EB40' : 'gray';
 
     return (
         <div className="to-do-list" key={listId} {...attrs} ref={drop}>
             <h3 className="to-do-list-title">{title}</h3>
             <div className="to-do-list-buttons">
-                <button className="to-do-add-task" onClick={() => onAddTask(listId)}>add task</button>
-                <button className="to-do-remove-list" onClick={() => removeList(listId)}>remove list</button>
+                <Button className="to-do-add-task" onClick={() => onAddTask(listId)}>add task</Button>
+                <Button className="to-do-remove-list" invert onClick={() => removeList(listId)}>remove list</Button>
             </div>
             {tasks.filter((task) => task.listId === listId).map(({id, title, checked}) => (
                 <ToDoItem 

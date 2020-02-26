@@ -1,0 +1,28 @@
+.btn {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+    border-radius: .25rem;
+    cursor: pointer;
+    padding: 4px 16px;
+    font-size: 14px;
+    transition: all .25s;
+}
+
+.btn:hover {
+    color: #fff;
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.btn.invert {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn.invert:hover {
+    color: #fff;
+    background-color: #c82333;
+    border-color: #bd2130;
+}

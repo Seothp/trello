@@ -1,27 +1,37 @@
 .to-do-item {
+    position: relative;
     display: flex;
     justify-content: space-between;
-    padding: 5px 5px;
+    padding: 8px;
     margin: 10px 0px;
     
     box-sizing: border-box;
     width: 100%;
 
-    background-color: #F9B3FF;
+    background-color: #ffffff;
+    border-bottom: 1px solid black;
 }
 
+
 .to-do-item-check {
-    border: 1px solid black;
-    width: 24px;
-    height: 24px;
-    background-color: red;
-    
+    border-radius: 50%;
+    border: 1px solid #8A95FF;
+    width: 20px;
+    height: 20px;
+    background-color: #EB3633;
 }
 .to-do-item.checked {
-    opacity: .7;
+    border-bottom: 1px solid #32EB40;
 }
 
 .to-do-item.checked .to-do-item-check {
-    background-color: green ;
+    background-color: #32EB40 ;
 }
 
+.to-do-item-delete {
+    padding: 0;
+    font-size: 24px;
+    line-height: 16px;
+    width: 21px;
+    /* color: #ffffff; */
+}

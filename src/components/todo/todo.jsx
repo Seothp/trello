@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import { addList, removeList, addTask, removeTask, checkTask, moveTask } from '../../actions/actionCreator'
 
 import ToDoList from '../todo-list/todo-list';
-import Header from '../todo-header/todo-header';
+import ToDoHeader from '../todo-header/todo-header';
 import ModalAddList from '../modal-add-list/modal-add-list';
 import ModalAddTask from '../modal-add-task/modal-add-task';
+import Button from '../button/button';
 
 
 import './todo.css';
@@ -87,9 +88,9 @@ class ToDo extends Component {
         const { openModalAddList, openModalAddTask, } = this.state
         return (
             <div className="to-do-app">
-                <Header>
-                    <button className="to-do-add-list" onClick={() => this.switchModalAddListView()}>add list</button>
-                </Header>
+                <ToDoHeader>
+                    <Button className="to-do-add-list" onClick={() => this.switchModalAddListView()}>add list</Button>
+                </ToDoHeader>
                 <div className="to-do-app-lists">
                     {this.props.lists.map(({listId, title}) => (
                         <ToDoList 
@@ -124,4 +125,4 @@ class ToDo extends Component {
 export default connect( ({ lists, tasks }) => ({
     lists,
     tasks
-  }), { addList, removeList, addTask, removeTask, checkTask, moveTask })(ToDo);
+}), { addList, removeList, addTask, removeTask, checkTask, moveTask })(ToDo);
