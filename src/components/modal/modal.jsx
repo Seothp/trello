@@ -18,10 +18,10 @@ const Modal = ({children, accepting, onAccept, onCancel, isOpen, ...attrs}) => {
                                 {children}
                             </div>
                             {accepting &&
-                            <>
-                            <button className="modal-accept" onClick={onAccept}></button>
-                            <button className="modal-define" onClick={onCancel}></button>
-                            </>
+                                <>
+                                    <button className="modal-accept" onClick={onAccept}></button>
+                                    <button className="modal-define" onClick={onCancel}></button>
+                                </>
                             }
                         </div>
                     </div>

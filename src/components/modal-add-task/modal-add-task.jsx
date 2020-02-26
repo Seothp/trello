@@ -35,8 +35,8 @@ class ModalAddTask extends Component {
         const { isOpen, onCancel } = this.props;
         return(
             <Modal
-            onCancel={onCancel}
-            isOpen={isOpen}
+                onCancel={onCancel}
+                isOpen={isOpen}
             >
                 <div className="modal-add-task">
                     <div className="add-task-form">

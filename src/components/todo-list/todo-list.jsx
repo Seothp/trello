@@ -29,17 +29,16 @@ const ToDoList = ({listId, title, tasks, onAddTask, removeTask, removeList, chec
             </div>
             {tasks.filter((task) => task.listId === listId).map(({id, title, checked}) => (
                 <ToDoItem 
-                id={id} 
-                title={title} 
-                key={id} 
-                checked={checked} 
-                removeTask={removeTask} 
-                checkTask={checkTask}
+                    id={id} 
+                    title={title} 
+                    key={id} 
+                    checked={checked} 
+                    removeTask={removeTask} 
+                    checkTask={checkTask}
                 />
             ))}
             { canDrop &&
-                <div className="to-do-can-drop-item" style={{background:plusBackground}}>
-                </div>
+                <div className="to-do-can-drop-item" style={{background:plusBackground}}/>
             }
         </div>
     )
