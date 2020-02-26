@@ -9,7 +9,7 @@ if (!LISTS && !LISTS.length && !LISTS.lists) {
         lists: []
     }
 }
-console.log(LISTS);
+
 const lists = (state = LISTS.lists, { listId, title, type }) => {
     switch (type) {
         case ADD_LIST:

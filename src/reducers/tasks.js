@@ -23,7 +23,6 @@ const tasks = (state = TASKS.tasks, {listId, id, title, checked, type} ) => {
             ]
         case REMOVE_TASK:
             return state.filter((item) => {
-                console.log(item.id, id);
                 return item.id !== id;
             });
         case CHECK_TASK:
