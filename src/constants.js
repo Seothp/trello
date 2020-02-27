@@ -9,3 +9,5 @@ export const REMOVE_LIST = 'REMOVE_LIST';
 export const CHECK_TASK = 'CHECK_TASK';
 
 export const MOVE_TASK = 'MOVE_TASK';
+
+export const DELETE_TASKS = 'DELETE_TASKS';

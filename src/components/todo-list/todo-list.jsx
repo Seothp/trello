@@ -9,7 +9,7 @@ import ItemTypes from '../../ItemTypes';
 import './todo-list.css';
 
 const ToDoList = ({listId, title, tasks, onAddTask, removeTask, removeList, checkTask, onItemDrop, ...attrs}) => {
-    const [{ canDrop, isOver, item }, drop] = useDrop({
+    const [{ canDrop, isOver}, drop] = useDrop({
         accept: ItemTypes.ITEM,
         drop: (item) => onItemDrop(item, listId),
         collect: monitor => ({

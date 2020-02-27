@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component , useState } from 'react';
 import { connect } from 'react-redux';
 
-import { addList, removeList, addTask, removeTask, checkTask, moveTask } from '../../actions/actionCreator'
+import { addList, removeList, addTask, removeTask, checkTask, moveTask, deleteTasks } from '../../actions/actionCreator'
 
 import ToDoList from '../todo-list/todo-list';
 import ToDoHeader from '../todo-header/todo-header';
@@ -12,117 +12,77 @@ import Button from '../button/button';
 
 import './todo.css';
 
-class ToDo extends Component {
-    constructor(props) {
-        super(props);
+const ToDo = ({lists, tasks, addList, removeList, addTask, removeTask, checkTask, moveTask, deleteTasks}) => {
+    const [ isOpenModalAddList, setIsOpenModalAddList ] = useState(false);
+    const [ isOpenModalAddTask, setIsOpenModalAddTask ] = useState(false);
+    const [ currentList, setCurrentList ] = useState(0);
 
-        // METHODS
+    const changeItemListId = ({itemId}, listId) => moveTask({itemId, listId})
 
-        this.state = {
-            openModalAddList: false,
-            openModalAddTask: false,
-        }
+    const changeCurListId = (id) => setCurrentList(id)
+
+    const switchModalAddListView = () => setIsOpenModalAddList(!isOpenModalAddList)
+    const switchModalAddTaskView = () =>  setIsOpenModalAddTask(!isOpenModalAddTask)
+
+    const onAddTask = (listId) => {
+        switchModalAddTaskView();
+        changeCurListId(listId);
     }
-
-
-    addTask ({title}) {
-        let item = {
-            id: new Date().getTime(),
-            listId: this.state.curListId,
-            title,
-        }
-        this.props.addTask(item);
+    const onRemoveList = (listId) => {
+        deleteTasks({listId});
+        removeList({listId});
     }
-    
-    
-    removeTask (id) {
-        this.props.removeTask({id});
-    }
-
-    checkTask(id) {
-        this.props.checkTask({id});
-    }
-
-    changeItemListId({itemId}, listId) {
-        const id = itemId;
-        this.props.moveTask({id, listId})
-    }
-
-    changeCurListId(curListId) {
-        this.setState({
-            curListId
-        })
-    }
-
-    switchModalAddListView(e) {
-        this.setState({
-            openModalAddList: !this.state.openModalAddList,
-        })
-    }
-
-    onAddTask(listId) {
-        this.switchModalAddTaskView();
-        this.changeCurListId(listId);
-    }
-
-    switchModalAddTaskView(e) {
-        this.setState({
-            openModalAddTask: !this.state.openModalAddTask,
-        })
-    }
-
-    onListModalAccept(value) {
+    const onListModalAccept = value => {
         const listId = Date.now()
-        this.props.addList(listId, value);
+        addList(listId, value);
     }
 
-    onModalTaskAccept(item) {
-        this.addTask(item);
+    const onModalTaskAccept = ({title}) => {
+        addTask({
+                id: new Date().getTime(),
+                listId: currentList,
+                title,
+            });
     }
 
-    onItemDrop(item, listId) {
-        this.changeItemListId(item, listId);
-    }
+    const onItemDrop = (item, listId) => changeItemListId(item, listId)
 
-    render() {
-        const { openModalAddList, openModalAddTask, } = this.state
-        return (
-            <div className="to-do-app">
-                <ToDoHeader>
-                    <Button className="to-do-add-list" onClick={() => this.switchModalAddListView()}>add list</Button>
-                </ToDoHeader>
-                <div className="to-do-app-lists">
-                    {this.props.lists.map(({listId, title}) => (
-                        <ToDoList 
-                            key={listId} 
-                            listId={listId} 
-                            title={title} 
-                            tasks={this.props.tasks}
-                            onAddTask={this.onAddTask.bind(this)}
-                            checkTask={this.checkTask.bind(this)}
-                            removeTask={this.removeTask.bind(this)}
-                            removeList={this.props.removeList.bind(this)}
-                            onItemDrop={this.onItemDrop.bind(this)}
-                        />
-                    ))}
-                </div>
-                <ModalAddList
-                    isOpen={openModalAddList}
-                    onAccept={this.onListModalAccept.bind(this)}  
-                    onCancel={this.switchModalAddListView.bind(this)}
-                />
-                <ModalAddTask 
-                    isOpen={openModalAddTask}
-                    onAccept={this.onModalTaskAccept.bind(this)}
-                    onCancel={this.switchModalAddTaskView.bind(this)}
-                />
-                
+    return (
+        <div className="to-do-app">
+            <ToDoHeader>
+                <Button className="to-do-add-list" onClick={() => switchModalAddListView()}>add list</Button>
+            </ToDoHeader>
+            <div className="to-do-app-lists">
+                {lists.map(({listId, title}) => (
+                    <ToDoList 
+                        key={listId} 
+                        listId={listId} 
+                        title={title} 
+                        tasks={tasks}
+                        removeList={onRemoveList}
+                        onAddTask={onAddTask}
+                        checkTask={checkTask}
+                        removeTask={removeTask}
+                        onItemDrop={onItemDrop}
+                    />
+                ))}
             </div>
-        )
-    }
+            <ModalAddList
+                isOpen={isOpenModalAddList}
+                onAccept={onListModalAccept}  
+                onCancel={switchModalAddListView}
+            />
+            <ModalAddTask 
+                isOpen={isOpenModalAddTask}
+                onAccept={onModalTaskAccept}
+                onCancel={switchModalAddTaskView}
+            />
+        </div>
+    )
 }
+
 
 export default connect( ({ lists, tasks }) => ({
     lists,
     tasks
-}), { addList, removeList, addTask, removeTask, checkTask, moveTask })(ToDo);
+}), { addList, removeList, addTask, removeTask, checkTask, moveTask, deleteTasks })(ToDo);

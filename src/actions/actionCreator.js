@@ -1,4 +1,4 @@
-import  { ADD_TASK, ADD_LIST, REMOVE_TASK, REMOVE_LIST, CHECK_TASK, MOVE_TASK } from '../constants'
+import  { ADD_TASK, ADD_LIST, REMOVE_TASK, REMOVE_LIST, CHECK_TASK, MOVE_TASK, DELETE_TASKS } from '../constants'
 
 export const addList = (listId, title) => {
     return ({
@@ -7,7 +7,7 @@ export const addList = (listId, title) => {
     title,
 })}
 
-export const removeList = listId => ({
+export const removeList = ({listId}) => ({
     type: REMOVE_LIST,
     listId,
 })
@@ -30,8 +30,14 @@ export const checkTask = ({ id }) => ({
     id,
 })
 
-export const moveTask = ({ listId, id }) => ({
+export const moveTask = ({ listId, itemId }) => {
+    return ({
     type: MOVE_TASK,
     listId,
-    id,
+    id: itemId,
+})}
+
+export const deleteTasks = ({ listId }) => ({
+    type: DELETE_TASKS,
+    listId,
 })

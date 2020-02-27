@@ -1,10 +1,10 @@
 import { load } from 'redux-localstorage-simple'
 
-import { ADD_TASK, REMOVE_TASK, CHECK_TASK, MOVE_TASK } from '../constants'
+import { ADD_TASK, REMOVE_TASK, CHECK_TASK, MOVE_TASK, DELETE_TASKS } from '../constants'
 
 
 let TASKS = load({namespace: 'todo-data'});
-if (!TASKS && !TASKS.length && TASKS.tasks) {
+if (!TASKS && !TASKS.length && !TASKS.tasks) {
     TASKS = {
         tasks: []
     }
@@ -22,11 +22,11 @@ const tasks = (state = TASKS.tasks, {listId, id, title, checked, type} ) => {
                 }
             ]
         case REMOVE_TASK:
-            return state.filter((item) => {
+            return state.filter(item => {
                 return item.id !== id;
             });
         case CHECK_TASK:
-            return state.map((item) => {
+            return state.map(item => {
                 if (item.id === id) {
                     return {
                         ...item,
@@ -35,8 +35,8 @@ const tasks = (state = TASKS.tasks, {listId, id, title, checked, type} ) => {
                 }
                 return item;
             })
-        case MOVE_TASK: 
-            return state.map((item) => {
+        case MOVE_TASK:
+            return state.map(item => {
                 if (item.id === id ) {
                     return {
                         ...item, 
@@ -45,6 +45,8 @@ const tasks = (state = TASKS.tasks, {listId, id, title, checked, type} ) => {
                 }
                 return item
             })
+        case DELETE_TASKS:
+            return state.filter(item => item.listId !== listId)
         default:
             return state
     }
