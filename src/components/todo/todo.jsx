@@ -1,4 +1,4 @@
-import React, { Component , useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import { addList, removeList, addTask, removeTask, checkTask, moveTask, deleteTasks } from '../../actions/actionCreator'

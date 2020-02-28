@@ -1,43 +1,28 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import Modal from '../modal/modal'
 
 import './modal-add-list.css';
 
-class ModalAddList extends Component {
-    state = {
-        inputValue: '',
+const ModalAddList = ({isOpen, onAccept, onCancel}) => {
+    const [inputValue, setInputValue] =  useState('')
+
+    const handleInputChange = ({target: {value}}) => setInputValue(value) 
+    const clearModal = () => setInputValue('')
+    const onClick = () => {
+        onAccept(inputValue);
+        onCancel();
+        clearModal();
     }
 
-    handleInputChange({target: {value}}) {
-        this.setState({
-            inputValue: value,
-        })
-    }
-    clearModal() {
-        this.setState({
-            inputValue: '',
-        })
-    }
-    onAccept(inputValue) {
-        this.props.onAccept(inputValue);
-        this.props.onCancel();
-        this.clearModal();
-    }
-    render() {
-        const { inputValue } = this.state;
-        const { onCancel, isOpen } = this.props;
-        return (
-            <Modal isOpen={isOpen} onCancel={onCancel}>
-                <div className="modal-add-list">
-                    <input type="text" className="input-title" value={inputValue} onChange={this.handleInputChange.bind(this)}/>
-                    <button className="modal-add-list-btn" onClick={() => this.onAccept(inputValue)}>add</button>
-                </div>
-            </Modal>
-            
-        )
-    }
-    
+    return (
+        <Modal isOpen={isOpen} onCancel={onCancel}>
+            <div className="modal-add-list">
+                <input type="text" className="input-title" value={inputValue} onChange={handleInputChange}/>
+                <button className="modal-add-list-btn" onClick={onClick}>add</button>
+            </div>
+        </Modal>
+    )
 }
 
 ModalAddList.propTypes = {
