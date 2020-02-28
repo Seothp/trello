@@ -1,52 +1,31 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Modal from '../modal/modal'
 
 import './modal-add-task.css'
 
-class ModalAddTask extends Component {
-    state = {
-        inputValue: '',
+const ModalAddTask = ({isOpen, onAccept, onCancel}) => {
+    const [inputValue, setInputValue] =  useState('')
 
+    const handleInputChange = ({target: {value}}) => setInputValue(value) 
+    const clearModal = () => setInputValue('')
+    const onClick = () => {
+        onAccept({title: inputValue});
+        onCancel();
+        clearModal();
     }
 
-    handleInputChange({target: {value}}) {
-        this.setState({
-            inputValue: value,
-        })
-    }
-
-    clearModal() {
-        this.setState({
-            inputValue: '',
-        })
-    }
-
-    onAccept(inputValue) {
-        this.props.onAccept(inputValue);
-        this.props.onCancel();
-        this.clearModal();
-    }
-
-   
-    render() {
-        const { inputValue } = this.state;
-        const { isOpen, onCancel } = this.props;
-        return(
-            <Modal
-                onCancel={onCancel}
-                isOpen={isOpen}
-            >
-                <div className="modal-add-task">
-                    <div className="add-task-form">
-                        <input type="text" className="add-task-title" value={inputValue} onChange={this.handleInputChange.bind(this)}/>
-                        <button className='modal-add-task-btn' onClick={() => this.onAccept({title: inputValue})}>add</button>
-                    </div>
+    return (
+        <Modal onCancel={onCancel} isOpen={isOpen}>
+            <div className="modal-add-task">
+                <div className="add-task-form">
+                    <input type="text" className="add-task-title" value={inputValue} onChange={handleInputChange}/>
+                    <button className='modal-add-task-btn' onClick={onClick}>add</button>
                 </div>
-            </Modal>
-        )
-    }
+            </div>
+        </Modal>
+    )
 }
 
 ModalAddTask.propTypes = {
