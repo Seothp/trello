@@ -19,30 +19,32 @@ const ToDo = ({lists, tasks, addList, removeList, addTask, removeTask, checkTask
 
     const changeItemListId = ({itemId}, listId) => moveTask({itemId, listId})
 
-    const changeCurListId = (id) => setCurrentList(id)
+    const changeCurrentListId = id => setCurrentList(id)
 
     const switchModalAddListView = () => setIsOpenModalAddList(!isOpenModalAddList)
     const switchModalAddTaskView = () =>  setIsOpenModalAddTask(!isOpenModalAddTask)
 
-    const onAddTask = (listId) => {
+    const onAddTask = listId => {
         switchModalAddTaskView();
-        changeCurListId(listId);
+        changeCurrentListId(listId);
     }
-    const onRemoveList = (listId) => {
+    const onRemoveList = listId => {
         deleteTasks({listId});
         removeList({listId});
     }
     const onListModalAccept = value => {
-        const listId = Date.now()
-        addList(listId, value);
+        addList({
+            listId: Date.now(), 
+            value,
+        });
     }
 
-    const onModalTaskAccept = ({title}) => {
+    const onTaskModalAccept = ({title}) => {
         addTask({
-                id: new Date().getTime(),
-                listId: currentList,
-                title,
-            });
+            id: Date.now(),
+            listId: currentList,
+            title,
+        });
     }
 
     const onItemDrop = (item, listId) => changeItemListId(item, listId)
@@ -74,7 +76,7 @@ const ToDo = ({lists, tasks, addList, removeList, addTask, removeTask, checkTask
             />
             <ModalAddTask 
                 isOpen={isOpenModalAddTask}
-                onAccept={onModalTaskAccept}
+                onAccept={onTaskModalAccept}
                 onCancel={switchModalAddTaskView}
             />
         </div>
@@ -84,5 +86,13 @@ const ToDo = ({lists, tasks, addList, removeList, addTask, removeTask, checkTask
 
 export default connect( ({ lists, tasks }) => ({
     lists,
-    tasks
-}), { addList, removeList, addTask, removeTask, checkTask, moveTask, deleteTasks })(ToDo);
+    tasks,
+}), { 
+    addList,
+    removeList,
+    addTask,
+    removeTask,
+    checkTask,
+    moveTask,
+    deleteTasks,
+})(ToDo);

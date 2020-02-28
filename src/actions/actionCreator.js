@@ -1,6 +1,6 @@
 import  { ADD_TASK, ADD_LIST, REMOVE_TASK, REMOVE_LIST, CHECK_TASK, MOVE_TASK, DELETE_TASKS } from '../constants'
 
-export const addList = (listId, title) => {
+export const addList = ({listId, title}) => {
     return ({
     type: ADD_LIST,
     listId,

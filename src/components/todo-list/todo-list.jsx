@@ -11,7 +11,7 @@ import './todo-list.css';
 const ToDoList = ({listId, title, tasks, onAddTask, removeTask, removeList, checkTask, onItemDrop, ...attrs}) => {
     const [{ canDrop, isOver}, drop] = useDrop({
         accept: ItemTypes.ITEM,
-        drop: (item) => onItemDrop(item, listId),
+        drop: item => onItemDrop(item, listId),
         collect: monitor => ({
             isOver: monitor.isOver(),
             canDrop: monitor.canDrop(),
@@ -27,7 +27,7 @@ const ToDoList = ({listId, title, tasks, onAddTask, removeTask, removeList, chec
                 <Button className="to-do-add-task" onClick={() => onAddTask(listId)}>add task</Button>
                 <Button className="to-do-remove-list" invert onClick={() => removeList(listId)}>remove list</Button>
             </div>
-            {tasks.filter((task) => task.listId === listId).map(({id, title, checked}) => (
+            {tasks.filter(task => task.listId === listId).map(({id, title, checked}) => (
                 <ToDoItem 
                     id={id} 
                     title={title} 
