@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import Modal from '../modal/modal'
 
-import './modal-add-task.css'
+import './modal-add-board.css'
 
-const ModalAddTask = ({isOpen, onAccept, onCancel}) => {
+const ModalAddBoard = ({isOpen, onAccept, onCancel}) => {
     const [inputValue, setInputValue] =  useState('')
 
     const handleInputChange = ({target: {value}}) => setInputValue(value) 
@@ -18,25 +18,25 @@ const ModalAddTask = ({isOpen, onAccept, onCancel}) => {
 
     return (
         <Modal onCancel={onCancel} isOpen={isOpen}>
-            <div className="modal-add-task">
-                <div className="add-task-form">
-                    <input type="text" className="add-task-title" value={inputValue} onChange={handleInputChange}/>
-                    <button className='modal-add-task-btn' onClick={onClick}>add</button>
+            <div className="modal-add-board">
+                <div className="add-board-form">
+                    <input type="text" className="add-board-title" value={inputValue} onChange={handleInputChange}/>
+                    <button className='modal-add-board-btn' onClick={onClick}>add</button>
                 </div>
             </div>
         </Modal>
     )
 }
 
-ModalAddTask.propTypes = {
+ModalAddBoard.propTypes = {
     isOpen: PropTypes.bool, 
     onAccept: PropTypes.func.isRequired, 
     onCancel: PropTypes.func.isRequired,
 }
 
-ModalAddTask.defaultProps = {
+ModalAddBoard.defaultProps = {
     isOpen: false,
 }
 
 
-export default ModalAddTask;
+export default ModalAddBoard;

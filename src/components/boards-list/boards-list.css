@@ -1,0 +1,32 @@
+.borads-list {
+    width: 40px;
+    display: flex; 
+    flex-direction: column;
+    align-content: center;
+    padding-top: 16px;
+}
+
+.boards-list-button,
+.board-item {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: none;
+    border-bottom: 1px solid black;
+    cursor: pointer;
+}
+.board-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.board-item:first-child {
+    border-top: 1px solid black;
+}
+.boards-list-button {
+    font-size: 32px;
+    color: #28a745;
+}

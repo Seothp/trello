@@ -1,10 +1,21 @@
-import  { ADD_TASK, ADD_LIST, REMOVE_TASK, REMOVE_LIST, CHECK_TASK, MOVE_TASK, DELETE_TASKS } from '../constants'
+import  { 
+    ADD_TASK, 
+    ADD_LIST, 
+    REMOVE_TASK, 
+    REMOVE_LIST, 
+    CHECK_TASK, 
+    MOVE_TASK, 
+    DELETE_TASKS, 
+    ADD_BOARD, 
+    REMOVE_BOARD 
+} from '../constants'
 
-export const addList = ({listId, title}) => {
+export const addList = ({listId, title, boardId}) => {
     return ({
     type: ADD_LIST,
     listId,
     title,
+    boardId,
 })}
 
 export const removeList = ({listId}) => ({
@@ -40,4 +51,15 @@ export const moveTask = ({ listId, itemId }) => {
 export const deleteTasks = ({ listId }) => ({
     type: DELETE_TASKS,
     listId,
+})
+
+export const addBoard = ({ boardId, title }) => ({
+    type: ADD_BOARD,
+    boardId,
+    title,
+})
+
+export const removeBoard = ({ boardId}) => ({
+    type: REMOVE_BOARD,
+    boardId,
 })
