@@ -6,12 +6,15 @@ import Portal from '../portal/portal'
 import './modal.css'
 
 const Modal = ({children, accepting, onAccept, onCancel, isOpen, ...attrs}) => {
-
+    const handleWrapperClick = (e) => {
+        e.persist()
+        if (e.target.className.indexOf('modal-wrapper') !== -1) onCancel()
+    }
     return (
         <>
             { isOpen &&
                 <Portal>
-                    <div className="modal-wrapper">
+                    <div className="modal-wrapper" onClick={handleWrapperClick}>
                         <div className='modal' {...attrs}> 
                             <button className="modal-close-btn" onClick={onCancel}>X</button>
                             <div className="modal-inner">

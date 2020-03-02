@@ -22,9 +22,9 @@ const ToDoItem = ({ title, id, checked, checkTask, removeTask, onTaskClick }) =>
         opacity: .7,
     } : {}
     return (
-        <div className={classes} ref={drag} style={style} onClick={() => onTaskClick(id)}>
+        <div className={classes} ref={drag} style={style} >
             <button className="to-do-item-check" onClick={() => checkTask({id})}></button>
-            {title}
+            <span className="to-do-item-text" onClick={() => onTaskClick(id)}>{title}</span>
             <button className="to-do-item-delete" onClick={() => removeTask({id})}>&#215;</button>
         </div>
     )

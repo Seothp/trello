@@ -35,3 +35,8 @@
     width: 21px;
     /* color: #ffffff; */
 }
+
+.to-do-item-text {
+    flex-grow: 1;
+    text-align: center;
+}
