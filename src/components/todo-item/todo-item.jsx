@@ -7,7 +7,7 @@ import ItemTypes from '../../ItemTypes';
 
 import './todo-item.css';
 
-const ToDoItem = ({title, id, checked, checkTask, removeTask}) => {
+const ToDoItem = ({ title, id, checked, checkTask, removeTask, onTaskClick }) => {
     const classes = classNames(
         'to-do-item',
         { checked }
@@ -22,7 +22,7 @@ const ToDoItem = ({title, id, checked, checkTask, removeTask}) => {
         opacity: .7,
     } : {}
     return (
-        <div className={classes} ref={drag} style={style}>
+        <div className={classes} ref={drag} style={style} onClick={() => onTaskClick(id)}>
             <button className="to-do-item-check" onClick={() => checkTask({id})}></button>
             {title}
             <button className="to-do-item-delete" onClick={() => removeTask({id})}>&#215;</button>

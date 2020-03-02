@@ -1,14 +1,43 @@
+.boards-list-wrapper {
+    position: absolute;
+    left: 0;
+    z-index: 1;
+}
+
 .borads-list {
+    box-sizing: border-box;
     width: 40px;
+    height: 100vh;
     display: flex; 
     flex-direction: column;
     align-content: center;
     padding-top: 16px;
+    background: #ffffff;
+    transition: all .25s;
+}
+
+.board-delete-btn {
+    display: none;
+}
+
+.boards-list-wrapper.opened {
+    background-color: rgba(0, 0, 0, .3);
+    width: 100%;
+    height: 100vh;
+}
+
+.boards-list-wrapper.opened .borads-list{
+    width: 240px;
+}
+
+.boards-list-wrapper.opened .board-delete-btn{
+    display: block;
 }
 
 .boards-list-button,
 .board-item {
-    width: 40px;
+    display: flex;
+    width: 100%;
     height: 40px;
     padding: 0;
     margin: 0;
@@ -29,4 +58,8 @@
 .boards-list-button {
     font-size: 32px;
     color: #28a745;
+}
+.board-item-btn {
+    height: 100%;
+    flex-grow: 1;
 }

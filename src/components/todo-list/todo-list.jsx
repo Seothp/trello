@@ -8,7 +8,7 @@ import Button from '../button/button';
 import ItemTypes from '../../ItemTypes';
 import './todo-list.css';
 
-const ToDoList = ({listId, title, tasks, onAddTask, removeTask, removeList, checkTask, onItemDrop, ...attrs}) => {
+const ToDoList = ({listId, title, tasks, onAddTask, removeTask, removeList, checkTask, onItemDrop, onTaskClick, ...attrs}) => {
     const [{ canDrop, isOver}, drop] = useDrop({
         accept: ItemTypes.ITEM,
         drop: item => onItemDrop(item, listId),
@@ -35,6 +35,7 @@ const ToDoList = ({listId, title, tasks, onAddTask, removeTask, removeList, chec
                     checked={checked} 
                     removeTask={removeTask} 
                     checkTask={checkTask}
+                    onTaskClick={onTaskClick}
                 />
             ))}
             { canDrop &&

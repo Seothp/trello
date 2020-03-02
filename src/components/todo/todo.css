@@ -5,4 +5,6 @@
 
 .to-do-app {
     display: flex;
+    padding-left: 40px;
+    position: relative;
 }

@@ -7,10 +7,11 @@ import  {
     MOVE_TASK, 
     DELETE_TASKS, 
     ADD_BOARD, 
-    REMOVE_BOARD 
+    REMOVE_BOARD,
+    EDIT_TASK_TITLE
 } from '../constants'
 
-export const addList = ({listId, title, boardId}) => {
+export const addList = ({ listId, title, boardId }) => {
     return ({
     type: ADD_LIST,
     listId,
@@ -18,12 +19,12 @@ export const addList = ({listId, title, boardId}) => {
     boardId,
 })}
 
-export const removeList = ({listId}) => ({
+export const removeList = ({ listId }) => ({
     type: REMOVE_LIST,
     listId,
 })
 
-export const addTask = ({listId, title, id}) => ({
+export const addTask = ({ listId, title, id }) => ({
     type: ADD_TASK,
     listId,
     title,
@@ -41,12 +42,17 @@ export const checkTask = ({ id }) => ({
     id,
 })
 
-export const moveTask = ({ listId, itemId }) => {
-    return ({
+export const moveTask = ({ listId, itemId }) => ({
     type: MOVE_TASK,
     listId,
     id: itemId,
-})}
+})
+
+export const editTaskTitle = ({ id, title }) => ({
+    type: EDIT_TASK_TITLE,
+    id,
+    title,
+})
 
 export const deleteTasks = ({ listId }) => ({
     type: DELETE_TASKS,
@@ -59,7 +65,7 @@ export const addBoard = ({ boardId, title }) => ({
     title,
 })
 
-export const removeBoard = ({ boardId}) => ({
+export const removeBoard = ({ boardId }) => ({
     type: REMOVE_BOARD,
     boardId,
 })

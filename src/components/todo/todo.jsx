@@ -1,43 +1,54 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { clear } from 'redux-localstorage-simple';
 
-import { addList, removeList, addTask, removeTask, checkTask, moveTask, deleteTasks, addBoard, removeBoard } from '../../actions/actionCreator'
+import { 
+    addList, 
+    removeList, 
+    addTask, 
+    removeTask, 
+    checkTask, 
+    moveTask, 
+    deleteTasks, 
+    addBoard, 
+    removeBoard,
+    editTaskTitle,
+} from '../../actions/actionCreator'
 
 import ToDoList from '../todo-list/todo-list';
 import ToDoHeader from '../todo-header/todo-header';
 import ModalAddList from '../modal-add-list/modal-add-list';
 import ModalAddTask from '../modal-add-task/modal-add-task';
 import ModalAddBoard from '../modal-add-board/modal-add-board';
+import ModalTaskInfo from '../modal-task-info/modal-task-info';
 import Button from '../button/button';
-import { BoardsList } from '../boards-list/boards-list'
+import BoardsList from '../boards-list/boards-list'
 
 import './todo.css';
 
-// const boards = [
-//     {
-//         title: '1stboard',
-//         boardId: 123123,
-//     } , {
-//         title: '2ndboard',
-//         boardId: 125123,
-//     }
-// ]
+const ToDo = (props) => {
+    //data destructuring
+    const { lists, tasks, boards } = props;
+    //methods destructuring
+    const { addList, removeList, addTask, removeTask, checkTask, moveTask, deleteTasks, addBoard, removeBoard, editTaskTitle } = props;
 
-const ToDo = ({lists, tasks, boards, addList, removeList, addTask, removeTask, checkTask, moveTask, deleteTasks, addBoard}) => {
     const [ isOpenModalAddList, setIsOpenModalAddList ] = useState(false);
     const [ isOpenModalAddTask, setIsOpenModalAddTask ] = useState(false);
-    const [ isOpenModalAddBoard, setIsOpenModalAddBoard] = useState(false);
+    const [ isOpenModalAddBoard, setIsOpenModalAddBoard ] = useState(false);
+    const [ isOpenModalTaskInfo, setIsOpenModalTaskInfo ] = useState(false);
+    const [ currentTask, setCurrentTask ] = useState(0);
     const [ currentList, setCurrentList ] = useState(0);
-    const [ currentBoard, setCurrentBoard] = useState(null);
-
-    const changeItemListId = ({itemId}, listId) => moveTask({itemId, listId})
-
+    const [ currentBoard, setCurrentBoard ] = useState(null);
+    
     const changeCurrentListId = id => setCurrentList(id)
     const changeCurrentBoard = id => setCurrentBoard(id)
     const switchModalAddListView = () => setIsOpenModalAddList(!isOpenModalAddList)
     const switchModalAddTaskView = () =>  setIsOpenModalAddTask(!isOpenModalAddTask)
     const switchModalAddBoardView = () => setIsOpenModalAddBoard(!isOpenModalAddBoard)
+    const switchModalTaskInfoView = () => setIsOpenModalTaskInfo(!isOpenModalTaskInfo)
+
+    const changeItemListId = ({itemId}, listId) => moveTask({itemId, listId})
+    const onItemDrop = (item, listId) => changeItemListId(item, listId)
+
     const onAddTask = listId => {
         switchModalAddTaskView();
         changeCurrentListId(listId);
@@ -69,11 +80,20 @@ const ToDo = ({lists, tasks, boards, addList, removeList, addTask, removeTask, c
             title
         })
     }
-    const onItemDrop = (item, listId) => changeItemListId(item, listId)
-    console.log(lists, tasks, boards)
+    const onTaskClick = id => {
+        setCurrentTask(id);
+        switchModalTaskInfoView()
+    }
+    const onCloseModalTaskInfo = () => switchModalTaskInfoView();
+    console.log(tasks, lists, boards,)
     return (
         <div className="to-do-app">
-            <BoardsList boards={boards} onAddBoard={onAddBoard} changeCurrentBoard={changeCurrentBoard}/>
+            <BoardsList 
+                boards={boards} 
+                onAddBoard={onAddBoard} 
+                onDeleteBoard={removeBoard} 
+                changeCurrentBoard={changeCurrentBoard}
+            />
             <div className="content">
                 <ToDoHeader>
                     <Button className="to-do-add-list" onClick={switchModalAddListView}>add list</Button>
@@ -81,7 +101,7 @@ const ToDo = ({lists, tasks, boards, addList, removeList, addTask, removeTask, c
                 <div className="to-do-app-lists">
                     {lists.filter(list => currentBoard === null? true: list.boardId === currentBoard).map(({listId, title}) => (
                         <ToDoList 
-                            key={listId} 
+                            key={listId}
                             listId={listId} 
                             title={title} 
                             tasks={tasks}
@@ -90,6 +110,7 @@ const ToDo = ({lists, tasks, boards, addList, removeList, addTask, removeTask, c
                             checkTask={checkTask}
                             removeTask={removeTask}
                             onItemDrop={onItemDrop}
+                            onTaskClick={onTaskClick}
                         />
                     ))}
                 </div>
@@ -107,6 +128,13 @@ const ToDo = ({lists, tasks, boards, addList, removeList, addTask, removeTask, c
                     isOpen={isOpenModalAddBoard}
                     onAccept={onBoardModalAccept}
                     onCancel={switchModalAddBoardView}
+                />
+                <ModalTaskInfo 
+                    isOpen={isOpenModalTaskInfo}
+                    taskId={currentTask}
+                    tasks={tasks}
+                    onClose={onCloseModalTaskInfo}
+                    onEditTitle={editTaskTitle}
                 />
             </div>
         </div>
@@ -127,4 +155,5 @@ export default connect( ({ lists, tasks, boards }) => ({
     deleteTasks,
     addBoard,
     removeBoard,
+    editTaskTitle,
 })(ToDo);

@@ -20,6 +20,7 @@ const boards = (state = BOARDS.boards, { title, boardId, type }) => {
                 }
             ];
         case REMOVE_BOARD:
+            console.log('removed')
             return [...state].filter(board => board.boardId !== boardId)
         default:
             return state;
