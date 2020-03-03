@@ -7,6 +7,7 @@ export const EDIT_TASK_TITLE = 'EDIT_TASK_TITLE';
 
 export const ADD_LIST = 'ADD_LIST';
 export const REMOVE_LIST = 'REMOVE_LIST';
+export const EDIT_LIST_TITLE = 'EDIT_LIST_TITLE';
 
 export const ADD_BOARD = 'ADD_BOARD';
 export const REMOVE_BOARD = 'REMOVE_BOARD';

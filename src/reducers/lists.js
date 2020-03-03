@@ -1,6 +1,6 @@
 import { load } from 'redux-localstorage-simple';
 
-import { ADD_LIST, REMOVE_LIST } from '../constants';
+import { ADD_LIST, REMOVE_LIST, EDIT_LIST_TITLE } from '../constants';
 
 let LISTS = load({namespace: 'todo-data'});
 
@@ -22,6 +22,16 @@ const lists = (state = LISTS.lists, { listId, title, boardId, type }) => {
             ];
         case REMOVE_LIST:
             return [...state].filter(list => list.listId !== listId)
+        case EDIT_LIST_TITLE:
+            return state.map(list => {
+                if (list.listId === listId) {
+                    return {
+                        ...list,
+                        title
+                    }
+                }
+                return list
+            })
         default:
             return state;
     }

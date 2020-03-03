@@ -58,7 +58,7 @@ const tasks = (state = TASKS.tasks, {listId, id, title, checked, type} ) => {
         case DELETE_TASKS:
             return state.filter(item => item.listId !== listId)
         default:
-            return state.filter(item => item !== null)
+            return state
     }
 }
 

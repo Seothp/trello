@@ -8,7 +8,8 @@ import  {
     DELETE_TASKS, 
     ADD_BOARD, 
     REMOVE_BOARD,
-    EDIT_TASK_TITLE
+    EDIT_TASK_TITLE,
+    EDIT_LIST_TITLE,
 } from '../constants'
 
 export const addList = ({ listId, title, boardId }) => {
@@ -57,6 +58,12 @@ export const editTaskTitle = ({ id, title }) => ({
 export const deleteTasks = ({ listId }) => ({
     type: DELETE_TASKS,
     listId,
+})
+
+export const editListTitle = ({ listId, title }) => ({
+    type: EDIT_LIST_TITLE,
+    listId,
+    title,
 })
 
 export const addBoard = ({ boardId, title }) => ({

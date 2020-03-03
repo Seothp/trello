@@ -5,7 +5,7 @@ import Portal from '../portal/portal'
 
 import './modal.css'
 
-const Modal = ({children, accepting, onAccept, onCancel, isOpen, ...attrs}) => {
+const Modal = ({ children, accepting, onAccept, onCancel, isOpen, ...attrs }) => {
     const handleWrapperClick = (e) => {
         e.persist()
         if (e.target.className.indexOf('modal-wrapper') !== -1) onCancel()

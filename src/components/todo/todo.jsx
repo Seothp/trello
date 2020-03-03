@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import { 
-    addList, 
-    removeList, 
     addTask, 
     removeTask, 
     checkTask, 
     moveTask, 
     deleteTasks, 
+    editTaskTitle,
+    addList, 
+    removeList, 
+    editListTitle,
     addBoard, 
     removeBoard,
-    editTaskTitle,
 } from '../../actions/actionCreator'
 
 import ToDoList from '../todo-list/todo-list';
@@ -20,6 +21,7 @@ import ModalAddList from '../modal-add-list/modal-add-list';
 import ModalAddTask from '../modal-add-task/modal-add-task';
 import ModalAddBoard from '../modal-add-board/modal-add-board';
 import ModalTaskInfo from '../modal-task-info/modal-task-info';
+import ModalListInfo from '../modal-list-info/modal-list-info';
 import Button from '../button/button';
 import BoardsList from '../boards-list/boards-list'
 
@@ -29,12 +31,17 @@ const ToDo = (props) => {
     //data destructuring
     const { lists, tasks, boards } = props;
     //methods destructuring
-    const { addList, removeList, addTask, removeTask, checkTask, moveTask, deleteTasks, addBoard, removeBoard, editTaskTitle } = props;
+    const { 
+        addTask, removeTask, checkTask, moveTask, deleteTasks, editTaskTitle, //tasks methods
+        addList, removeList, editListTitle, //lists methods
+        addBoard, removeBoard //board methods
+    } = props;
 
     const [ isOpenModalAddList, setIsOpenModalAddList ] = useState(false);
     const [ isOpenModalAddTask, setIsOpenModalAddTask ] = useState(false);
     const [ isOpenModalAddBoard, setIsOpenModalAddBoard ] = useState(false);
     const [ isOpenModalTaskInfo, setIsOpenModalTaskInfo ] = useState(false);
+    const [ isOpenModalListInfo, setIsOpenModalListInfo ] = useState(false)
     const [ currentTask, setCurrentTask ] = useState(0);
     const [ currentList, setCurrentList ] = useState(0);
     const [ currentBoard, setCurrentBoard ] = useState(null);
@@ -45,10 +52,9 @@ const ToDo = (props) => {
     const switchModalAddTaskView = () =>  setIsOpenModalAddTask(!isOpenModalAddTask)
     const switchModalAddBoardView = () => setIsOpenModalAddBoard(!isOpenModalAddBoard)
     const switchModalTaskInfoView = () => setIsOpenModalTaskInfo(!isOpenModalTaskInfo)
-
+    const switchModalListInfoView = () => setIsOpenModalListInfo(!isOpenModalListInfo)
     const changeItemListId = ({itemId}, listId) => moveTask({itemId, listId})
     const onItemDrop = (item, listId) => changeItemListId(item, listId)
-
     const onAddTask = listId => {
         switchModalAddTaskView();
         changeCurrentListId(listId);
@@ -82,9 +88,14 @@ const ToDo = (props) => {
     }
     const onTaskClick = id => {
         setCurrentTask(id);
-        switchModalTaskInfoView()
+        switchModalTaskInfoView();
+    }
+    const onOpenListInfo = id => {
+        setCurrentList(id);
+        switchModalListInfoView();
     }
     const onCloseModalTaskInfo = () => switchModalTaskInfoView();
+    const onCloseModalListInfo = () => switchModalListInfoView();
     console.log(tasks, lists, boards,)
     return (
         <div className="to-do-app">
@@ -111,6 +122,7 @@ const ToDo = (props) => {
                             removeTask={removeTask}
                             onItemDrop={onItemDrop}
                             onTaskClick={onTaskClick}
+                            onOpenListInfo={onOpenListInfo}
                         />
                     ))}
                 </div>
@@ -136,6 +148,13 @@ const ToDo = (props) => {
                     onClose={onCloseModalTaskInfo}
                     onEditTitle={editTaskTitle}
                 />
+                <ModalListInfo 
+                    isOpen={isOpenModalListInfo}
+                    listId={currentList}
+                    lists={lists}
+                    onClose={onCloseModalListInfo}
+                    onEditTitle={editListTitle}
+                />
             </div>
         </div>
     )
@@ -146,14 +165,15 @@ export default connect( ({ lists, tasks, boards }) => ({
     tasks,
     boards,
 }), { 
-    addList,
-    removeList,
     addTask,
     removeTask,
     checkTask,
     moveTask,
     deleteTasks,
+    editTaskTitle,
+    addList,
+    removeList,
+    editListTitle,
     addBoard,
     removeBoard,
-    editTaskTitle,
 })(ToDo);

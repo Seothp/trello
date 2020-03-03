@@ -8,7 +8,9 @@ import Button from '../button/button';
 import ItemTypes from '../../ItemTypes';
 import './todo-list.css';
 
-const ToDoList = ({listId, title, tasks, onAddTask, removeTask, removeList, checkTask, onItemDrop, onTaskClick, ...attrs}) => {
+const ToDoList = ({
+    listId, title, tasks, 
+    onAddTask, removeTask, removeList, checkTask, onItemDrop, onTaskClick, onOpenListInfo, ...attrs}) => {
     const [{ canDrop, isOver}, drop] = useDrop({
         accept: ItemTypes.ITEM,
         drop: item => onItemDrop(item, listId),
@@ -23,6 +25,7 @@ const ToDoList = ({listId, title, tasks, onAddTask, removeTask, removeList, chec
     return (
         <div className="to-do-list" key={listId} {...attrs} ref={drop}>
             <h3 className="to-do-list-title">{title}</h3>
+            <button className="to-do-list-info-btn" onClick={() => onOpenListInfo(listId)}>&#9998;</button>
             <div className="to-do-list-buttons">
                 <Button className="to-do-add-task" onClick={() => onAddTask(listId)}>add task</Button>
                 <Button className="to-do-remove-list" invert onClick={() => removeList(listId)}>remove list</Button>
