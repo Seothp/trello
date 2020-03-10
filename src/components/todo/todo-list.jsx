@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useDrop } from 'react-dnd';
 
-import ToDoItem from '../todo-item/todo-item';
+import ToDoItem from './todo-item';
 import Button from '../button/button';
 
 import ItemTypes from '../../ItemTypes';
@@ -10,7 +10,8 @@ import './todo-list.css';
 
 const ToDoList = ({
     listId, title, tasks, 
-    onAddTask, removeTask, removeList, checkTask, onItemDrop, onTaskClick, onOpenListInfo, ...attrs}) => {
+    onAddTask, removeTask, removeList, checkTask, onItemDrop, onTaskClick, onOpenListInfo, ...attrs
+}) => {
     const [{ canDrop, isOver}, drop] = useDrop({
         accept: ItemTypes.ITEM,
         drop: item => onItemDrop(item, listId),

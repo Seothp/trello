@@ -14,16 +14,17 @@ import {
     addBoard, 
     removeBoard,
 } from '../../actions/actionCreator'
-
-import ToDoList from '../todo-list/todo-list';
-import ToDoHeader from '../todo-header/todo-header';
-import ModalAddList from '../modal-add-list/modal-add-list';
-import ModalAddTask from '../modal-add-task/modal-add-task';
-import ModalAddBoard from '../modal-add-board/modal-add-board';
-import ModalTaskInfo from '../modal-task-info/modal-task-info';
-import ModalListInfo from '../modal-list-info/modal-list-info';
+//components imports
 import Button from '../button/button';
-import BoardsList from '../boards-list/boards-list'
+//local imports
+import ToDoHeader from './todo-header';
+import ToDoList from './todo-list';
+import ModalAddList from './modal-add-list';
+import ModalAddTask from './modal-add-task';
+import ModalAddBoard from './modal-add-board';
+import ModalTaskInfo from './modal-task-info';
+import ModalListInfo from './modal-list-info';
+import BoardsList from './boards-list'
 
 import './todo.css';
 
