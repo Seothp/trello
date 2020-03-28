@@ -1,5 +1,6 @@
 import { createStore, compose, applyMiddleware } from 'redux';
 import { save } from "redux-localstorage-simple";
+import thunk from 'redux-thunk'
 
 import rootReducer from './reducers/index';
 
@@ -17,7 +18,7 @@ const configureStore = preloadedState => (
     rootReducer,
     preloadedState,
     composeEnhancers(
-      applyMiddleware(save({ namespace: "todo-data" }))
+      applyMiddleware(save({ namespace: "todo-data" }), thunk)
     ),
   )
 );

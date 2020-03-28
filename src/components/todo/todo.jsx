@@ -14,8 +14,11 @@ import {
     addBoard, 
     removeBoard,
 } from '../../actions/actionCreator'
+import { registerUser } from '../../utilities/api'
+
 //components imports
 import Button from '../button/button';
+
 //local imports
 import ToDoHeader from './todo-header';
 import ToDoList from './todo-list';
@@ -24,9 +27,13 @@ import ModalAddTask from './modal-add-task';
 import ModalAddBoard from './modal-add-board';
 import ModalTaskInfo from './modal-task-info';
 import ModalListInfo from './modal-list-info';
-import BoardsList from './boards-list'
+import ModalSignUp from './modal-sign-up';
+import ModalLogIn from './modal-log-in';
+import BoardsList from './boards-list';
 
 import './todo.css';
+
+const FIREBASE_API_KEY = 'AIzaSyDL75b9bD07bmPWk7eN7VsoDZitkHdPTus'
 
 const ToDo = (props) => {
     //data destructuring
@@ -35,14 +42,17 @@ const ToDo = (props) => {
     const { 
         addTask, removeTask, checkTask, moveTask, deleteTasks, editTaskTitle, //tasks methods
         addList, removeList, editListTitle, //lists methods
-        addBoard, removeBoard //board methods
+        addBoard, removeBoard, //board methods
+        registerUser
     } = props;
 
     const [ isOpenModalAddList, setIsOpenModalAddList ] = useState(false);
     const [ isOpenModalAddTask, setIsOpenModalAddTask ] = useState(false);
     const [ isOpenModalAddBoard, setIsOpenModalAddBoard ] = useState(false);
     const [ isOpenModalTaskInfo, setIsOpenModalTaskInfo ] = useState(false);
-    const [ isOpenModalListInfo, setIsOpenModalListInfo ] = useState(false)
+    const [ isOpenModalListInfo, setIsOpenModalListInfo ] = useState(false);
+    const [ isOpenModalSignUp, setIsOpenModalSignUp] = useState(false);
+    const [ isOpenModalLogIn, setIsOpenModalLogIn] = useState(false);
     const [ currentTask, setCurrentTask ] = useState(0);
     const [ currentList, setCurrentList ] = useState(0);
     const [ currentBoard, setCurrentBoard ] = useState(null);
@@ -54,6 +64,8 @@ const ToDo = (props) => {
     const switchModalAddBoardView = () => setIsOpenModalAddBoard(!isOpenModalAddBoard)
     const switchModalTaskInfoView = () => setIsOpenModalTaskInfo(!isOpenModalTaskInfo)
     const switchModalListInfoView = () => setIsOpenModalListInfo(!isOpenModalListInfo)
+    const switchModalSignUpView = () => setIsOpenModalSignUp(!isOpenModalSignUp)
+    const switchModalLogInView = () => setIsOpenModalLogIn(!isOpenModalLogIn)
     const changeItemListId = ({itemId}, listId) => moveTask({itemId, listId})
     const onItemDrop = (item, listId) => changeItemListId(item, listId)
     const onAddTask = listId => {
@@ -95,8 +107,31 @@ const ToDo = (props) => {
         setCurrentList(id);
         switchModalListInfoView();
     }
+    const onSignUpSubmit = ({email, password}) => {
+        // console.log('submited')
+        // fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${FIREBASE_API_KEY}`, {
+        //     method: 'POST',
+        //     'Content-Type': 'application/json',
+        //     body: JSON.stringify({
+        //         email, password
+        //     })
+        // }).then(res => res.json()).then(res => console.log(res));
+        registerUser({email, password})
+    }
+    const onLogInSubmit = ({email, password}) => {
+        console.log('logged')
+        fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
+            method: 'POST',
+            'Content-Type': 'application/json',
+            body: JSON.stringify({
+                email, password
+            })
+        }).then(res => res.json()).then(res => console.log(res));
+    }
     const onCloseModalTaskInfo = () => switchModalTaskInfoView();
     const onCloseModalListInfo = () => switchModalListInfoView();
+    const onCloseModalSignUp = () => switchModalSignUpView();
+    const onCloseModalLogIn = () => switchModalLogInView();
     console.log(tasks, lists, boards,)
     return (
         <div className="to-do-app">
@@ -109,6 +144,8 @@ const ToDo = (props) => {
             <div className="content">
                 <ToDoHeader>
                     <Button className="to-do-add-list" onClick={switchModalAddListView}>add list</Button>
+                    <Button className="to-do-log-in" onClick={switchModalLogInView}>Log In</Button>
+                    <Button className="to-do-sign-up" onClick={switchModalSignUpView}>Sign Up</Button>
                 </ToDoHeader>
                 <div className="to-do-app-lists">
                     {lists.filter(list => currentBoard === null? true: list.boardId === currentBoard).map(({listId, title}) => (
@@ -156,6 +193,16 @@ const ToDo = (props) => {
                     onClose={onCloseModalListInfo}
                     onEditTitle={editListTitle}
                 />
+                <ModalSignUp
+                    isOpen={isOpenModalSignUp}
+                    onClose={onCloseModalSignUp}
+                    onSubmit={onSignUpSubmit}
+                />
+                <ModalLogIn 
+                    isOpen={isOpenModalLogIn}
+                    onClose={onCloseModalLogIn}
+                    onSubmit={onLogInSubmit}
+                />
             </div>
         </div>
     )
@@ -177,4 +224,5 @@ export default connect( ({ lists, tasks, boards }) => ({
     editListTitle,
     addBoard,
     removeBoard,
+    registerUser,
 })(ToDo);
