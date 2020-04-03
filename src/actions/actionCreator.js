@@ -10,6 +10,7 @@ import  {
     REMOVE_BOARD,
     EDIT_TASK_TITLE,
     EDIT_LIST_TITLE,
+    SET_USER_TOKEN,
 } from '../constants'
 
 export const addList = ({ listId, title, boardId }) => {
@@ -75,4 +76,9 @@ export const addBoard = ({ boardId, title }) => ({
 export const removeBoard = ({ boardId }) => ({
     type: REMOVE_BOARD,
     boardId,
+})
+
+export const setUserToken = token => ({
+    type: SET_USER_TOKEN,
+    token
 })

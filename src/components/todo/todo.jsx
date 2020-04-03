@@ -14,7 +14,7 @@ import {
     addBoard, 
     removeBoard,
 } from '../../actions/actionCreator'
-import { registerUser } from '../../utilities/api'
+import { registerUser, loginUserWithEmail } from '../../utilities/api'
 
 //components imports
 import Button from '../button/button';
@@ -43,7 +43,9 @@ const ToDo = (props) => {
         addTask, removeTask, checkTask, moveTask, deleteTasks, editTaskTitle, //tasks methods
         addList, removeList, editListTitle, //lists methods
         addBoard, removeBoard, //board methods
-        registerUser
+        registerUser,
+        loginUserWithEmail,
+        token
     } = props;
 
     const [ isOpenModalAddList, setIsOpenModalAddList ] = useState(false);
@@ -108,25 +110,18 @@ const ToDo = (props) => {
         switchModalListInfoView();
     }
     const onSignUpSubmit = ({email, password}) => {
-        // console.log('submited')
-        // fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${FIREBASE_API_KEY}`, {
+        registerUser({email, password})
+    }
+    const onLogInSubmit = ({email, password}) => {
+        // console.log('logged')
+        // fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
         //     method: 'POST',
         //     'Content-Type': 'application/json',
         //     body: JSON.stringify({
         //         email, password
         //     })
         // }).then(res => res.json()).then(res => console.log(res));
-        registerUser({email, password})
-    }
-    const onLogInSubmit = ({email, password}) => {
-        console.log('logged')
-        fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
-            method: 'POST',
-            'Content-Type': 'application/json',
-            body: JSON.stringify({
-                email, password
-            })
-        }).then(res => res.json()).then(res => console.log(res));
+        loginUserWithEmail({email, password})
     }
     const onCloseModalTaskInfo = () => switchModalTaskInfoView();
     const onCloseModalListInfo = () => switchModalListInfoView();
@@ -208,11 +203,21 @@ const ToDo = (props) => {
     )
 }
 
-export default connect( ({ lists, tasks, boards }) => ({
+export default connect( (payload) => {
+    const {
+        lists,
+        tasks,
+        boards,
+        token
+    } = payload
+    console.log(payload)
+    console.log()
+    return ({
     lists,
     tasks,
     boards,
-}), { 
+    token
+})}, { 
     addTask,
     removeTask,
     checkTask,
@@ -225,4 +230,5 @@ export default connect( ({ lists, tasks, boards }) => ({
     addBoard,
     removeBoard,
     registerUser,
+    loginUserWithEmail,
 })(ToDo);
