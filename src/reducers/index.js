@@ -2,8 +2,8 @@ import { combineReducers } from 'redux';
 import lists from './lists';
 import tasks from './tasks';
 import boards from './boards';
-import token from './token';
+import user from './user';
 
-const rootReducer = combineReducers({ lists, tasks, boards, token });
+const rootReducer = combineReducers({ lists, tasks, boards, user });
 
 export default rootReducer;

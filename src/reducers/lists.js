@@ -4,7 +4,7 @@ import { ADD_LIST, REMOVE_LIST, EDIT_LIST_TITLE } from '../constants';
 
 let LISTS = load({namespace: 'todo-data'});
 
-if (!LISTS || !LISTS.lists || !LISTS.lists.length) {
+if (!LISTS.lists || !LISTS.lists.length) {
     LISTS = {
         lists: []
     }

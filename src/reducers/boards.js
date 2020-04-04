@@ -4,7 +4,7 @@ import { ADD_BOARD, REMOVE_BOARD } from '../constants';
 
 let BOARDS = load({namespace: 'todo-data'});
 
-if (!BOARDS || !BOARDS.boards || !BOARDS.boards.length) {
+if (!BOARDS.boards || !BOARDS.boards.length) {
     BOARDS = {
         boards: []
     }

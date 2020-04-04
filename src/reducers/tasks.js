@@ -4,7 +4,7 @@ import { ADD_TASK, REMOVE_TASK, CHECK_TASK, MOVE_TASK, DELETE_TASKS, EDIT_TASK_T
 
 
 let TASKS = load({namespace: 'todo-data'});
-if (!TASKS || !TASKS.tasks || !TASKS.tasks.length) {
+if (!TASKS.tasks || !TASKS.tasks.length) {
     TASKS = {
         tasks: []
     }

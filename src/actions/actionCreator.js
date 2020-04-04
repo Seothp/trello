@@ -11,6 +11,7 @@ import  {
     EDIT_TASK_TITLE,
     EDIT_LIST_TITLE,
     SET_USER_TOKEN,
+    SET_USER_ID,
 } from '../constants'
 
 export const addList = ({ listId, title, boardId }) => {
@@ -81,4 +82,9 @@ export const removeBoard = ({ boardId }) => ({
 export const setUserToken = token => ({
     type: SET_USER_TOKEN,
     token
+})
+
+export const setUserId = id => ({
+    type: SET_USER_ID,
+    id
 })

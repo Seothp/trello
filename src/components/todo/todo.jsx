@@ -45,7 +45,7 @@ const ToDo = (props) => {
         addBoard, removeBoard, //board methods
         registerUser,
         loginUserWithEmail,
-        token
+        user
     } = props;
 
     const [ isOpenModalAddList, setIsOpenModalAddList ] = useState(false);
@@ -127,7 +127,7 @@ const ToDo = (props) => {
     const onCloseModalListInfo = () => switchModalListInfoView();
     const onCloseModalSignUp = () => switchModalSignUpView();
     const onCloseModalLogIn = () => switchModalLogInView();
-    console.log(tasks, lists, boards,)
+    // console.log(tasks, lists, boards,)
     return (
         <div className="to-do-app">
             <BoardsList 
@@ -203,21 +203,12 @@ const ToDo = (props) => {
     )
 }
 
-export default connect( (payload) => {
-    const {
-        lists,
-        tasks,
-        boards,
-        token
-    } = payload
-    console.log(payload)
-    console.log()
-    return ({
+export default connect( ({ lists, tasks, boards, user}) => ({
     lists,
     tasks,
     boards,
-    token
-})}, { 
+    user
+}), {
     addTask,
     removeTask,
     checkTask,

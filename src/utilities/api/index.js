@@ -1,4 +1,4 @@
-import { setUserToken } from '../../actions/actionCreator'
+import { setUserToken, setUserId } from '../../actions/actionCreator'
 const FIREBASE_API_KEY = 'AIzaSyDL75b9bD07bmPWk7eN7VsoDZitkHdPTus'
 export const registerUser = ({email, password}) => dispatch => {
     console.log('registration started')
@@ -10,8 +10,9 @@ export const registerUser = ({email, password}) => dispatch => {
         })
     })
         .then(res => res.json())
-        .then(({ idToken }) => {
+        .then(({ idToken, localId }) => {
             dispatch(setUserToken(idToken))
+            dispatch(setUserId(localId))
         });
 }
 
@@ -25,7 +26,9 @@ export const loginUserWithEmail = ({ email, password }) => dispatch => {
         })
     })
         .then(res => res.json())
-        .then(({ idToken }) => {
+        .then(({ idToken, localId }) => {
             dispatch(setUserToken(idToken))
+            dispatch(setUserId(localId))
         });
 }
+
