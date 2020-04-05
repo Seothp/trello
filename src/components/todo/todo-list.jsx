@@ -22,7 +22,6 @@ const ToDoList = ({
     })
 
     const plusBackground = canDrop && isOver ? '#32EB40' : 'gray';
-
     return (
         <div className="to-do-list" key={listId} {...attrs} ref={drop}>
             <h3 className="to-do-list-title">{title}</h3>
@@ -31,7 +30,7 @@ const ToDoList = ({
                 <Button className="to-do-add-task" onClick={() => onAddTask(listId)}>add task</Button>
                 <Button className="to-do-remove-list" invert onClick={() => removeList(listId)}>remove list</Button>
             </div>
-            {tasks.filter(task => task.listId === listId).map(({id, title, checked}) => (
+            {tasks.filter(([_, task]) => task.listId === listId).map(([id, { title, checked }]) => (
                 <ToDoItem 
                     id={id} 
                     title={title} 
@@ -50,7 +49,7 @@ const ToDoList = ({
 }
 
 ToDoList.propTypes = {
-    listId: PropTypes.number.isRequired, 
+    listId: PropTypes.string.isRequired, 
     tasks: PropTypes.array.isRequired, 
     onAddTask: PropTypes.func.isRequired, 
     removeTask: PropTypes.func.isRequired, 

@@ -1,6 +1,6 @@
 import { load } from 'redux-localstorage-simple';
 
-import { ADD_LIST, REMOVE_LIST, EDIT_LIST_TITLE } from '../constants';
+import { ADD_LIST, REMOVE_LIST, EDIT_LIST_TITLE, SET_LISTS } from '../constants';
 
 let LISTS = load({namespace: 'todo-data'});
 
@@ -10,7 +10,8 @@ if (!LISTS.lists || !LISTS.lists.length) {
     }
 }
 
-const lists = (state = LISTS.lists, { listId, title, boardId, type }) => {
+const lists = (state = LISTS.lists, payload) => {
+    const  { type, listId, title, boardId, lists } = payload
     switch (type) {
         case ADD_LIST:
             return [
@@ -32,6 +33,8 @@ const lists = (state = LISTS.lists, { listId, title, boardId, type }) => {
                 }
                 return list
             })
+        case SET_LISTS:
+            return lists
         default:
             return state;
     }

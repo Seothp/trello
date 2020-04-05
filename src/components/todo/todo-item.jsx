@@ -31,7 +31,7 @@ const ToDoItem = ({ title, id, checked, checkTask, removeTask, onTaskClick }) =>
 }
 
 ToDoItem.propTypes = {
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     checkTask: PropTypes.func.isRequired,
     removeTask: PropTypes.func.isRequired,
     title: PropTypes.string,

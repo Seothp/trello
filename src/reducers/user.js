@@ -1,5 +1,5 @@
 import { load } from 'redux-localstorage-simple';
-import { SET_USER_TOKEN, SET_USER_ID } from '../constants';
+import { SET_USER_TOKEN, SET_USER_ID, SET_USER_REFRESH_TOKEN } from '../constants';
 let DATA = load({namespace: 'todo-data'})
 console.log()
 let USER = DATA.user || {
@@ -12,8 +12,11 @@ if ( !USER.token || USER.token === undefined) {
 if ( !USER.id || USER.id === undefined) {
     USER.id = '';
 }
+if ( !USER.refreshToken || USER.refreshToken === undefined) {
+    USER.refreshToken = '';
+}
 const user = (state = USER, payload ) => {
-    const { type, token, id } = payload
+    const { type, token, id, refreshToken } = payload
     switch (type) {
         case SET_USER_TOKEN:
             return {
@@ -24,6 +27,11 @@ const user = (state = USER, payload ) => {
             return {
                 ...state,
                 id
+            }
+        case SET_USER_REFRESH_TOKEN:
+            return {
+                ...state,
+                refreshToken,
             }
         default:
             return state

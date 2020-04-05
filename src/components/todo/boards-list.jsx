@@ -15,13 +15,12 @@ const BoardsList = ({ boards, changeCurrentBoard, onAddBoard, onDeleteBoard }) =
         <div className={"boards-list-wrapper " + opened} onClick={handleWrapperClick}>
             <div className="borads-list">
                 <button className="board-toggle-btn" onClick={toggleOpened}>OP</button>
-                <div className="board-item" key='all' onClick={() => changeCurrentBoard(null)}>all</div>
-                { boards && boards.map(({boardId, title}, index) => (
+                <div className="board-item" key='all' onClick={() => changeCurrentBoard(0)}>all</div>
+                { boards && boards.map(([boardId, { title }], index) => (
                     <div className="board-item" key={boardId}>
                         <div className="board-item-btn" onClick={() => changeCurrentBoard(boardId)}>{index + 1}</div>
                         <button className="board-delete-btn" onClick={() => onDeleteBoard({boardId})}>del</button>
                     </div>
-                    
                 ))}
                 <div className='boards-list-button' key='add' onClick={onAddBoard}>+</div>
             </div>

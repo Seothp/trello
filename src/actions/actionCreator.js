@@ -12,20 +12,12 @@ import  {
     EDIT_LIST_TITLE,
     SET_USER_TOKEN,
     SET_USER_ID,
+    SET_USER_REFRESH_TOKEN,
+    SET_TASKS,
+    SET_BOARDS,
+    SET_LISTS,
 } from '../constants'
 
-export const addList = ({ listId, title, boardId }) => {
-    return ({
-    type: ADD_LIST,
-    listId,
-    title,
-    boardId,
-})}
-
-export const removeList = ({ listId }) => ({
-    type: REMOVE_LIST,
-    listId,
-})
 
 export const addTask = ({ listId, title, id }) => ({
     type: ADD_TASK,
@@ -62,10 +54,35 @@ export const deleteTasks = ({ listId }) => ({
     listId,
 })
 
+export const setTasks = tasks => {
+    console.log('setted')
+    return ({
+    type: SET_TASKS,
+    tasks
+})}
+
+export const addList = ({ listId, title, boardId }) => {
+    return ({
+    type: ADD_LIST,
+    listId,
+    title,
+    boardId,
+})}
+
+export const removeList = ({ listId }) => ({
+    type: REMOVE_LIST,
+    listId,
+})
+
 export const editListTitle = ({ listId, title }) => ({
     type: EDIT_LIST_TITLE,
     listId,
     title,
+})
+
+export const setLists = lists => ({
+    type: SET_LISTS,
+    lists
 })
 
 export const addBoard = ({ boardId, title }) => ({
@@ -79,12 +96,22 @@ export const removeBoard = ({ boardId }) => ({
     boardId,
 })
 
+export const setBoards = boards => ({
+    type: SET_BOARDS,
+    boards
+})
+
 export const setUserToken = token => ({
     type: SET_USER_TOKEN,
-    token
+    token,
 })
 
 export const setUserId = id => ({
     type: SET_USER_ID,
-    id
+    id,
+})
+
+export const setUserRefreshToken = refreshToken => ({
+    type: SET_USER_REFRESH_TOKEN,
+    refreshToken,
 })
