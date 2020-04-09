@@ -1,29 +1,47 @@
 import { load } from 'redux-localstorage-simple';
 
-import { ADD_BOARD, REMOVE_BOARD, SET_BOARDS } from '../constants';
+import { ADD_BOARD, REMOVE_BOARD, SET_BOARDS, EDIT_BOARD_ID } from '../constants';
 
 // let BOARDS = load({namespace: 'todo-data'});
-let BOARDS = {}
-
-if (!BOARDS.boards || !BOARDS.boards.length) {
-    BOARDS = {
-        boards: []
-    }
+let BOARDS = {
+    boards: []
 }
 
+// if (!BOARDS.boards || !BOARDS.boards.length) {
+//     BOARDS = {
+//         boards: []
+//     }
+// }
+
 const boards = (state = BOARDS.boards, payload) => {
-    const { type, title, boardId, boards } = payload;
+    const { type, title, boardId, boards, newId } = payload;
     switch (type) {
         case ADD_BOARD:
+            const boardBody = {
+                title
+            }
+            const board = [
+                boardId,
+                boardBody
+            ]
             return [
-                ...state, {
-                    boardId,
-                    title,
-                }
+                ...state, 
+                board
             ];
         case REMOVE_BOARD:
-            console.log('removed')
-            return [...state].filter(board => board.boardId !== boardId)
+            return [...state].filter(([id]) => id !== boardId)
+        case EDIT_BOARD_ID: 
+            return state.map(board => {
+                const id = board[0]
+                const boardBody = board
+                if (id === boardId) {
+                    return [
+                        newId,
+                        boardBody
+                    ]
+                }
+                return board
+            })
         case SET_BOARDS: 
             return boards
         default:

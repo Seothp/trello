@@ -3,13 +3,18 @@ import PropTypes from 'prop-types';
 
 import Modal from '../modal/modal'
 
-const ModalListInfo = ({ isOpen, listId, lists, onClose, onEditTitle }) => {
-    const list = lists.find(list => list.listId === listId);
-    const [ title, setTitle ] = useState(null);
+const ModalListInfo = ({ isOpen, listId, lists, onClose, onEditTitle, currentList, fetchList }) => {
+    const [ title, setTitle ] = useState("");
     useEffect(() => {
-        if(list) setTitle(list.title)
-    }
-    , [list])
+        if (listId) {
+            fetchList({listId})
+        }
+    }, [listId])
+    useEffect(() => {
+        if (currentList) {
+            setTitle(currentList.title)
+        }
+    }, [currentList])
     const handleInputChange = ({target: {value}}) => setTitle(value)
     const clearModal = () => setTitle('')
     const onClick = () => {
@@ -19,13 +24,11 @@ const ModalListInfo = ({ isOpen, listId, lists, onClose, onEditTitle }) => {
     }
     return (
         <Modal isOpen={isOpen} onCancel={onClose}>
-            <div className="modal-list-info">
-                { list && 
-                    <div className="list-info">
-                        <input className="list-title" onChange={handleInputChange} value={title !== null? title: list.title }/>
-                        <button className="list-title-edit" onClick={onClick}>edit</button>
-                    </div>
-                }
+            <div className="modal-list-info"> 
+                <div className="list-info">
+                    <input className="list-title" onChange={handleInputChange} value={title || ''}/>
+                    <button className="list-title-edit" onClick={onClick}>edit</button>
+                </div>
             </div>
         </Modal>
     )
@@ -39,6 +42,5 @@ ModalListInfo.propTypes = {
 ModalListInfo.defaultProps = {
     isOpen: false,
 }
-
 
 export default ModalListInfo;

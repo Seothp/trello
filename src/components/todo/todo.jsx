@@ -3,24 +3,29 @@ import { connect } from 'react-redux';
 import { useEffect } from 'react';
 
 import { 
-    // addTask, 
-    // removeTask, 
-    // checkTask, 
-    moveTask, 
-    deleteTasks, 
-    editTaskTitle,
-    // addList, 
-    // removeList, 
-    editListTitle,
-    // addBoard, 
-    // removeBoard
+    addTaskLocal,
+    removeTaskLocal,
+    moveTaskLocal,
+    deleteTasksLocal,
+    checkTaskLocal,
+    editTaskTitleLocal,
+    addListLocal,
+    removeListLocal,
+    editListTitleLocal,
+    addBoardLocal,
+    removeBoardLocal,
 } from '../../actions/actionCreator'
 import { 
     registerUser, 
     loginUserWithEmail, 
     addTask, removeTask, checkTask, fetchTasks,
     addList, removeList, fetchLists,
-    addBoard, removeBoard, fetchBoards
+    addBoard, removeBoard, fetchBoards,
+    moveTask,
+    fetchTask,
+    fetchList,
+    editTaskTitle,
+    editListTitle
 } from '../../utilities/api'
 
 //components imports
@@ -45,12 +50,26 @@ const ToDo = (props) => {
     const { lists, tasks, boards } = props;
     //methods destructuring
     const { 
-        addTask, removeTask, checkTask, moveTask, deleteTasks, editTaskTitle, //tasks methods
+        addTask, removeTask, checkTask, moveTask, deleteTasksLocal, editTaskTitle, //tasks methods
         addList, removeList, editListTitle, //lists methods
         addBoard, removeBoard, //board methods
         registerUser,
         loginUserWithEmail,
         fetchTasks, fetchLists, fetchBoards,    
+        fetchTask,
+        fetchList,
+        currentTask,
+        currentList,
+        addTaskLocal,
+        removeTaskLocal,
+        checkTaskLocal,
+        moveTaskLocal,
+        editTaskTitleLocal,
+        addListLocal,
+        removeListLocal,
+        editListTitleLocal,
+        addBoardLocal,
+        removeBoardLocal,
     } = props;
 
     const [ isOpenModalAddList, setIsOpenModalAddList ] = useState(false);
@@ -60,15 +79,15 @@ const ToDo = (props) => {
     const [ isOpenModalListInfo, setIsOpenModalListInfo ] = useState(false);
     const [ isOpenModalSignUp, setIsOpenModalSignUp] = useState(false);
     const [ isOpenModalLogIn, setIsOpenModalLogIn] = useState(false);
-    const [ currentTask, setCurrentTask ] = useState(0);
-    const [ currentList, setCurrentList ] = useState(0);
+    const [ currentTaskId, setCurrentTaskId ] = useState(0);
+    const [ currentListId, setCurrentListId ] = useState(0);
     const [ currentBoard, setCurrentBoard ] = useState(0);
     useEffect(() => {
         fetchTasks();
         fetchLists();
         fetchBoards();
     }, [])
-    const changeCurrentListId = id => setCurrentList(id)
+    const changeCurrentListId = id => setCurrentListId(id)
     const changeCurrentBoard = id => setCurrentBoard(id)
     const switchModalAddListView = () => setIsOpenModalAddList(!isOpenModalAddList)
     const switchModalAddTaskView = () =>  setIsOpenModalAddTask(!isOpenModalAddTask)
@@ -77,7 +96,10 @@ const ToDo = (props) => {
     const switchModalListInfoView = () => setIsOpenModalListInfo(!isOpenModalListInfo)
     const switchModalSignUpView = () => setIsOpenModalSignUp(!isOpenModalSignUp)
     const switchModalLogInView = () => setIsOpenModalLogIn(!isOpenModalLogIn)
-    const changeItemListId = ({ itemId }, listId) => moveTask({itemId, listId})
+    const changeItemListId = ({ itemId }, listId) => {
+        moveTask({itemId, listId})
+        moveTaskLocal({itemId, listId})
+    }
     const onItemDrop = (item, listId) => changeItemListId(item, listId)
     const onAddTask = listId => {
         switchModalAddTaskView();
@@ -87,34 +109,65 @@ const ToDo = (props) => {
         switchModalAddBoardView();
     }
     const onRemoveList = listId => {
-        deleteTasks({listId});
+        // deleteTasks({listId});
         removeList({listId});
+        removeListLocal({listId})
     }
     const onListModalAccept = title => {
-        addList({
+        const listId = String(Date.now())
+        const payload = {
             title,
-            boardId: currentBoard,
-        });
+            boardId: currentBoard
+        }
+        
+        addList({...payload, temporaryId: listId});
+        addListLocal({...payload, listId})
     }
     const onTaskModalAccept = title => {
-        addTask({
-            listId: currentList,
+        const id = String(Date.now())
+        const payload = {
+            listId: currentListId,
             checked: false,
             title,
-        });
+        }
+        addTask({...payload, temporaryId: id});
+        addTaskLocal({...payload, id});
+    }
+    const onRemoveTask = ({id}) => {
+        removeTask({id})
+        removeTaskLocal({id})
     }
     const onBoardModalAccept = title => {
-        addBoard({
+        const id = String(Date.now())
+        const boardBody = {
             title
-        })
+        }
+        addBoardLocal({...boardBody, boardId: id})
+        addBoard({...boardBody, temporaryId: id})
     }
     const onTaskClick = id => {
-        setCurrentTask(id);
+        setCurrentTaskId(id);
         switchModalTaskInfoView();
     }
     const onOpenListInfo = id => {
-        setCurrentList(id);
+        setCurrentListId(id);
         switchModalListInfoView();
+    }
+    const onCheckTask = ({id}) => {
+        checkTask({id})
+        checkTaskLocal({id})
+    }
+    const onEditTaskTitle = payload => {
+        editTaskTitle(payload)
+        editTaskTitleLocal(payload)
+    }
+    const onEditListTitle = payload => {
+        editListTitle(payload)
+        editListTitleLocal(payload)
+    }
+    const onRemoveBoard = payload => {
+        removeBoard(payload)
+        removeBoardLocal(payload)
     }
     const onSignUpSubmit = ({ email, password }) => registerUser({email, password})
     const onLogInSubmit = ({ email, password }) => loginUserWithEmail({email, password})
@@ -128,7 +181,7 @@ const ToDo = (props) => {
             <BoardsList 
                 boards={boards} 
                 onAddBoard={onAddBoard} 
-                onDeleteBoard={removeBoard} 
+                onDeleteBoard={onRemoveBoard} 
                 changeCurrentBoard={changeCurrentBoard}
             />
             <div className="content">
@@ -146,8 +199,8 @@ const ToDo = (props) => {
                             tasks={tasks}
                             removeList={onRemoveList}
                             onAddTask={onAddTask}
-                            checkTask={checkTask}
-                            removeTask={removeTask}
+                            checkTask={onCheckTask}
+                            removeTask={onRemoveTask}
                             onItemDrop={onItemDrop}
                             onTaskClick={onTaskClick}
                             onOpenListInfo={onOpenListInfo}
@@ -171,17 +224,21 @@ const ToDo = (props) => {
                 />
                 <ModalTaskInfo 
                     isOpen={isOpenModalTaskInfo}
-                    taskId={currentTask}
+                    taskId={currentTaskId}
                     tasks={tasks}
                     onClose={onCloseModalTaskInfo}
-                    onEditTitle={editTaskTitle}
+                    onEditTitle={onEditTaskTitle}
+                    fetchTask={fetchTask}
+                    currentTask={currentTask}
                 />
                 <ModalListInfo 
                     isOpen={isOpenModalListInfo}
-                    listId={currentList}
+                    listId={currentListId}
                     lists={lists}
                     onClose={onCloseModalListInfo}
-                    onEditTitle={editListTitle}
+                    onEditTitle={onEditListTitle}
+                    fetchList={fetchList}
+                    currentList={currentList}
                 />
                 <ModalSignUp
                     isOpen={isOpenModalSignUp}
@@ -198,16 +255,18 @@ const ToDo = (props) => {
     )
 }
 
-export default connect( ({ lists, tasks, boards }) => ({
+export default connect( ({ lists, tasks, boards, currentTask, currentList }) => ({
     lists,
     tasks,
     boards,
+    currentTask,
+    currentList
 }), {
     addTask,
     removeTask,
     checkTask,
     moveTask,
-    deleteTasks,
+    deleteTasksLocal,
     editTaskTitle,
     addList,
     removeList,
@@ -219,4 +278,17 @@ export default connect( ({ lists, tasks, boards }) => ({
     fetchTasks,
     fetchLists,
     fetchBoards,
+    fetchTask,
+    fetchList,
+    // deleteTasksLocal,
+    addTaskLocal,
+    removeTaskLocal,
+    checkTaskLocal,
+    moveTaskLocal,
+    editTaskTitleLocal,
+    addListLocal,
+    removeListLocal,
+    editListTitleLocal,
+    addBoardLocal,
+    removeBoardLocal,
 })(ToDo);

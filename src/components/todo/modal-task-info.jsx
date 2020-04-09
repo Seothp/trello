@@ -3,13 +3,18 @@ import PropTypes from 'prop-types';
 
 import Modal from '../modal/modal'
 
-const ModalTaskInfo = ({ isOpen, taskId, tasks, onClose, onEditTitle }) => {
-    const task = tasks.find(task => task.id === taskId);
+const ModalTaskInfo = ({ isOpen, taskId, tasks, onClose, onEditTitle, fetchTask, currentTask }) => {
     const [ title, setTitle ] = useState(null);
     useEffect(() => {
-        if(task) setTitle(task.title)
-    }
-    , [task])
+        if (taskId) {
+            fetchTask({taskId})
+        }
+    }, [taskId])
+    useEffect(() => {
+        if (currentTask) {
+            setTitle(currentTask.title)
+        }
+    }, [currentTask])
     const handleInputChange = ({target: {value}}) => setTitle(value)
     const clearModal = () => setTitle('')
     const onClick = () => {
@@ -20,12 +25,10 @@ const ModalTaskInfo = ({ isOpen, taskId, tasks, onClose, onEditTitle }) => {
     return (
         <Modal isOpen={isOpen} onCancel={onClose}>
             <div className="modal-task-info">
-                { task && 
                     <div className="task-info">
-                        <input className="task-title" onChange={handleInputChange} value={title !== null? title: task.title }/>
+                        <input className="task-title" onChange={handleInputChange} value={title || ''}/>
                         <button className="task-title-edit" onClick={onClick}>edit</button>
                     </div>
-                }
             </div>
         </Modal>
     )

@@ -20,7 +20,6 @@ const ToDoList = ({
             canDrop: monitor.canDrop(),
         }),
     })
-
     const plusBackground = canDrop && isOver ? '#32EB40' : 'gray';
     return (
         <div className="to-do-list" key={listId} {...attrs} ref={drop}>
