@@ -33,7 +33,7 @@ const boards = (state = BOARDS.boards, payload) => {
         case EDIT_BOARD_ID: 
             return state.map(board => {
                 const id = board[0]
-                const boardBody = board
+                const boardBody = board[1]
                 if (id === boardId) {
                     return [
                         newId,
