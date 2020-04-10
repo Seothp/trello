@@ -182,12 +182,6 @@ export const fetchList = payload => (dispatch, getState) => {
             
         })
 }
-// export const fetchBoard = payload => (dispatch, getState) => {
-//     const { boardId } = payload
-//     const { user } = getState()
-//     const { id } = user
-// }
-
 export const checkTask = payload => (dispatch, getState) => {
     const { id: taskId } = payload
     const { user, tasks } = getState()
@@ -202,7 +196,6 @@ export const checkTask = payload => (dispatch, getState) => {
         })
     })
 }
-
 export const moveTask = payload => (dispatch, getState) => {
     const { listId, itemId: taskId } = payload
     const { user } = getState()

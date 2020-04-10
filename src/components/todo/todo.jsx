@@ -50,7 +50,7 @@ const ToDo = (props) => {
     const { lists, tasks, boards } = props;
     //methods destructuring
     const { 
-        addTask, removeTask, checkTask, moveTask, deleteTasksLocal, editTaskTitle, //tasks methods
+        addTask, removeTask, checkTask, moveTask, editTaskTitle, //tasks methods
         addList, removeList, editListTitle, //lists methods
         addBoard, removeBoard, //board methods
         registerUser,
@@ -109,7 +109,6 @@ const ToDo = (props) => {
         switchModalAddBoardView();
     }
     const onRemoveList = listId => {
-        // deleteTasks({listId});
         removeList({listId});
         removeListLocal({listId})
     }
@@ -280,7 +279,6 @@ export default connect( ({ lists, tasks, boards, currentTask, currentList }) => 
     fetchBoards,
     fetchTask,
     fetchList,
-    // deleteTasksLocal,
     addTaskLocal,
     removeTaskLocal,
     checkTaskLocal,

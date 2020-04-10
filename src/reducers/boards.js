@@ -2,16 +2,9 @@ import { load } from 'redux-localstorage-simple';
 
 import { ADD_BOARD, REMOVE_BOARD, SET_BOARDS, EDIT_BOARD_ID } from '../constants';
 
-// let BOARDS = load({namespace: 'todo-data'});
 let BOARDS = {
     boards: []
 }
-
-// if (!BOARDS.boards || !BOARDS.boards.length) {
-//     BOARDS = {
-//         boards: []
-//     }
-// }
 
 const boards = (state = BOARDS.boards, payload) => {
     const { type, title, boardId, boards, newId } = payload;

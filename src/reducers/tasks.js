@@ -44,7 +44,6 @@ const tasks = (state = TASKS.tasks, payload ) => {
                 return task;
             })
         case MOVE_TASK:
-            console.log(payload)
             return state.map(task => {
                 const taskId = task[0];
                 const taskBody = task[1]
@@ -69,7 +68,6 @@ const tasks = (state = TASKS.tasks, payload ) => {
                 return task
             })
         case EDIT_TASK_ID:
-            console.log(payload)
             return state.map(task => {
                 const taskId = task[0]
                 const taskBody = task[1]
