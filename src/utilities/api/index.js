@@ -13,7 +13,6 @@ import {
 } from '../../actions/actionCreator'
 const FIREBASE_API_KEY = 'AIzaSyDL75b9bD07bmPWk7eN7VsoDZitkHdPTus'
 export const registerUser = ({email, password}) => dispatch => {
-    console.log('registration started')
     fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${FIREBASE_API_KEY}`, {
         method: 'POST',
         'Content-Type': 'application/json',
@@ -94,16 +93,14 @@ export const addBoard = payload => (dispatch, getState) => {
 export const removeTask = payload => (dispatch, getState) => {
     const { id: taskId } = payload
     const { id } = getState().user
-    console.log('remove task')
     fetch(`https://to-do-trello.firebaseio.com/users/${id}/tasks/${taskId}.json?`, {
         method: 'DELETE',
         'Content-Type': 'application/json',
-    }).then(r => r.json()).then(r => console.log(r))
+    })
 }
 export const removeList = payload => (dispatch, getState) => {
     const { listId } = payload
     const { id } = getState().user
-    console.log('remove list')
     fetch(`https://to-do-trello.firebaseio.com/users/${id}/lists/${listId}.json?`, {
         method: 'DELETE',
         'Content-Type': 'application/json',
@@ -112,11 +109,10 @@ export const removeList = payload => (dispatch, getState) => {
 export const removeBoard = payload => (dispatch, getState) => {
     const { boardId } = payload
     const { id } = getState().user
-    console.log('remove board')
     fetch(`https://to-do-trello.firebaseio.com/users/${id}/boards/${boardId}.json?`, {
         method: 'DELETE',
         'Content-Type': 'application/json',
-    }).then(r => r.json()).then(r => console.log(r))
+    })
 }
 export const fetchTasks = payload => (dispatch, getState) => {
     const { id } = getState().user

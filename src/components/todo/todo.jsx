@@ -174,7 +174,6 @@ const ToDo = (props) => {
     const onCloseModalListInfo = () => switchModalListInfoView();
     const onCloseModalSignUp = () => switchModalSignUpView();
     const onCloseModalLogIn = () => switchModalLogInView();
-    console.log('TASKS:', tasks, 'LISTS:', lists, 'BOARDS:',boards)
     return (
         <div className="to-do-app">
             <BoardsList 

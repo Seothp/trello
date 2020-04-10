@@ -1,7 +1,6 @@
 import { load } from 'redux-localstorage-simple';
 import { SET_USER_TOKEN, SET_USER_ID, SET_USER_REFRESH_TOKEN } from '../constants';
 let DATA = load({namespace: 'todo-data'})
-console.log()
 let USER = DATA.user || {
     token: '',
     id: '',

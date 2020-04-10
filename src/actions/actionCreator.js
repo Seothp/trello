@@ -59,12 +59,10 @@ export const deleteTasksLocal = ({ listId }) => ({
     listId,
 })
 
-export const setTasks = tasks => {
-    console.log('setted')
-    return ({
+export const setTasks = tasks => ({
     type: SET_TASKS,
     tasks
-})}
+})
 
 export const setCurrentTask = currentTask => ({
     type: SET_CURRENT_TASK,
