@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useEffect } from 'react';
-
-import { 
+import {
     addTaskLocal,
     removeTaskLocal,
     moveTaskLocal,
@@ -15,9 +14,9 @@ import {
     addBoardLocal,
     removeBoardLocal,
 } from '../../actions/actionCreator'
-import { 
-    registerUser, 
-    loginUser, 
+import {
+    registerUser,
+    loginUser,
     addTask, removeTask, checkTask, fetchTasks,
     addList, removeList, fetchLists,
     addBoard, removeBoard, fetchBoards,
@@ -46,246 +45,283 @@ import BoardsList from './boards-list';
 import './todo.css';
 
 const ToDo = (props) => {
-    //data destructuring
+    // data destructuring
     const { lists, tasks, boards } = props;
-    //methods destructuring
-    const { 
-        addTask, removeTask, checkTask, moveTask, editTaskTitle, //tasks methods
-        addList, removeList, editListTitle, //lists methods
-        addBoard, removeBoard, //board methods
-        registerUser,
-        loginUser,
-        fetchTasks, fetchLists, fetchBoards,    
-        fetchTask,
-        fetchList,
-        currentTask,
-        currentList,
+    // tasks functions distructuring
+    const {
+        addTask,
+        removeTask,
+        checkTask,
+        moveTask,
+        editTaskTitle,
+        fetchTasks,
         addTaskLocal,
         removeTaskLocal,
         checkTaskLocal,
         moveTaskLocal,
         editTaskTitleLocal,
+        currentTask,
+    } = props
+    // lists functions distructuring
+    const {
+        addList,
+        removeList,
+        editListTitle,
+        fetchLists,
+        fetchList,
+        currentList,
         addListLocal,
         removeListLocal,
         editListTitleLocal,
+    } = props
+    // boards functions distructuring
+    const {
         addBoardLocal,
         removeBoardLocal,
-    } = props;
+        addBoard,
+        removeBoard,
+        fetchBoards,
+        fetchTask,
+    } = props
+    // other distructuring
+    const { registerUser, loginUser } = props
 
-    const [ isOpenModalAddList, setIsOpenModalAddList ] = useState(false);
-    const [ isOpenModalAddTask, setIsOpenModalAddTask ] = useState(false);
-    const [ isOpenModalAddBoard, setIsOpenModalAddBoard ] = useState(false);
-    const [ isOpenModalTaskInfo, setIsOpenModalTaskInfo ] = useState(false);
-    const [ isOpenModalListInfo, setIsOpenModalListInfo ] = useState(false);
-    const [ isOpenModalSignUp, setIsOpenModalSignUp] = useState(false);
-    const [ isOpenModalLogIn, setIsOpenModalLogIn] = useState(false);
-    const [ currentTaskId, setCurrentTaskId ] = useState(0);
-    const [ currentListId, setCurrentListId ] = useState(0);
-    const [ currentBoard, setCurrentBoard ] = useState(0);
+    const [openedModalAddList, setOpenedModalAddList] = useState(false);
+    const [openedModalAddTask, setOpenedModalAddTask] = useState(false);
+    const [openedModalAddBoard, setOpenedModalAddBoard] = useState(false);
+    const [openedModalTaskInfo, setOpenedModalTaskInfo] = useState(false);
+    const [openedModalListInfo, setOpenedModalListInfo] = useState(false);
+    const [openedModalSignUp, setOpenedModalSignUp] = useState(false);
+    const [openedModalLogIn, setOpenedModalLogIn] = useState(false);
+    const [currentTaskId, setCurrentTaskId] = useState(0);
+    const [currentListId, setCurrentListId] = useState(0);
+    const [currentBoard, setCurrentBoard] = useState(0);
+
     useEffect(() => {
         fetchTasks();
         fetchLists();
         fetchBoards();
     }, [])
-    const changeCurrentListId = id => setCurrentListId(id)
-    const changeCurrentBoard = id => setCurrentBoard(id)
-    const switchModalAddListView = () => setIsOpenModalAddList(!isOpenModalAddList)
-    const switchModalAddTaskView = () =>  setIsOpenModalAddTask(!isOpenModalAddTask)
-    const switchModalAddBoardView = () => setIsOpenModalAddBoard(!isOpenModalAddBoard)
-    const switchModalTaskInfoView = () => setIsOpenModalTaskInfo(!isOpenModalTaskInfo)
-    const switchModalListInfoView = () => setIsOpenModalListInfo(!isOpenModalListInfo)
-    const switchModalSignUpView = () => setIsOpenModalSignUp(!isOpenModalSignUp)
-    const switchModalLogInView = () => setIsOpenModalLogIn(!isOpenModalLogIn)
-    const changeItemListId = ({ itemId }, listId) => {
-        moveTask({itemId, listId})
-        moveTaskLocal({itemId, listId})
+
+    const toggleModalAddListView = () => setOpenedModalAddList(!openedModalAddList)
+    const toggleModalAddTaskView = () => setOpenedModalAddTask(!openedModalAddTask)
+    const toggleModalAddBoardView = () => setOpenedModalAddBoard(!openedModalAddBoard)
+    const toggleModalTaskInfoView = () => setOpenedModalTaskInfo(!openedModalTaskInfo)
+    const toggleModalListInfoView = () => setOpenedModalListInfo(!openedModalListInfo)
+    const toggleModalSignUpView = () => setOpenedModalSignUp(!openedModalSignUp)
+    const toggleModalLogInView = () => setOpenedModalLogIn(!openedModalLogIn)
+
+    const setItemListId = ({ itemId }, listId) => {
+        const payload = {
+            itemId,
+            listId
+        }
+        moveTask(payload)
+        moveTaskLocal(payload)
     }
-    const onItemDrop = (item, listId) => changeItemListId(item, listId)
-    const onAddTask = listId => {
-        switchModalAddTaskView();
-        changeCurrentListId(listId);
+    const handleItemDrop = (item, listId) => setItemListId(item, listId)
+    const handleAddTask = listId => {
+        toggleModalAddTaskView();
+        setCurrentListId(listId);
     }
-    const onAddBoard = () => {
-        switchModalAddBoardView();
+    const handleAddBoard = () => {
+        toggleModalAddBoardView();
     }
-    const onRemoveList = listId => {
-        removeList({listId});
-        removeListLocal({listId})
+    const handleRemoveList = listId => {
+        removeList({ listId });
+        removeListLocal({ listId })
     }
-    const onListModalAccept = title => {
+    const handleListModalAccept = title => {
+        // Генерирует временный id который изменится после добавления списка в бд
         const listId = String(Date.now())
         const payload = {
             title,
             boardId: currentBoard
         }
-        
-        addList({...payload, temporaryId: listId});
-        addListLocal({...payload, listId})
+
+        addList({ ...payload, temporaryId: listId });
+        addListLocal({ ...payload, listId })
     }
-    const onTaskModalAccept = title => {
+    const handleTaskModalAccept = title => {
+        // Генерирует временный id который изменится после добавления таски в бд
         const id = String(Date.now())
         const payload = {
             listId: currentListId,
             checked: false,
             title,
         }
-        addTask({...payload, temporaryId: id});
-        addTaskLocal({...payload, id});
+        addTask({ ...payload, temporaryId: id });
+        addTaskLocal({ ...payload, id });
     }
-    const onRemoveTask = ({id}) => {
-        removeTask({id})
-        removeTaskLocal({id})
+    const handleRemoveTask = payload => {
+        removeTask(payload)
+        removeTaskLocal(payload)
     }
-    const onBoardModalAccept = title => {
+    const handleBoardModalAccept = title => {
+        // Генерирует временный id который изменится после добавления доски в бд
         const id = String(Date.now())
         const boardBody = {
             title
         }
-        addBoardLocal({...boardBody, boardId: id})
-        addBoard({...boardBody, temporaryId: id})
+        addBoardLocal({ ...boardBody, boardId: id })
+        addBoard({ ...boardBody, temporaryId: id })
     }
-    const onTaskClick = id => {
+    const handleTaskClick = id => {
         setCurrentTaskId(id);
-        switchModalTaskInfoView();
+        toggleModalTaskInfoView();
     }
-    const onOpenListInfo = id => {
+    const handleOpenListInfo = id => {
         setCurrentListId(id);
-        switchModalListInfoView();
+        toggleModalListInfoView();
     }
-    const onCheckTask = ({id}) => {
-        checkTask({id})
-        checkTaskLocal({id})
+    const handleCheckTask = payload => {
+        checkTask(payload)
+        checkTaskLocal(payload)
     }
-    const onEditTaskTitle = payload => {
+    const handleEditTaskTitle = payload => {
         editTaskTitle(payload)
         editTaskTitleLocal(payload)
     }
-    const onEditListTitle = payload => {
+    const handleEditListTitle = payload => {
         editListTitle(payload)
         editListTitleLocal(payload)
     }
-    const onRemoveBoard = payload => {
+    const handleRemoveBoard = payload => {
         removeBoard(payload)
         removeBoardLocal(payload)
     }
-    const onSignUpSubmit = ({ email, password }) => registerUser({email, password})
-    const onLogInSubmit = ({ email, password }) => loginUser({email, password})
-    const onCloseModalTaskInfo = () => switchModalTaskInfoView();
-    const onCloseModalListInfo = () => switchModalListInfoView();
-    const onCloseModalSignUp = () => switchModalSignUpView();
-    const onCloseModalLogIn = () => switchModalLogInView();
+    const handleSignUpSubmit = payload => registerUser(payload)
+    const handleLogInSubmit = payload => loginUser(payload)
+    const handleCloseModalTaskInfo = () => toggleModalTaskInfoView();
+    const handleCloseModalListInfo = () => toggleModalListInfoView();
+    const handleCloseModalSignUp = () => toggleModalSignUpView();
+    const handleCloseModalLogIn = () => toggleModalLogInView();
     return (
         <div className="to-do-app">
-            <BoardsList 
-                boards={boards} 
-                onAddBoard={onAddBoard} 
-                onDeleteBoard={onRemoveBoard} 
-                changeCurrentBoard={changeCurrentBoard}
+            <BoardsList
+                boards={boards}
+                onAddBoard={handleAddBoard}
+                onDeleteBoard={handleRemoveBoard}
+                setCurrentBoard={setCurrentBoard}
             />
             <div className="content">
                 <ToDoHeader>
-                    <Button className="to-do-add-list" onClick={switchModalAddListView}>add list</Button>
-                    <Button className="to-do-log-in" onClick={switchModalLogInView}>Log In</Button>
-                    <Button className="to-do-sign-up" onClick={switchModalSignUpView}>Sign Up</Button>
+                    <Button className="to-do-add-list" onClick={toggleModalAddListView}>add list</Button>
+                    <Button className="to-do-log-in" onClick={toggleModalLogInView}>Log In</Button>
+                    <Button className="to-do-sign-up" onClick={toggleModalSignUpView}>Sign Up</Button>
                 </ToDoHeader>
                 <div className="to-do-app-lists">
                     {lists.filter(([_, list]) => currentBoard === 0 || list.boardId === currentBoard).map(([listId, { title }]) => (
-                        <ToDoList 
+                        <ToDoList
                             key={listId}
-                            listId={listId} 
-                            title={title} 
+                            listId={listId}
+                            title={title}
                             tasks={tasks}
-                            removeList={onRemoveList}
-                            onAddTask={onAddTask}
-                            checkTask={onCheckTask}
-                            removeTask={onRemoveTask}
-                            onItemDrop={onItemDrop}
-                            onTaskClick={onTaskClick}
-                            onOpenListInfo={onOpenListInfo}
+                            removeList={handleRemoveList}
+                            onAddTask={handleAddTask}
+                            checkTask={handleCheckTask}
+                            removeTask={handleRemoveTask}
+                            onItemDrop={handleItemDrop}
+                            onTaskClick={handleTaskClick}
+                            onOpenListInfo={handleOpenListInfo}
                         />
                     ))}
                 </div>
                 <ModalAddList
-                    isOpen={isOpenModalAddList}
-                    onAccept={onListModalAccept}  
-                    onCancel={switchModalAddListView}
+                    isOpen={openedModalAddList}
+                    onAccept={handleListModalAccept}
+                    onCancel={toggleModalAddListView}
                 />
-                <ModalAddTask 
-                    isOpen={isOpenModalAddTask}
-                    onAccept={onTaskModalAccept}
-                    onCancel={switchModalAddTaskView}
+                <ModalAddTask
+                    isOpen={openedModalAddTask}
+                    onAccept={handleTaskModalAccept}
+                    onCancel={toggleModalAddTaskView}
                 />
                 <ModalAddBoard
-                    isOpen={isOpenModalAddBoard}
-                    onAccept={onBoardModalAccept}
-                    onCancel={switchModalAddBoardView}
+                    isOpen={openedModalAddBoard}
+                    onAccept={handleBoardModalAccept}
+                    onCancel={toggleModalAddBoardView}
                 />
-                <ModalTaskInfo 
-                    isOpen={isOpenModalTaskInfo}
+                <ModalTaskInfo
+                    isOpen={openedModalTaskInfo}
                     taskId={currentTaskId}
                     tasks={tasks}
-                    onClose={onCloseModalTaskInfo}
-                    onEditTitle={onEditTaskTitle}
+                    onClose={handleCloseModalTaskInfo}
+                    onEditTitle={handleEditTaskTitle}
                     fetchTask={fetchTask}
                     currentTask={currentTask}
                 />
-                <ModalListInfo 
-                    isOpen={isOpenModalListInfo}
+                <ModalListInfo
+                    isOpen={openedModalListInfo}
                     listId={currentListId}
                     lists={lists}
-                    onClose={onCloseModalListInfo}
-                    onEditTitle={onEditListTitle}
+                    onClose={handleCloseModalListInfo}
+                    onEditTitle={handleEditListTitle}
                     fetchList={fetchList}
                     currentList={currentList}
                 />
                 <ModalSignUp
-                    isOpen={isOpenModalSignUp}
-                    onClose={onCloseModalSignUp}
-                    onSubmit={onSignUpSubmit}
+                    isOpen={openedModalSignUp}
+                    onClose={handleCloseModalSignUp}
+                    onSubmit={handleSignUpSubmit}
                 />
-                <ModalLogIn 
-                    isOpen={isOpenModalLogIn}
-                    onClose={onCloseModalLogIn}
-                    onSubmit={onLogInSubmit}
+                <ModalLogIn
+                    isOpen={openedModalLogIn}
+                    onClose={handleCloseModalLogIn}
+                    onSubmit={handleLogInSubmit}
                 />
             </div>
         </div>
     )
 }
 
-export default connect( ({ lists, tasks, boards, currentTask, currentList }) => ({
+const mapStateToProps = ({ lists, tasks, boards, currentTask, currentList }) => ({
     lists,
     tasks,
     boards,
     currentTask,
     currentList
-}), {
+})
+const mapTasksDispatchToProps = {
     addTask,
     removeTask,
     checkTask,
     moveTask,
     deleteTasksLocal,
     editTaskTitle,
-    addList,
-    removeList,
-    editListTitle,
-    addBoard,
-    removeBoard,
-    registerUser,
-    loginUser,
-    fetchTasks,
-    fetchLists,
-    fetchBoards,
-    fetchTask,
-    fetchList,
     addTaskLocal,
     removeTaskLocal,
     checkTaskLocal,
     moveTaskLocal,
     editTaskTitleLocal,
+    fetchTasks,
+    fetchTask,
+}
+const mapListsDispatchToProps = {
+    addList,
+    removeList,
+    editListTitle,
     addListLocal,
     removeListLocal,
     editListTitleLocal,
+    fetchList,
+    fetchLists,
+}
+const mapBoardsDispatchToProps = {
+    addBoard,
+    removeBoard,
+    fetchBoards,
     addBoardLocal,
     removeBoardLocal,
-})(ToDo);
+}
+const mapOtherDispatchToProps = {
+    registerUser,
+    loginUser,
+}
+const mapDispatchToProps = {
+    ...mapTasksDispatchToProps,
+    ...mapListsDispatchToProps,
+    ...mapBoardsDispatchToProps,
+    ...mapOtherDispatchToProps,
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ToDo);

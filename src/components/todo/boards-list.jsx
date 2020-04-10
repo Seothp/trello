@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import './boards-list.css'
 
-const BoardsList = ({ boards, changeCurrentBoard, onAddBoard, onDeleteBoard }) => {
+const BoardsList = ({ boards, setCurrentBoard, onAddBoard, onDeleteBoard }) => {
     const [ isOpen, setIsOpen ] = useState(false)
 
     const toggleOpened = () => setIsOpen(!isOpen)
@@ -15,10 +15,10 @@ const BoardsList = ({ boards, changeCurrentBoard, onAddBoard, onDeleteBoard }) =
         <div className={"boards-list-wrapper " + opened} onClick={handleWrapperClick}>
             <div className="borads-list">
                 <button className="board-toggle-btn" onClick={toggleOpened}>OP</button>
-                <div className="board-item" key='all' onClick={() => changeCurrentBoard(0)}>all</div>
+                <div className="board-item" key='all' onClick={() => setCurrentBoard(0)}>all</div>
                 { boards && boards.map(([boardId, { title }], index) => (
                     <div className="board-item" key={boardId}>
-                        <div className="board-item-btn" onClick={() => changeCurrentBoard(boardId)}>{index + 1}</div>
+                        <div className="board-item-btn" onClick={() => setCurrentBoard(boardId)}>{index + 1}</div>
                         <button className="board-delete-btn" onClick={() => onDeleteBoard({boardId})}>del</button>
                     </div>
                 ))}
