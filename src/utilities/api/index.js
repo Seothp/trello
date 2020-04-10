@@ -27,7 +27,7 @@ export const registerUser = ({email, password}) => dispatch => {
             dispatch(setUserId(localId))
         });
 }
-export const loginUserWithEmail = ({ email, password }) => dispatch => {
+export const loginUser = ({ email, password }) => dispatch => {
     fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
         method: 'POST',
         'Content-Type': 'application/json',

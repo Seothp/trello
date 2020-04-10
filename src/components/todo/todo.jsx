@@ -17,7 +17,7 @@ import {
 } from '../../actions/actionCreator'
 import { 
     registerUser, 
-    loginUserWithEmail, 
+    loginUser, 
     addTask, removeTask, checkTask, fetchTasks,
     addList, removeList, fetchLists,
     addBoard, removeBoard, fetchBoards,
@@ -54,7 +54,7 @@ const ToDo = (props) => {
         addList, removeList, editListTitle, //lists methods
         addBoard, removeBoard, //board methods
         registerUser,
-        loginUserWithEmail,
+        loginUser,
         fetchTasks, fetchLists, fetchBoards,    
         fetchTask,
         fetchList,
@@ -169,7 +169,7 @@ const ToDo = (props) => {
         removeBoardLocal(payload)
     }
     const onSignUpSubmit = ({ email, password }) => registerUser({email, password})
-    const onLogInSubmit = ({ email, password }) => loginUserWithEmail({email, password})
+    const onLogInSubmit = ({ email, password }) => loginUser({email, password})
     const onCloseModalTaskInfo = () => switchModalTaskInfoView();
     const onCloseModalListInfo = () => switchModalListInfoView();
     const onCloseModalSignUp = () => switchModalSignUpView();
@@ -272,7 +272,7 @@ export default connect( ({ lists, tasks, boards, currentTask, currentList }) => 
     addBoard,
     removeBoard,
     registerUser,
-    loginUserWithEmail,
+    loginUser,
     fetchTasks,
     fetchLists,
     fetchBoards,
