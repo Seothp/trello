@@ -5,12 +5,12 @@ import Modal from '../modal/modal'
 
 import './modal-add-board.css'
 
-const ModalAddBoard = ({isOpen, onAccept, onCancel}) => {
-    const [inputValue, setInputValue] =  useState('')
+const ModalAddBoard = ({ isOpen, onAccept, onCancel }) => {
+    const [inputValue, setInputValue] = useState('')
 
-    const handleInputChange = ({target: {value}}) => setInputValue(value) 
+    const handleInputChange = ({ target: { value } }) => setInputValue(value)
     const clearModal = () => setInputValue('')
-    const onClick = () => {
+    const handleClick = () => {
         onAccept(inputValue);
         onCancel();
         clearModal();
@@ -20,8 +20,8 @@ const ModalAddBoard = ({isOpen, onAccept, onCancel}) => {
         <Modal onCancel={onCancel} isOpen={isOpen}>
             <div className="modal-add-board">
                 <div className="add-board-form">
-                    <input type="text" className="add-board-title" value={inputValue} onChange={handleInputChange}/>
-                    <button className='modal-add-board-btn' onClick={onClick}>add</button>
+                    <input type="text" className="add-board-title" value={inputValue} onChange={handleInputChange} />
+                    <button className='modal-add-board-btn' onClick={handleClick}>add</button>
                 </div>
             </div>
         </Modal>
@@ -29,8 +29,8 @@ const ModalAddBoard = ({isOpen, onAccept, onCancel}) => {
 }
 
 ModalAddBoard.propTypes = {
-    isOpen: PropTypes.bool, 
-    onAccept: PropTypes.func.isRequired, 
+    isOpen: PropTypes.bool,
+    onAccept: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
 }
 

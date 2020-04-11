@@ -9,10 +9,10 @@ import ItemTypes from '../../ItemTypes';
 import './todo-list.css';
 
 const ToDoList = ({
-    listId, title, tasks, 
+    listId, title, tasks,
     onAddTask, removeTask, removeList, checkTask, onItemDrop, onTaskClick, onOpenListInfo, ...attrs
 }) => {
-    const [{ canDrop, isOver}, drop] = useDrop({
+    const [{ canDrop, isOver }, drop] = useDrop({
         accept: ItemTypes.ITEM,
         drop: item => onItemDrop(item, listId),
         collect: monitor => ({
@@ -20,7 +20,7 @@ const ToDoList = ({
             canDrop: monitor.canDrop(),
         }),
     })
-    const plusBackground = canDrop && isOver ? '#32EB40' : 'gray';
+    const plusBackground = (canDrop && isOver) ? '#32EB40' : 'gray';
     return (
         <div className="to-do-list" key={listId} {...attrs} ref={drop}>
             <h3 className="to-do-list-title">{title}</h3>
@@ -30,31 +30,31 @@ const ToDoList = ({
                 <Button className="to-do-remove-list" invert onClick={() => removeList(listId)}>remove list</Button>
             </div>
             {tasks.filter(([_, task]) => task.listId === listId).map(([id, { title, checked }]) => (
-                <ToDoItem 
-                    id={id} 
-                    title={title} 
-                    key={id} 
-                    checked={checked} 
-                    removeTask={removeTask} 
+                <ToDoItem
+                    id={id}
+                    title={title}
+                    key={id}
+                    checked={checked}
+                    removeTask={removeTask}
                     checkTask={checkTask}
                     onTaskClick={onTaskClick}
                 />
             ))}
-            { canDrop &&
-                <div className="to-do-can-drop-item" style={{background:plusBackground}}/>
+            {canDrop &&
+                <div className="to-do-can-drop-item" style={{ background: plusBackground }} />
             }
         </div>
     )
 }
 
 ToDoList.propTypes = {
-    listId: PropTypes.string.isRequired, 
-    tasks: PropTypes.array.isRequired, 
-    onAddTask: PropTypes.func.isRequired, 
-    removeTask: PropTypes.func.isRequired, 
-    removeList: PropTypes.func.isRequired, 
+    listId: PropTypes.string.isRequired,
+    tasks: PropTypes.array.isRequired,
+    onAddTask: PropTypes.func.isRequired,
+    removeTask: PropTypes.func.isRequired,
+    removeList: PropTypes.func.isRequired,
     checkTask: PropTypes.func.isRequired,
-    title: PropTypes.string, 
+    title: PropTypes.string,
 }
 
 ToDoList.defaultProps = {

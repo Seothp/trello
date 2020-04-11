@@ -14,7 +14,7 @@ let LISTS = {
 // }
 
 const lists = (state = LISTS.lists, payload) => {
-    const  { type, listId, title, boardId, lists, newId } = payload
+    const { type, listId, title, boardId, lists, newId } = payload
     switch (type) {
         case ADD_LIST:
             const listBody = {
@@ -26,7 +26,7 @@ const lists = (state = LISTS.lists, payload) => {
                 listBody
             ]
             return [
-                ...state, 
+                ...state,
                 list
             ];
         case REMOVE_LIST:
@@ -43,11 +43,11 @@ const lists = (state = LISTS.lists, payload) => {
                 }
                 return list
             })
-        case EDIT_LIST_ID: 
+        case EDIT_LIST_ID:
             return state.map(list => {
                 const id = list[0]
                 const listBody = list[1]
-                if ( id === listId ) {
+                if (id === listId) {
                     return [
                         newId,
                         listBody

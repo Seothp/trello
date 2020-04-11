@@ -13,7 +13,7 @@ let TASKS = {
 //     }
 // }
 
-const tasks = (state = TASKS.tasks, payload ) => {
+const tasks = (state = TASKS.tasks, payload) => {
     const { type, listId, id, title, checked, tasks, newId } = payload
     switch (type) {
         case ADD_TASK:
@@ -48,19 +48,19 @@ const tasks = (state = TASKS.tasks, payload ) => {
                 const taskId = task[0];
                 const taskBody = task[1]
                 if (taskId === id) {
-                    return [ taskId, {
+                    return [taskId, {
                         ...taskBody,
                         listId
                     }]
                 }
                 return task
             })
-        case EDIT_TASK_TITLE: 
+        case EDIT_TASK_TITLE:
             return state.map(task => {
                 const taskId = task[0];
                 const taskBody = task[1]
                 if (taskId === id) {
-                    return [ taskId, {
+                    return [taskId, {
                         ...taskBody,
                         title
                     }]
@@ -72,7 +72,7 @@ const tasks = (state = TASKS.tasks, payload ) => {
                 const taskId = task[0]
                 const taskBody = task[1]
                 if (taskId === id) {
-                    return [ newId, {
+                    return [newId, {
                         ...taskBody
                     }]
                 }

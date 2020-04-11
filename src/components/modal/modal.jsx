@@ -8,14 +8,15 @@ import './modal.css'
 const Modal = ({ children, accepting, onAccept, onCancel, isOpen, ...attrs }) => {
     const handleWrapperClick = (e) => {
         e.persist()
-        if (e.target.className.indexOf('modal-wrapper') !== -1) onCancel()
+        const isWrapper = e.target.className.indexOf('modal-wrapper') !== -1
+        if (isWrapper) onCancel()
     }
     return (
         <>
-            { isOpen &&
+            {isOpen &&
                 <Portal>
                     <div className="modal-wrapper" onClick={handleWrapperClick}>
-                        <div className='modal' {...attrs}> 
+                        <div className='modal' {...attrs}>
                             <button className="modal-close-btn" onClick={onCancel}>X</button>
                             <div className="modal-inner">
                                 {children}
@@ -35,19 +36,19 @@ const Modal = ({ children, accepting, onAccept, onCancel, isOpen, ...attrs }) =>
 }
 
 Modal.propTypes = {
-    isOpen: PropTypes.bool, 
-    children: PropTypes.node , 
-    accepting: PropTypes.bool, 
-    onAccept: PropTypes.func, 
-    onCancel: PropTypes.func, 
+    isOpen: PropTypes.bool,
+    children: PropTypes.node,
+    accepting: PropTypes.bool,
+    onAccept: PropTypes.func,
+    onCancel: PropTypes.func,
 }
 
 Modal.defalutProps = {
-    isOpen: false, 
-    children: null, 
-    accepting: false, 
-    onAccept: () => {}, 
-    onCancel: () => {}, 
+    isOpen: false,
+    children: null,
+    accepting: false,
+    onAccept: () => { },
+    onCancel: () => { },
 }
 
 export default Modal;

@@ -18,12 +18,12 @@ const boards = (state = BOARDS.boards, payload) => {
                 boardBody
             ]
             return [
-                ...state, 
+                ...state,
                 board
             ];
         case REMOVE_BOARD:
             return [...state].filter(([id]) => id !== boardId)
-        case EDIT_BOARD_ID: 
+        case EDIT_BOARD_ID:
             return state.map(board => {
                 const id = board[0]
                 const boardBody = board[1]
@@ -35,7 +35,7 @@ const boards = (state = BOARDS.boards, payload) => {
                 }
                 return board
             })
-        case SET_BOARDS: 
+        case SET_BOARDS:
             return boards
         default:
             return state;

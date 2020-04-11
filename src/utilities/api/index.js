@@ -1,7 +1,7 @@
-import { 
-    setUserToken, 
-    setUserId, 
-    setUserRefreshToken ,
+import {
+    setUserToken,
+    setUserId,
+    setUserRefreshToken,
     setTasks,
     setCurrentTask,
     setLists,
@@ -12,7 +12,7 @@ import {
     editBoardId
 } from '../../actions/actionCreator'
 const FIREBASE_API_KEY = 'AIzaSyDL75b9bD07bmPWk7eN7VsoDZitkHdPTus'
-export const registerUser = ({email, password}) => dispatch => {
+export const registerUser = ({ email, password }) => dispatch => {
     fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${FIREBASE_API_KEY}`, {
         method: 'POST',
         'Content-Type': 'application/json',
@@ -47,8 +47,8 @@ export const addTask = payload => (dispatch, getState) => {
     const { title, checked, listId } = payload
     const { temporaryId } = payload
     const taskBody = {
-        title, 
-        checked, 
+        title,
+        checked,
         listId
     }
     fetch(`https://to-do-trello.firebaseio.com/users/${id}/tasks.json?`, {
@@ -57,7 +57,7 @@ export const addTask = payload => (dispatch, getState) => {
         body: JSON.stringify(taskBody)
     })
         .then(res => res.json())
-        .then(({ name: id }) => dispatch(editTaskId({newId: id, id: temporaryId})))
+        .then(({ name: id }) => dispatch(editTaskId({ newId: id, id: temporaryId })))
 }
 export const addList = payload => (dispatch, getState) => {
     const { id } = getState().user
@@ -73,7 +73,7 @@ export const addList = payload => (dispatch, getState) => {
         body: JSON.stringify(listBody)
     })
         .then(res => res.json())
-        .then(({ name }) => dispatch(editListId({listId: temporaryId, newId: name})))
+        .then(({ name }) => dispatch(editListId({ listId: temporaryId, newId: name })))
 }
 export const addBoard = payload => (dispatch, getState) => {
     const { id } = getState().user
@@ -88,7 +88,7 @@ export const addBoard = payload => (dispatch, getState) => {
         body: JSON.stringify(boardBody)
     })
         .then(res => res.json())
-        .then(({ name }) => dispatch(editBoardId({boardId: temporaryId, newId: name})))
+        .then(({ name }) => dispatch(editBoardId({ boardId: temporaryId, newId: name })))
 }
 export const removeTask = payload => (dispatch, getState) => {
     const { id: taskId } = payload
@@ -104,7 +104,7 @@ export const removeList = payload => (dispatch, getState) => {
     fetch(`https://to-do-trello.firebaseio.com/users/${id}/lists/${listId}.json?`, {
         method: 'DELETE',
         'Content-Type': 'application/json',
-    }).then(() => dispatch(deleteTasks({listId})))
+    }).then(() => dispatch(deleteTasks({ listId })))
 }
 export const removeBoard = payload => (dispatch, getState) => {
     const { boardId } = payload
@@ -122,8 +122,8 @@ export const fetchTasks = payload => (dispatch, getState) => {
     })
         .then(res => res.json())
         .then(res => {
-            if ( typeof(res) === 'object' && res !== null && res !== undefined) dispatch(setTasks(Object.entries(res)))
-            
+            if (typeof (res) === 'object' && res !== null && res !== undefined) dispatch(setTasks(Object.entries(res)))
+
         })
 }
 export const fetchLists = payload => (dispatch, getState) => {
@@ -134,20 +134,20 @@ export const fetchLists = payload => (dispatch, getState) => {
     })
         .then(res => res.json())
         .then(res => {
-            if ( typeof(res) === 'object' && res !== null && res !== undefined) dispatch(setLists(Object.entries(res)))
-            
+            if (typeof (res) === 'object' && res !== null && res !== undefined) dispatch(setLists(Object.entries(res)))
+
         })
 }
 export const fetchBoards = payload => (dispatch, getState) => {
-    const { id } = getState().user 
+    const { id } = getState().user
     fetch(`https://to-do-trello.firebaseio.com/users/${id}/boards.json?`, {
         method: 'GET',
         'Content-Type': 'application/json'
     })
         .then(res => res.json())
         .then(res => {
-            if ( typeof(res) === 'object' && res !== null && res !== undefined) dispatch(setBoards(Object.entries(res)))
-            
+            if (typeof (res) === 'object' && res !== null && res !== undefined) dispatch(setBoards(Object.entries(res)))
+
         })
 }
 export const fetchTask = payload => (dispatch, getState) => {
@@ -160,8 +160,8 @@ export const fetchTask = payload => (dispatch, getState) => {
     })
         .then(res => res.json())
         .then(res => {
-            if ( typeof(res) === 'object' && res !== null && res !== undefined) dispatch(setCurrentTask(res))
-            
+            if (typeof (res) === 'object' && res !== null && res !== undefined) dispatch(setCurrentTask(res))
+
         })
 }
 export const fetchList = payload => (dispatch, getState) => {
@@ -174,8 +174,8 @@ export const fetchList = payload => (dispatch, getState) => {
     })
         .then(res => res.json())
         .then(res => {
-            if ( typeof(res) === 'object' && res !== null && res !== undefined) dispatch(setCurrentList(res))
-            
+            if (typeof (res) === 'object' && res !== null && res !== undefined) dispatch(setCurrentList(res))
+
         })
 }
 export const checkTask = payload => (dispatch, getState) => {
@@ -211,8 +211,8 @@ export const deleteTasks = payload => (dispatch, getState) => {
     const targetTasks = tasks.filter(([_, task]) => task.listId === listId)
     targetTasks.forEach(([taskId]) => {
         fetch(`https://to-do-trello.firebaseio.com/users/${id}/tasks/${taskId}.json?`, {
-        method: 'DELETE',
-        'Content-Type': 'application/json'
+            method: 'DELETE',
+            'Content-Type': 'application/json'
         })
     })
 }

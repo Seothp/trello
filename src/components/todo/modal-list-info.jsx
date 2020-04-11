@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 import Modal from '../modal/modal'
 
-const ModalListInfo = ({ isOpen, listId, lists, onClose, onEditTitle, currentList, fetchList }) => {
-    const [ title, setTitle ] = useState("");
+const ModalListInfo = ({ isOpen, listId, onClose, onEditTitle, currentList, fetchList }) => {
+    const [title, setTitle] = useState("");
     useEffect(() => {
         if (listId) {
-            fetchList({listId})
+            fetchList({ listId })
         }
     }, [listId])
     useEffect(() => {
@@ -15,19 +15,19 @@ const ModalListInfo = ({ isOpen, listId, lists, onClose, onEditTitle, currentLis
             setTitle(currentList.title)
         }
     }, [currentList])
-    const handleInputChange = ({target: {value}}) => setTitle(value)
+    const handleInputChange = ({ target: { value } }) => setTitle(value)
     const clearModal = () => setTitle('')
-    const onClick = () => {
-        onEditTitle({listId, title});
+    const handleClick = () => {
+        onEditTitle({ listId, title });
         onClose();
         clearModal();
     }
     return (
         <Modal isOpen={isOpen} onCancel={onClose}>
-            <div className="modal-list-info"> 
+            <div className="modal-list-info">
                 <div className="list-info">
-                    <input className="list-title" onChange={handleInputChange} value={title || ''}/>
-                    <button className="list-title-edit" onClick={onClick}>edit</button>
+                    <input className="list-title" onChange={handleInputChange} value={title || ''} />
+                    <button className="list-title-edit" onClick={handleClick}>edit</button>
                 </div>
             </div>
         </Modal>

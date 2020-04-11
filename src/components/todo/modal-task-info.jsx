@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 import Modal from '../modal/modal'
 
-const ModalTaskInfo = ({ isOpen, taskId, tasks, onClose, onEditTitle, fetchTask, currentTask }) => {
-    const [ title, setTitle ] = useState(null);
+const ModalTaskInfo = ({ isOpen, taskId, onClose, onEditTitle, fetchTask, currentTask }) => {
+    const [title, setTitle] = useState(null);
     useEffect(() => {
         if (taskId) {
-            fetchTask({taskId})
+            fetchTask({ taskId })
         }
     }, [taskId])
     useEffect(() => {
@@ -15,20 +15,20 @@ const ModalTaskInfo = ({ isOpen, taskId, tasks, onClose, onEditTitle, fetchTask,
             setTitle(currentTask.title)
         }
     }, [currentTask])
-    const handleInputChange = ({target: {value}}) => setTitle(value)
+    const handleInputChange = ({ target: { value } }) => setTitle(value)
     const clearModal = () => setTitle('')
-    const onClick = () => {
-        onEditTitle({id: taskId, title});
+    const handleClick = () => {
+        onEditTitle({ id: taskId, title });
         onClose();
         clearModal();
     }
     return (
         <Modal isOpen={isOpen} onCancel={onClose}>
             <div className="modal-task-info">
-                    <div className="task-info">
-                        <input className="task-title" onChange={handleInputChange} value={title || ''}/>
-                        <button className="task-title-edit" onClick={onClick}>edit</button>
-                    </div>
+                <div className="task-info">
+                    <input className="task-title" onChange={handleInputChange} value={title || ''} />
+                    <button className="task-title-edit" onClick={handleClick}>edit</button>
+                </div>
             </div>
         </Modal>
     )

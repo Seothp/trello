@@ -4,12 +4,12 @@ import Modal from '../modal/modal'
 
 import './modal-add-list.css';
 
-const ModalAddList = ({isOpen, onAccept, onCancel}) => {
-    const [inputValue, setInputValue] =  useState('')
+const ModalAddList = ({ isOpen, onAccept, onCancel }) => {
+    const [inputValue, setInputValue] = useState('')
 
-    const handleInputChange = ({target: {value}}) => setInputValue(value) 
+    const handleInputChange = ({ target: { value } }) => setInputValue(value)
     const clearModal = () => setInputValue('')
-    const onClick = () => {
+    const handleClick = () => {
         onAccept(inputValue);
         onCancel();
         clearModal();
@@ -18,8 +18,8 @@ const ModalAddList = ({isOpen, onAccept, onCancel}) => {
     return (
         <Modal isOpen={isOpen} onCancel={onCancel}>
             <div className="modal-add-list">
-                <input type="text" className="input-title" value={inputValue} onChange={handleInputChange}/>
-                <button className="modal-add-list-btn" onClick={onClick}>add</button>
+                <input type="text" className="input-title" value={inputValue} onChange={handleInputChange} />
+                <button className="modal-add-list-btn" onClick={handleClick}>add</button>
             </div>
         </Modal>
     )

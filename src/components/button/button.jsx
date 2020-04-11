@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import './button.css'
 
-const Button = ({children, onClick, className, invert, ...attrs}) => {
+const Button = ({ children, onClick, className, invert, ...attrs }) => {
     const classes = classNames(
         'btn',
         { invert },

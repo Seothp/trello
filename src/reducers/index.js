@@ -6,13 +6,13 @@ import user from './user';
 import currentTask from './currentTask';
 import currentList from './currentList'
 
-const rootReducer = combineReducers({ 
-    lists, 
-    tasks, 
-    boards, 
-    user, 
-    currentTask, 
-    currentList 
+const rootReducer = combineReducers({
+    lists,
+    tasks,
+    boards,
+    user,
+    currentTask,
+    currentList
 });
 
 export default rootReducer;
