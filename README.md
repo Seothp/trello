@@ -1,3 +1,4 @@
+#cutted trello version
 Installing: 
 
     - npm install
