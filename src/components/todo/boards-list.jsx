@@ -13,12 +13,9 @@ const BoardsList = ({
     e.persist();
     if (e.target.className.indexOf('boards-list-wrapper') !== -1) toggleIsOpen();
   };
-  const handleKeyPress = (e) => {
-    console.log(e);
-  };
   const opened = isOpen ? 'opened' : '';
   return (
-    <div className={`boards-list-wrapper ${opened}`} onClick={handleWrapperClick} onKeyPress={handleKeyPress}>
+    <div className={`boards-list-wrapper ${opened}`} onClick={handleWrapperClick}>
       <div className="borads-list">
         <button className="board-toggle-btn" type="submit" onClick={toggleIsOpen}>OP</button>
         <button className="board-item" key="all" type="submit" onClick={() => setCurrentBoard(0)}>all</button>

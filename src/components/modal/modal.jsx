@@ -13,15 +13,12 @@ const Modal = ({
     const isWrapper = e.target.className.indexOf('modal-wrapper') !== -1;
     if (isWrapper) onCancel();
   };
-  const handleKeyPress = (e) => {
-    console.log(e);
-  };
   return (
     <>
       {isOpen
         && (
         <Portal>
-          <div className="modal-wrapper" onClick={handleWrapperClick} onKeyPress={handleKeyPress}>
+          <div className="modal-wrapper" onClick={handleWrapperClick}>
             <div className="modal">
               <button className="modal-close-btn" type="button" onClick={onCancel}>X</button>
               <div className="modal-inner">
