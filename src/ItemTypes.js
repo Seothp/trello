@@ -1,3 +1,3 @@
 export default {
-    ITEM: 'Item',
-}
+  ITEM: 'Item',
+};

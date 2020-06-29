@@ -1,24 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './todo-header.css'
+import './todo-header.css';
 
-const Header = ({children}) => {
-    return (
-        <div className="to-do-header">
-            {children}
-        </div>
+const Header = ({ children }) => (
+  <div className="to-do-header">
+    {children}
+  </div>
 
-    )
-}
+);
 
 Header.propTypes = {
-    children: PropTypes.node,
-}
+  children: PropTypes.node,
+};
 
 Header.defaultProps = {
-    children: null,
-}
-
+  children: null,
+};
 
 export default Header;

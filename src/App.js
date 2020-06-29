@@ -5,7 +5,6 @@ import Backend from 'react-dnd-html5-backend';
 import ToDo from './components/todo/todo';
 import './App.css';
 
-
 function App() {
   return (
     <div className="App">
