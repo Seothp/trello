@@ -57,7 +57,7 @@ const ModalSignUp = ({ isOpen, onClose, onSubmit }) => {
 };
 
 ModalSignUp.propTypes = {
-  isOpen: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
 };

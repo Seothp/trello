@@ -43,7 +43,10 @@ ModalListInfo.propTypes = {
     PropTypes.number,
   ]).isRequired,
   onEditTitle: PropTypes.func.isRequired,
-  currentList: PropTypes.func.isRequired,
+  currentList: PropTypes.objectOf(PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ])).isRequired,
   fetchList: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
 };
