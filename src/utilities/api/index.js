@@ -11,8 +11,12 @@ import {
   editListId,
   editBoardId,
 } from '../../actions/actionCreator';
+
 const FIREBASE_API_KEY = 'AIzaSyDL75b9bD07bmPWk7eN7VsoDZitkHdPTus';
 const FIREBASE_DB = 'https://to-do-trello.firebaseio.com/';
+
+const isExist = (obj) => typeof (obj) === 'object' && obj !== null && obj !== undefined;
+
 export const registerUser = ({ email, password }) => (dispatch) => {
   fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${FIREBASE_API_KEY}`, {
     method: 'POST',
@@ -127,7 +131,7 @@ export const removeBoard = (payload) => (dispatch, getState) => {
     'Content-Type': 'application/json',
   });
 };
-export const fetchTasks = (payload) => (dispatch, getState) => {
+export const fetchTasks = () => (dispatch, getState) => {
   const { id } = getState().user;
   fetch(`${FIREBASE_DB}users/${id}/tasks.json?`, {
     method: 'GET',
@@ -135,10 +139,10 @@ export const fetchTasks = (payload) => (dispatch, getState) => {
   })
     .then((res) => res.json())
     .then((res) => {
-      if (typeof (res) === 'object' && res !== null && res !== undefined) dispatch(setTasks(Object.entries(res)));
+      if (isExist(res)) dispatch(setTasks(Object.entries(res)));
     });
 };
-export const fetchLists = (payload) => (dispatch, getState) => {
+export const fetchLists = () => (dispatch, getState) => {
   const { id } = getState().user;
   fetch(`${FIREBASE_DB}users/${id}/lists.json?`, {
     method: 'GET',
@@ -146,10 +150,10 @@ export const fetchLists = (payload) => (dispatch, getState) => {
   })
     .then((res) => res.json())
     .then((res) => {
-      if (typeof (res) === 'object' && res !== null && res !== undefined) dispatch(setLists(Object.entries(res)));
+      if (isExist(res)) dispatch(setLists(Object.entries(res)));
     });
 };
-export const fetchBoards = (payload) => (dispatch, getState) => {
+export const fetchBoards = () => (dispatch, getState) => {
   const { id } = getState().user;
   fetch(`${FIREBASE_DB}users/${id}/boards.json?`, {
     method: 'GET',
@@ -157,7 +161,7 @@ export const fetchBoards = (payload) => (dispatch, getState) => {
   })
     .then((res) => res.json())
     .then((res) => {
-      if (typeof (res) === 'object' && res !== null && res !== undefined) dispatch(setBoards(Object.entries(res)));
+      if (isExist(res)) dispatch(setBoards(Object.entries(res)));
     });
 };
 export const fetchTask = (payload) => (dispatch, getState) => {
@@ -170,7 +174,7 @@ export const fetchTask = (payload) => (dispatch, getState) => {
   })
     .then((res) => res.json())
     .then((res) => {
-      if (typeof (res) === 'object' && res !== null && res !== undefined) dispatch(setCurrentTask(res));
+      if (isExist(res)) dispatch(setCurrentTask(res));
     });
 };
 export const fetchList = (payload) => (dispatch, getState) => {
@@ -183,7 +187,7 @@ export const fetchList = (payload) => (dispatch, getState) => {
   })
     .then((res) => res.json())
     .then((res) => {
-      if (typeof (res) === 'object' && res !== null && res !== undefined) dispatch(setCurrentList(res));
+      if (isExist(res)) dispatch(setCurrentList(res));
     });
 };
 export const checkTask = (payload) => (dispatch, getState) => {
