@@ -3,8 +3,12 @@
     flex-wrap: wrap;
 }
 
+.to-do-app-lists.small {
+  justify-content: center;
+}
+
 .to-do-app {
     display: flex;
-    padding-left: 40px;
+    /* padding-left: 40px; */
     position: relative;
 }

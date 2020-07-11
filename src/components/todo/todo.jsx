@@ -45,6 +45,9 @@ import BoardsList from './boards-list';
 
 import './todo.css';
 
+const isSmallScreen = window.innerWidth < 375;
+const small = isSmallScreen ? 'small' : '';
+
 const ToDo = (props) => {
   // data destructuring
   const { lists, tasks, boards } = props;
@@ -210,7 +213,7 @@ const ToDo = (props) => {
           <Button className="to-do-log-in" onClick={toggleModalLogInView}>Log In</Button>
           <Button className="to-do-sign-up" onClick={toggleModalSignUpView}>Sign Up</Button>
         </ToDoHeader>
-        <div className="to-do-app-lists">
+        <div className={`to-do-app-lists ${small}`}>
           {lists.filter(([, list]) => currentBoard === 0 || list.boardId === currentBoard)
             .map(([listId, { title }]) => (
               <ToDoList

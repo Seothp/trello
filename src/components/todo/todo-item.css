@@ -1,42 +1,47 @@
 .to-do-item {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    padding: 8px;
-    margin: 10px 0px;
-    
-    box-sizing: border-box;
-    width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  margin: 10px 0px;
 
-    background-color: #ffffff;
-    border-bottom: 1px solid black;
+  box-sizing: border-box;
+  width: 100%;
+
+  background-color: #ffffff;
+  border-bottom: 1px solid black;
 }
 
 
 .to-do-item-check {
-    border-radius: 50%;
-    border: 1px solid #8A95FF;
-    width: 20px;
-    height: 20px;
-    background-color: #EB3633;
+  border-radius: 50%;
+  border: 1px solid #8A95FF;
+  width: 20px;
+  height: 20px;
+  background-color: #EB3633;
+  font-size: 0;
+  line-height: 0;
 }
+
 .to-do-item.checked {
-    border-bottom: 1px solid #32EB40;
+  border-bottom: 1px solid #32EB40;
 }
 
 .to-do-item.checked .to-do-item-check {
-    background-color: #32EB40 ;
+  background-color: #32EB40;
 }
 
 .to-do-item-delete {
-    padding: 0;
-    font-size: 24px;
-    line-height: 16px;
-    width: 21px;
-    /* color: #ffffff; */
+  padding: 0;
+  font-size: 24px;
+  line-height: 16px;
+  width: 21px;
+  /* color: #ffffff; */
 }
 
 .to-do-item-text {
-    flex-grow: 1;
-    text-align: center;
+  flex-grow: 1;
+  text-align: center;
+  background: none;
+  border: none;
 }

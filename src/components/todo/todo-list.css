@@ -49,3 +49,8 @@
 .to-do-can-drop-item:hover {
     background-color: greenyellow;
 }
+
+.to-do-list.small {
+  margin-right: 0;
+  margin-left: 0;
+}

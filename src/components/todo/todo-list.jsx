@@ -8,6 +8,9 @@ import Button from '../button/button';
 import ItemTypes from '../../ItemTypes';
 import './todo-list.css';
 
+const isSmallScreen = window.innerWidth < 375;
+const small = isSmallScreen ? 'small' : '';
+
 const ToDoList = ({
   listId, title, tasks,
   onAddTask, removeTask, removeList, checkTask, onItemDrop, onTaskClick, onOpenListInfo,
@@ -22,7 +25,7 @@ const ToDoList = ({
   });
   const plusBackground = (canDrop && isOver) ? '#32EB40' : 'gray';
   return (
-    <div className="to-do-list" key={listId} ref={drop}>
+    <div className={`to-do-list ${small}`} key={listId} ref={drop}>
       <h3 className="to-do-list-title">{title}</h3>
       <button className="to-do-list-info-btn" type="button" onClick={() => onOpenListInfo(listId)}>&#9998;</button>
       <div className="to-do-list-buttons">

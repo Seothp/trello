@@ -16,10 +16,6 @@
     transition: all .25s;
 }
 
-.board-delete-btn {
-    display: none;
-}
-
 .boards-list-wrapper.opened {
     background-color: rgba(0, 0, 0, .3);
     width: 100%;
@@ -32,6 +28,13 @@
 
 .boards-list-wrapper.opened .board-delete-btn{
     display: block;
+}
+.board-btn {
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
 }
 
 .boards-list-button,
@@ -46,20 +49,46 @@
     border-bottom: 1px solid black;
     cursor: pointer;
 }
+
 .board-item {
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
 .board-item:first-child {
     border-top: 1px solid black;
 }
+
 .boards-list-button {
     font-size: 32px;
     color: #28a745;
 }
+
 .board-item-btn {
     height: 100%;
     flex-grow: 1;
+    text-align: center;
+}
+
+.board-item-btn.opened {
+  text-align: left;
+}
+
+.board-delete-btn {
+  display: none;
+  padding: 8px;
+}
+.board-btn-num {
+  margin-right: 16px;
+}
+.hidden {
+  display: none;
+}
+.boards-list-wrapper {
+  position: absolute;
+  height: 66px;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  margin-top: -16px;
 }

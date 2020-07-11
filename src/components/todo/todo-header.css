@@ -1,4 +1,12 @@
 .to-do-header {
     background-color: #ffffff;
     padding: 16px 24px;
+    padding-left: 48px;
+}
+
+.to-do-header.small {
+  width: 320px;
+  box-sizing: border-box;
+  padding-right: 0;
+  padding-left: 48px;
 }
