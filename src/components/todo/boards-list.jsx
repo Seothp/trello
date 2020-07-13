@@ -15,7 +15,6 @@ const BoardsList = ({
   const opened = isOpen ? 'opened' : '';
   const isSmallScreen = window.innerWidth < 375;
   const hidden = isSmallScreen && !isOpen ? 'hidden' : '';
-  console.log(hidden, isSmallScreen);
   return (
     <div className={`boards-list-wrapper ${opened}`} onClick={handleWrapperClick}>
       <div className="borads-list">

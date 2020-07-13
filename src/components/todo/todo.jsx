@@ -50,7 +50,9 @@ const small = isSmallScreen ? 'small' : '';
 
 const ToDo = (props) => {
   // data destructuring
-  const { lists, tasks, boards } = props;
+  const {
+    lists, tasks, boards,
+  } = props;
   // tasks functions distructuring
   const {
     addTask,
@@ -199,6 +201,7 @@ const ToDo = (props) => {
   const handleCloseModalListInfo = () => toggleModalListInfoView();
   const handleCloseModalSignUp = () => toggleModalSignUpView();
   const handleCloseModalLogIn = () => toggleModalLogInView();
+
   return (
     <div className="to-do-app">
       <BoardsList
@@ -334,13 +337,14 @@ ToDo.propTypes = {
 };
 
 const mapStateToProps = ({
-  lists, tasks, boards, currentTask, currentList,
+  lists, tasks, boards, currentTask, currentList, user,
 }) => ({
   lists,
   tasks,
   boards,
   currentTask,
   currentList,
+  user,
 });
 const mapTasksDispatchToProps = {
   addTask,
