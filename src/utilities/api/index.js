@@ -18,7 +18,7 @@ const FIREBASE_API_KEY = 'AIzaSyDL75b9bD07bmPWk7eN7VsoDZitkHdPTus';
 const FIREBASE_DB = 'https://to-do-trello.firebaseio.com/';
 const debaunceTime = 600 * 1000;
 const isExist = (obj) => typeof (obj) === 'object' && obj !== null && obj !== undefined;
-const isTokenExpired = (res) => res.error === 'Auth token is expired';
+const isTokenExpired = (res) => isExist(res) && res.error === 'Auth token is expired';
 const refreshToken = () => (dispatch, getState) => {
   const { refreshToken } = getState().user;
   fetch(`https://securetoken.googleapis.com/v1/token?key=${FIREBASE_API_KEY}`, {
@@ -33,6 +33,9 @@ const refreshToken = () => (dispatch, getState) => {
     .then((res) => {
       dispatch(setUserToken(res.id_token));
       dispatch(setUserRefreshToken(res.efresh_token));
+      dispatch(fetchTasks());
+      dispatch(fetchLists());
+      dispatch(fetchBoards());
     });
 };
 const refreshTokenDebaunced = debaunce(refreshToken, debaunceTime);
@@ -64,6 +67,9 @@ export const loginUser = ({ email, password }) => (dispatch) => {
       dispatch(setUserToken(idToken));
       dispatch(setUserRefreshToken(refreshToken));
       dispatch(setUserId(localId));
+      dispatch(fetchTasks());
+      dispatch(fetchLists());
+      dispatch(fetchBoards());
     });
 };
 export const addTask = (payload) => (dispatch, getState) => {

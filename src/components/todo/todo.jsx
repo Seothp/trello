@@ -337,14 +337,13 @@ ToDo.propTypes = {
 };
 
 const mapStateToProps = ({
-  lists, tasks, boards, currentTask, currentList, user,
+  lists, tasks, boards, currentTask, currentList,
 }) => ({
   lists,
   tasks,
   boards,
   currentTask,
   currentList,
-  user,
 });
 const mapTasksDispatchToProps = {
   addTask,
