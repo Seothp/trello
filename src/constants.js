@@ -23,3 +23,5 @@ export const EDIT_BOARD_ID = 'EDIT_BOARD_ID';
 export const SET_USER_TOKEN = 'SET_USER_TOKEN';
 export const SET_USER_ID = 'SET_USER_ID';
 export const SET_USER_REFRESH_TOKEN = 'SET_USER_REFRESH_TOKEN';
+
+export const LOGOUT_USER = 'LOGOUT_USER';

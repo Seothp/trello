@@ -12,3 +12,20 @@
     /* padding-left: 40px; */
     position: relative;
 }
+.todo-btns {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+}
+.content {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 16px;
+}
+.to-do-sign-up {
+  margin-left: 16px;
+}
+.to-do-add-list {
+  margin-bottom: 16px;
+}

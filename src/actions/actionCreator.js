@@ -21,6 +21,7 @@ import {
   EDIT_TASK_ID,
   EDIT_LIST_ID,
   EDIT_BOARD_ID,
+  LOGOUT_USER,
 } from '../constants';
 
 export const addTaskLocal = ({ listId, title, id }) => ({
@@ -143,4 +144,8 @@ export const editBoardId = ({ boardId, newId }) => ({
   type: EDIT_BOARD_ID,
   boardId,
   newId,
+});
+
+export const logoutUser = () => ({
+  type: LOGOUT_USER,
 });

@@ -92,3 +92,18 @@
   overflow: hidden;
   margin-top: -16px;
 }
+.burger {
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  justify-content: center;
+  align-content: space-around;
+  height: 100%;
+  padding: 8px 0;
+}
+.burger__line {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: #000;
+}

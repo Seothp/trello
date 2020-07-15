@@ -18,7 +18,13 @@ const BoardsList = ({
   return (
     <div className={`boards-list-wrapper ${opened}`} onClick={handleWrapperClick}>
       <div className="borads-list">
-        <button className="board-toggle-btn board-btn board-item" type="submit" onClick={toggleIsOpen}>OP</button>
+        <button className="board-toggle-btn board-btn board-item" type="submit" onClick={toggleIsOpen}>
+          <div className="burger">
+            <span className="burger__line" />
+            <span className="burger__line" />
+            <span className="burger__line" />
+          </div>
+        </button>
         <div className={`board-items ${hidden}`}>
           <button className="board-item board-btn" key="all" type="submit" onClick={() => setCurrentBoard(0)}>all</button>
           {boards && boards.map(([boardId, { title }], index) => (

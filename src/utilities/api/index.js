@@ -12,14 +12,20 @@ import {
   editBoardId,
 } from '../../actions/actionCreator';
 
-import debaunce from './debaunce';
-
 const FIREBASE_API_KEY = 'AIzaSyDL75b9bD07bmPWk7eN7VsoDZitkHdPTus';
 const FIREBASE_DB = 'https://to-do-trello.firebaseio.com/';
 const debaunceTime = 600 * 1000;
 const isExist = (obj) => typeof (obj) === 'object' && obj !== null && obj !== undefined;
 const isTokenExpired = (res) => isExist(res) && res.error === 'Auth token is expired';
+let isRefreshTokenCooldown = false;
 const refreshToken = () => (dispatch, getState) => {
+  if (isRefreshTokenCooldown) return;
+
+  isRefreshTokenCooldown = true;
+
+  setTimeout(() => {
+    isRefreshTokenCooldown = false;
+  }, debaunceTime);
   const { refreshToken } = getState().user;
   fetch(`https://securetoken.googleapis.com/v1/token?key=${FIREBASE_API_KEY}`, {
     method: 'POST',
@@ -38,7 +44,7 @@ const refreshToken = () => (dispatch, getState) => {
       dispatch(fetchBoards());
     });
 };
-const refreshTokenDebaunced = debaunce(refreshToken, debaunceTime);
+
 export const registerUser = ({ email, password }) => (dispatch) => {
   fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${FIREBASE_API_KEY}`, {
     method: 'POST',
@@ -54,6 +60,8 @@ export const registerUser = ({ email, password }) => (dispatch) => {
       dispatch(setUserId(localId));
     });
 };
+
+
 export const loginUser = ({ email, password }) => (dispatch) => {
   fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
     method: 'POST',
@@ -72,6 +80,7 @@ export const loginUser = ({ email, password }) => (dispatch) => {
       dispatch(fetchBoards());
     });
 };
+
 export const addTask = (payload) => (dispatch, getState) => {
   const { id, token } = getState().user;
   const { title, checked, listId } = payload;
@@ -87,9 +96,10 @@ export const addTask = (payload) => (dispatch, getState) => {
     body: JSON.stringify(taskBody),
   })
     .then((res) => res.json())
-    .then((res) => (isTokenExpired(res) ? dispatch(refreshTokenDebaunced()) : res))
+    .then((res) => (isTokenExpired(res) ? dispatch(refreshToken()) : res))
     .then(({ name: id }) => dispatch(editTaskId({ newId: id, id: temporaryId })));
 };
+
 export const addList = (payload) => (dispatch, getState) => {
   const { id, token } = getState().user;
   const { title, boardId } = payload;
@@ -104,9 +114,10 @@ export const addList = (payload) => (dispatch, getState) => {
     body: JSON.stringify(listBody),
   })
     .then((res) => res.json())
-    .then((res) => (isTokenExpired(res) ? dispatch(refreshTokenDebaunced()) : res))
+    .then((res) => (isTokenExpired(res) ? dispatch(refreshToken()) : res))
     .then(({ name }) => dispatch(editListId({ listId: temporaryId, newId: name })));
 };
+
 export const addBoard = (payload) => (dispatch, getState) => {
   const { id, token } = getState().user;
   const { title } = payload;
@@ -120,9 +131,10 @@ export const addBoard = (payload) => (dispatch, getState) => {
     body: JSON.stringify(boardBody),
   })
     .then((res) => res.json())
-    .then((res) => (isTokenExpired(res) ? dispatch(refreshTokenDebaunced()) : res))
+    .then((res) => (isTokenExpired(res) ? dispatch(refreshToken()) : res))
     .then(({ name }) => dispatch(editBoardId({ boardId: temporaryId, newId: name })));
 };
+
 export const removeTask = (payload) => (dispatch, getState) => {
   const { id: taskId } = payload;
   const { id, token } = getState().user;
@@ -131,6 +143,7 @@ export const removeTask = (payload) => (dispatch, getState) => {
     'Content-Type': 'application/json',
   });
 };
+
 export const deleteTasks = (payload) => (dispatch, getState) => {
   const { listId } = payload;
   const { user, tasks } = getState();
@@ -142,9 +155,10 @@ export const deleteTasks = (payload) => (dispatch, getState) => {
       'Content-Type': 'application/json',
     })
       .then((res) => res.json())
-      .then((res) => (isTokenExpired(res) ? dispatch(refreshTokenDebaunced()) : res));
+      .then((res) => (isTokenExpired(res) ? dispatch(refreshToken()) : res));
   });
 };
+
 export const removeList = (payload) => (dispatch, getState) => {
   const { listId } = payload;
   const { id, token } = getState().user;
@@ -153,9 +167,10 @@ export const removeList = (payload) => (dispatch, getState) => {
     'Content-Type': 'application/json',
   })
     .then((res) => res.json())
-    .then((res) => (isTokenExpired(res) ? dispatch(refreshTokenDebaunced()) : res))
+    .then((res) => (isTokenExpired(res) ? dispatch(refreshToken()) : res))
     .then(() => dispatch(deleteTasks({ listId })));
 };
+
 export const removeBoard = (payload) => (dispatch, getState) => {
   const { boardId } = payload;
   const { id, token } = getState().user;
@@ -164,8 +179,9 @@ export const removeBoard = (payload) => (dispatch, getState) => {
     'Content-Type': 'application/json',
   })
     .then((res) => res.json())
-    .then((res) => (isTokenExpired(res) ? dispatch(refreshTokenDebaunced()) : res));
+    .then((res) => (isTokenExpired(res) ? dispatch(refreshToken()) : res));
 };
+
 export const fetchTasks = () => (dispatch, getState) => {
   const { id, token } = getState().user;
   fetch(`${FIREBASE_DB}users/${id}/tasks.json?auth=${token}`, {
@@ -173,11 +189,12 @@ export const fetchTasks = () => (dispatch, getState) => {
     'Content-Type': 'application/json',
   })
     .then((res) => res.json())
-    .then((res) => (isTokenExpired(res) ? dispatch(refreshTokenDebaunced()) : res))
+    .then((res) => (isTokenExpired(res) ? dispatch(refreshToken()) : res))
     .then((res) => {
       if (isExist(res)) dispatch(setTasks(Object.entries(res)));
     });
 };
+
 export const fetchLists = () => (dispatch, getState) => {
   const { id, token } = getState().user;
   fetch(`${FIREBASE_DB}users/${id}/lists.json?auth=${token}`, {
@@ -185,11 +202,12 @@ export const fetchLists = () => (dispatch, getState) => {
     'Content-Type': 'application/json',
   })
     .then((res) => res.json())
-    .then((res) => (isTokenExpired(res) ? dispatch(refreshTokenDebaunced()) : res))
+    .then((res) => (isTokenExpired(res) ? dispatch(refreshToken()) : res))
     .then((res) => {
       if (isExist(res)) dispatch(setLists(Object.entries(res)));
     });
 };
+
 export const fetchBoards = () => (dispatch, getState) => {
   const { id, token } = getState().user;
   fetch(`${FIREBASE_DB}users/${id}/boards.json?auth=${token}`, {
@@ -197,11 +215,12 @@ export const fetchBoards = () => (dispatch, getState) => {
     'Content-Type': 'application/json',
   })
     .then((res) => res.json())
-    .then((res) => (isTokenExpired(res) ? dispatch(refreshTokenDebaunced()) : res))
+    .then((res) => (isTokenExpired(res) ? dispatch(refreshToken()) : res))
     .then((res) => {
       if (isExist(res)) dispatch(setBoards(Object.entries(res)));
     });
 };
+
 export const fetchTask = (payload) => (dispatch, getState) => {
   const { taskId } = payload;
   const { user } = getState();
@@ -211,11 +230,12 @@ export const fetchTask = (payload) => (dispatch, getState) => {
     'Content-Type': 'application/json',
   })
     .then((res) => res.json())
-    .then((res) => (isTokenExpired(res) ? dispatch(refreshTokenDebaunced()) : res))
+    .then((res) => (isTokenExpired(res) ? dispatch(refreshToken()) : res))
     .then((res) => {
       if (isExist(res)) dispatch(setCurrentTask(res));
     });
 };
+
 export const fetchList = (payload) => (dispatch, getState) => {
   const { listId } = payload;
   const { user } = getState();
@@ -225,11 +245,12 @@ export const fetchList = (payload) => (dispatch, getState) => {
     'Content-Type': 'application/json',
   })
     .then((res) => res.json())
-    .then((res) => (isTokenExpired(res) ? dispatch(refreshTokenDebaunced()) : res))
+    .then((res) => (isTokenExpired(res) ? dispatch(refreshToken()) : res))
     .then((res) => {
       if (isExist(res)) dispatch(setCurrentList(res));
     });
 };
+
 export const checkTask = (payload) => (dispatch, getState) => {
   const { id: taskId } = payload;
   const { user, tasks } = getState();
@@ -244,8 +265,9 @@ export const checkTask = (payload) => (dispatch, getState) => {
     }),
   })
     .then((res) => res.json())
-    .then((res) => (isTokenExpired(res) ? dispatch(refreshTokenDebaunced()) : res));
+    .then((res) => (isTokenExpired(res) ? dispatch(refreshToken()) : res));
 };
+
 export const moveTask = (payload) => (dispatch, getState) => {
   const { listId, itemId: taskId } = payload;
   const { user } = getState();
@@ -258,8 +280,9 @@ export const moveTask = (payload) => (dispatch, getState) => {
     }),
   })
     .then((res) => res.json())
-    .then((res) => (isTokenExpired(res) ? dispatch(refreshTokenDebaunced()) : res));
+    .then((res) => (isTokenExpired(res) ? dispatch(refreshToken()) : res));
 };
+
 export const editTaskTitle = (payload) => (dispatch, getState) => {
   const { title, id: taskId } = payload;
   const { user } = getState();
@@ -272,8 +295,9 @@ export const editTaskTitle = (payload) => (dispatch, getState) => {
     }),
   })
     .then((res) => res.json())
-    .then((res) => (isTokenExpired(res) ? dispatch(refreshTokenDebaunced()) : res));
+    .then((res) => (isTokenExpired(res) ? dispatch(refreshToken()) : res));
 };
+
 export const editListTitle = (payload) => (dispatch, getState) => {
   const { title, listId } = payload;
   const { user } = getState();
@@ -286,5 +310,5 @@ export const editListTitle = (payload) => (dispatch, getState) => {
     }),
   })
     .then((res) => res.json())
-    .then((res) => (isTokenExpired(res) ? dispatch(refreshTokenDebaunced()) : res));
+    .then((res) => (isTokenExpired(res) ? dispatch(refreshToken()) : res));
 };

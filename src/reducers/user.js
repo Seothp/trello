@@ -1,5 +1,7 @@
 import { load } from 'redux-localstorage-simple';
-import { SET_USER_TOKEN, SET_USER_ID, SET_USER_REFRESH_TOKEN } from '../constants';
+import {
+  SET_USER_TOKEN, SET_USER_ID, SET_USER_REFRESH_TOKEN, LOGOUT_USER,
+} from '../constants';
 
 const DATA = load({ namespace: 'todo-data' });
 const USER = DATA.user || {
@@ -34,6 +36,13 @@ const user = (state = USER, payload) => {
       return {
         ...state,
         refreshToken,
+      };
+    case LOGOUT_USER:
+      return {
+        ...state,
+        id: '',
+        token: '',
+        refreshToken: '',
       };
     default:
       return state;
