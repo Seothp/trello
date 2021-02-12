@@ -11,7 +11,7 @@ import {
   editListId,
   editBoardId,
 } from '../../actions/actionCreator';
-
+// IT SHOULD BE IN .ENV
 const FIREBASE_API_KEY = 'AIzaSyDL75b9bD07bmPWk7eN7VsoDZitkHdPTus';
 const FIREBASE_DB = 'https://to-do-trello.firebaseio.com/';
 const debaunceTime = 600 * 1000;
@@ -60,7 +60,6 @@ export const registerUser = ({ email, password }) => (dispatch) => {
       dispatch(setUserId(localId));
     });
 };
-
 
 export const loginUser = ({ email, password }) => (dispatch) => {
   fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
