@@ -48,9 +48,13 @@ import './todo.css';
 
 const isSmallScreen = window.innerWidth < 375;
 const small = isSmallScreen ? 'small' : '';
-
+/*
+====================================================================
+    WARGNING: Это одна большая куча говнокода
+====================================================================
+*/
 const ToDo = (props) => {
-  // data destructuring
+  // data destructuringD
   const {
     lists, tasks, boards, user,
   } = props;
