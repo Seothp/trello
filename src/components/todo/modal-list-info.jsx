@@ -4,14 +4,9 @@ import PropTypes from 'prop-types';
 import Modal from '../modal/modal';
 
 const ModalListInfo = ({
-  isOpen, listId, onClose, onEditTitle, currentList, fetchList,
+  isOpen, listId, onClose, onEditTitle, currentList,
 }) => {
   const [title, setTitle] = useState('');
-  useEffect(() => {
-    if (listId) {
-      fetchList({ listId });
-    }
-  }, [listId]);
   useEffect(() => {
     if (currentList) {
       setTitle(currentList.title);
@@ -47,7 +42,6 @@ ModalListInfo.propTypes = {
     PropTypes.string,
     PropTypes.number,
   ])).isRequired,
-  fetchList: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
 };
 

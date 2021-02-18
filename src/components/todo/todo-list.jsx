@@ -1,9 +1,15 @@
-import React from 'react';
+// /* eslint-disable react/prop-types */
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
+
+import { editListTitle } from '../../utilities/api';
+import { editListTitleLocal } from '../../actions/actionCreator';
 
 import ToDoItem from './todo-item';
 import Button from '../button/button';
+import ModalListInfo from './modal-list-info';
 
 import ItemTypes from '../../ItemTypes';
 import './todo-list.css';
@@ -12,8 +18,9 @@ const isSmallScreen = window.innerWidth < 375;
 const small = isSmallScreen ? 'small' : '';
 
 const ToDoList = ({
-  listId, title, tasks,
-  onAddTask, removeTask, removeList, checkTask, onItemDrop, onTaskClick, onOpenListInfo,
+  listId, title, tasks, list,
+  onAddTask, removeTask, removeList, checkTask, onTaskClick,
+  onItemDrop,
 }) => {
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: ItemTypes.ITEM,
@@ -24,10 +31,20 @@ const ToDoList = ({
     }),
   });
   const plusBackground = (canDrop && isOver) ? '#32EB40' : 'gray';
+  const dispatch = useDispatch();
+  const [isOpenInfoModal, setIsOpenInfoModal] = useState(false);
+  const handleEditListTitle = (list) => {
+    dispatch(editListTitle(list));
+    dispatch(editListTitleLocal(list));
+  };
   return (
-    <div className={`to-do-list ${small}`} key={listId} ref={drop}>
+    <div
+      className={`to-do-list ${small}`}
+      key={listId}
+      ref={drop}
+    >
       <h3 className="to-do-list-title">{title}</h3>
-      <button className="to-do-list-info-btn" type="button" onClick={() => onOpenListInfo(listId)}>&#9998;</button>
+      <button className="to-do-list-info-btn" type="button" onClick={() => setIsOpenInfoModal(true)}>&#9998;</button>
       <div className="to-do-list-buttons">
         <Button className="to-do-add-task" onClick={() => onAddTask(listId)}>add task</Button>
         <Button className="to-do-remove-list" invert onClick={() => removeList(listId)}>remove list</Button>
@@ -45,6 +62,13 @@ const ToDoList = ({
       ))}
       {canDrop
         && <div className="to-do-can-drop-item" style={{ background: plusBackground }} />}
+      <ModalListInfo
+        isOpen={isOpenInfoModal}
+        listId={listId}
+        onClose={() => setIsOpenInfoModal(false)}
+        onEditTitle={handleEditListTitle}
+        currentList={list}
+      />
     </div>
   );
 };
@@ -61,7 +85,10 @@ ToDoList.propTypes = {
   checkTask: PropTypes.func.isRequired,
   onItemDrop: PropTypes.func.isRequired,
   onTaskClick: PropTypes.func.isRequired,
-  onOpenListInfo: PropTypes.func.isRequired,
+  list: PropTypes.shape({
+    listId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    title: PropTypes.string,
+  }).isRequired,
   title: PropTypes.string,
 };
 

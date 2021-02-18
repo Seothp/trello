@@ -39,7 +39,6 @@ import ModalAddList from './modal-add-list';
 import ModalAddTask from './modal-add-task';
 import ModalAddBoard from './modal-add-board';
 import ModalTaskInfo from './modal-task-info';
-import ModalListInfo from './modal-list-info';
 import ModalSignUp from './modal-sign-up';
 import ModalLogIn from './modal-log-in';
 import BoardsList from './boards-list';
@@ -77,13 +76,9 @@ const ToDo = (props) => {
   const {
     addList,
     removeList,
-    editListTitle,
     fetchLists,
-    fetchList,
-    currentList,
     addListLocal,
     removeListLocal,
-    editListTitleLocal,
   } = props;
   // boards functions distructuring
   const {
@@ -192,10 +187,6 @@ const ToDo = (props) => {
     editTaskTitle(payload);
     editTaskTitleLocal(payload);
   };
-  const handleEditListTitle = (payload) => {
-    editListTitle(payload);
-    editListTitleLocal(payload);
-  };
   const handleRemoveBoard = (payload) => {
     removeBoard(payload);
     removeBoardLocal(payload);
@@ -203,7 +194,6 @@ const ToDo = (props) => {
   const handleSignUpSubmit = (payload) => registerUser(payload);
   const handleLogInSubmit = (payload) => loginUser(payload);
   const handleCloseModalTaskInfo = () => toggleModalTaskInfoView();
-  const handleCloseModalListInfo = () => toggleModalListInfoView();
   const handleCloseModalSignUp = () => toggleModalSignUpView();
   const handleCloseModalLogIn = () => toggleModalLogInView();
   const handleLogOut = () => {
@@ -237,11 +227,12 @@ const ToDo = (props) => {
         </ToDoHeader>
         <div className={`to-do-app-lists ${small}`}>
           {lists.filter(([, list]) => currentBoard === 0 || list.boardId === currentBoard)
-            .map(([listId, { title }]) => (
+            .map(([listId, list]) => (
               <ToDoList
                 key={listId}
                 listId={listId}
-                title={title}
+                title={list.title}
+                list={list}
                 tasks={tasks}
                 removeList={handleRemoveList}
                 onAddTask={handleAddTask}
@@ -276,15 +267,6 @@ const ToDo = (props) => {
           onEditTitle={handleEditTaskTitle}
           fetchTask={fetchTask}
           currentTask={currentTask}
-        />
-        <ModalListInfo
-          isOpen={isOpenModalListInfo}
-          listId={currentListId}
-          lists={lists}
-          onClose={handleCloseModalListInfo}
-          onEditTitle={handleEditListTitle}
-          fetchList={fetchList}
-          currentList={currentList}
         />
         <ModalSignUp
           isOpen={isOpenModalSignUp}
@@ -333,12 +315,9 @@ ToDo.propTypes = {
   editTaskTitleLocal: PropTypes.func.isRequired,
   addList: PropTypes.func.isRequired,
   removeList: PropTypes.func.isRequired,
-  editListTitle: PropTypes.func.isRequired,
   fetchLists: PropTypes.func.isRequired,
-  fetchList: PropTypes.func.isRequired,
   addListLocal: PropTypes.func.isRequired,
   removeListLocal: PropTypes.func.isRequired,
-  editListTitleLocal: PropTypes.func.isRequired,
   addBoardLocal: PropTypes.func.isRequired,
   removeBoardLocal: PropTypes.func.isRequired,
   addBoard: PropTypes.func.isRequired,
@@ -349,10 +328,6 @@ ToDo.propTypes = {
   loginUser: PropTypes.func.isRequired,
   logoutUser: PropTypes.func.isRequired,
   //  other prop types
-  currentList: PropTypes.objectOf(PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ])).isRequired,
   currentTask: PropTypes.objectOf(PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
