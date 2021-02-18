@@ -12,11 +12,8 @@ import {
   addListLocal,
   addBoardLocal,
   removeBoardLocal,
-  logoutUser,
 } from '../../actions/actionCreator';
 import {
-  registerUser,
-  loginUser,
   addTask, removeTask, checkTask, fetchTasks,
   addList, fetchLists,
   addBoard, removeBoard, fetchBoards,
@@ -36,8 +33,6 @@ import ModalAddList from './modal-add-list';
 import ModalAddTask from './modal-add-task';
 import ModalAddBoard from './modal-add-board';
 import ModalTaskInfo from './modal-task-info';
-import ModalSignUp from './modal-sign-up';
-import ModalLogIn from './modal-log-in';
 import BoardsList from './boards-list';
 
 import './todo.css';
@@ -52,7 +47,7 @@ const small = isSmallScreen ? 'small' : '';
 const ToDo = (props) => {
   // data destructuringD
   const {
-    lists, tasks, boards, user,
+    lists, tasks, boards,
   } = props;
   // tasks functions distructuring
   const {
@@ -84,16 +79,12 @@ const ToDo = (props) => {
     fetchBoards,
     fetchTask,
   } = props;
-  // user functions distructuring
-  const { registerUser, loginUser, logoutUser } = props;
 
   const [isOpenModalAddList, setIsOpenModalAddList] = useState(false);
   const [isOpenModalAddTask, setIsOpenModalAddTask] = useState(false);
   const [isOpenModalAddBoard, setIsOpenModalAddBoard] = useState(false);
   const [isOpenModalTaskInfo, setIsOpenModalTaskInfo] = useState(false);
   const [isOpenModalListInfo, setIsOpenModalListInfo] = useState(false);
-  const [isOpenModalSignUp, setIsOpenModalSignUp] = useState(false);
-  const [isOpenModalLogIn, setIsOpenModalLogIn] = useState(false);
   const [currentTaskId, setCurrentTaskId] = useState(0);
   const [currentListId, setCurrentListId] = useState(0);
   const [currentBoard, setCurrentBoard] = useState(0);
@@ -109,8 +100,6 @@ const ToDo = (props) => {
   const toggleModalAddBoardView = () => setIsOpenModalAddBoard(!isOpenModalAddBoard);
   const toggleModalTaskInfoView = () => setIsOpenModalTaskInfo(!isOpenModalTaskInfo);
   const toggleModalListInfoView = () => setIsOpenModalListInfo(!isOpenModalListInfo);
-  const toggleModalSignUpView = () => setIsOpenModalSignUp(!isOpenModalSignUp);
-  const toggleModalLogInView = () => setIsOpenModalLogIn(!isOpenModalLogIn);
   const setItemListId = ({ itemId }, listId) => {
     const payload = {
       itemId,
@@ -182,18 +171,8 @@ const ToDo = (props) => {
     removeBoard(payload);
     removeBoardLocal(payload);
   };
-  const handleSignUpSubmit = (payload) => registerUser(payload);
-  const handleLogInSubmit = (payload) => loginUser(payload);
   const handleCloseModalTaskInfo = () => toggleModalTaskInfoView();
-  const handleCloseModalSignUp = () => toggleModalSignUpView();
-  const handleCloseModalLogIn = () => toggleModalLogInView();
-  const handleLogOut = () => {
-    logoutUser();
-    fetchTasks();
-    fetchLists();
-    fetchBoards();
-  };
-  const isLogged = user.token !== '';
+
   return (
     <div className="to-do-app">
       <BoardsList
@@ -203,20 +182,9 @@ const ToDo = (props) => {
         setCurrentBoard={setCurrentBoard}
       />
       <div className="content">
-        <ToDoHeader>
-          <div className="todo-btns">
-            <Button className="to-do-add-list" onClick={toggleModalAddListView}>add list</Button>
-            <div className="auth-btns">
-              {!isLogged
-                && <Button className="to-do-log-in" onClick={toggleModalLogInView}>Log In</Button>}
-              {!isLogged
-                && <Button className="to-do-sign-up" onClick={toggleModalSignUpView}>Sign Up</Button>}
-              {isLogged
-                && <Button className="to-do-log-out" onClick={handleLogOut}>Log Out</Button>}
-            </div>
-          </div>
-        </ToDoHeader>
+        <ToDoHeader />
         <div className={`to-do-app-lists ${small}`}>
+          <Button className="to-do-add-list" onClick={toggleModalAddListView}>add list</Button>
           {lists.filter(([, list]) => currentBoard === 0 || list.boardId === currentBoard)
             .map(([listId, list]) => (
               <ToDoList
@@ -258,16 +226,6 @@ const ToDo = (props) => {
           fetchTask={fetchTask}
           currentTask={currentTask}
         />
-        <ModalSignUp
-          isOpen={isOpenModalSignUp}
-          onClose={handleCloseModalSignUp}
-          onSubmit={handleSignUpSubmit}
-        />
-        <ModalLogIn
-          isOpen={isOpenModalLogIn}
-          onClose={handleCloseModalLogIn}
-          onSubmit={handleLogInSubmit}
-        />
       </div>
     </div>
   );
@@ -287,10 +245,6 @@ ToDo.propTypes = {
     PropTypes.string,
     PropTypes.object,
   ]))).isRequired,
-  user: PropTypes.objectOf(PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ])).isRequired,
   // functions prop types
   addTask: PropTypes.func.isRequired,
   removeTask: PropTypes.func.isRequired,
@@ -312,9 +266,6 @@ ToDo.propTypes = {
   removeBoard: PropTypes.func.isRequired,
   fetchBoards: PropTypes.func.isRequired,
   fetchTask: PropTypes.func.isRequired,
-  registerUser: PropTypes.func.isRequired,
-  loginUser: PropTypes.func.isRequired,
-  logoutUser: PropTypes.func.isRequired,
   //  other prop types
   currentTask: PropTypes.objectOf(PropTypes.oneOfType([
     PropTypes.string,
@@ -361,15 +312,9 @@ const mapBoardsDispatchToProps = {
   addBoardLocal,
   removeBoardLocal,
 };
-const mapOtherDispatchToProps = {
-  registerUser,
-  loginUser,
-  logoutUser,
-};
 const mapDispatchToProps = {
   ...mapTasksDispatchToProps,
   ...mapListsDispatchToProps,
   ...mapBoardsDispatchToProps,
-  ...mapOtherDispatchToProps,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ToDo);

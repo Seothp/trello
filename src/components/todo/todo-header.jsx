@@ -1,23 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
+import Login from './login';
 
 import './todo-header.css';
 
 const isSmallScreen = window.innerWidth < 375;
 const small = isSmallScreen ? 'small' : '';
-const Header = ({ children }) => (
+const Header = () => (
   <div className={`to-do-header ${small}`}>
-    {children}
+    <Login />
   </div>
 
 );
-
-Header.propTypes = {
-  children: PropTypes.node,
-};
-
-Header.defaultProps = {
-  children: null,
-};
 
 export default Header;
