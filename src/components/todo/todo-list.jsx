@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 
-import { editListTitle } from '../../utilities/api';
-import { editListTitleLocal } from '../../actions/actionCreator';
+import { editListTitle, removeList } from '../../utilities/api';
+import { editListTitleLocal, removeListLocal } from '../../actions/actionCreator';
 
 import ToDoItem from './todo-item';
 import Button from '../button/button';
@@ -19,7 +19,7 @@ const small = isSmallScreen ? 'small' : '';
 
 const ToDoList = ({
   listId, title, tasks, list,
-  onAddTask, removeTask, removeList, checkTask, onTaskClick,
+  onAddTask, removeTask, checkTask, onTaskClick,
   onItemDrop,
 }) => {
   const [{ canDrop, isOver }, drop] = useDrop({
@@ -33,6 +33,10 @@ const ToDoList = ({
   const plusBackground = (canDrop && isOver) ? '#32EB40' : 'gray';
   const dispatch = useDispatch();
   const [isOpenInfoModal, setIsOpenInfoModal] = useState(false);
+  const handleRemoveList = (listId) => {
+    dispatch(removeList({ listId }));
+    dispatch(removeListLocal({ listId }));
+  };
   const handleEditListTitle = (list) => {
     dispatch(editListTitle(list));
     dispatch(editListTitleLocal(list));
@@ -47,7 +51,7 @@ const ToDoList = ({
       <button className="to-do-list-info-btn" type="button" onClick={() => setIsOpenInfoModal(true)}>&#9998;</button>
       <div className="to-do-list-buttons">
         <Button className="to-do-add-task" onClick={() => onAddTask(listId)}>add task</Button>
-        <Button className="to-do-remove-list" invert onClick={() => removeList(listId)}>remove list</Button>
+        <Button className="to-do-remove-list" invert onClick={() => handleRemoveList(listId)}>remove list</Button>
       </div>
       {tasks.filter(([, task]) => task.listId === listId).map(([id, { title, checked }]) => (
         <ToDoItem
@@ -81,7 +85,6 @@ ToDoList.propTypes = {
   ]))).isRequired,
   onAddTask: PropTypes.func.isRequired,
   removeTask: PropTypes.func.isRequired,
-  removeList: PropTypes.func.isRequired,
   checkTask: PropTypes.func.isRequired,
   onItemDrop: PropTypes.func.isRequired,
   onTaskClick: PropTypes.func.isRequired,

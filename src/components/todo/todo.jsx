@@ -10,8 +10,6 @@ import {
   checkTaskLocal,
   editTaskTitleLocal,
   addListLocal,
-  removeListLocal,
-  editListTitleLocal,
   addBoardLocal,
   removeBoardLocal,
   logoutUser,
@@ -20,13 +18,12 @@ import {
   registerUser,
   loginUser,
   addTask, removeTask, checkTask, fetchTasks,
-  addList, removeList, fetchLists,
+  addList, fetchLists,
   addBoard, removeBoard, fetchBoards,
   moveTask,
   fetchTask,
   fetchList,
   editTaskTitle,
-  editListTitle,
 } from '../../utilities/api';
 
 // components imports
@@ -75,10 +72,8 @@ const ToDo = (props) => {
   // lists functions distructuring
   const {
     addList,
-    removeList,
     fetchLists,
     addListLocal,
-    removeListLocal,
   } = props;
   // boards functions distructuring
   const {
@@ -131,10 +126,6 @@ const ToDo = (props) => {
   };
   const handleAddBoard = () => {
     toggleModalAddBoardView();
-  };
-  const handleRemoveList = (listId) => {
-    removeList({ listId });
-    removeListLocal({ listId });
   };
   const handleListModalAccept = (title) => {
     // Генерирует временный id который изменится после добавления списка в бд
@@ -234,7 +225,6 @@ const ToDo = (props) => {
                 title={list.title}
                 list={list}
                 tasks={tasks}
-                removeList={handleRemoveList}
                 onAddTask={handleAddTask}
                 checkTask={handleCheckTask}
                 removeTask={handleRemoveTask}
@@ -314,10 +304,8 @@ ToDo.propTypes = {
   moveTaskLocal: PropTypes.func.isRequired,
   editTaskTitleLocal: PropTypes.func.isRequired,
   addList: PropTypes.func.isRequired,
-  removeList: PropTypes.func.isRequired,
   fetchLists: PropTypes.func.isRequired,
   addListLocal: PropTypes.func.isRequired,
-  removeListLocal: PropTypes.func.isRequired,
   addBoardLocal: PropTypes.func.isRequired,
   removeBoardLocal: PropTypes.func.isRequired,
   addBoard: PropTypes.func.isRequired,
@@ -362,11 +350,7 @@ const mapTasksDispatchToProps = {
 };
 const mapListsDispatchToProps = {
   addList,
-  removeList,
-  editListTitle,
   addListLocal,
-  removeListLocal,
-  editListTitleLocal,
   fetchList,
   fetchLists,
 };
