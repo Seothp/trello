@@ -14,7 +14,7 @@ import {
   removeBoardLocal,
 } from '../../actions/actionCreator';
 import {
-  addTask, removeTask, checkTask, fetchTasks,
+  removeTask, checkTask, fetchTasks,
   addList, fetchLists,
   addBoard, removeBoard, fetchBoards,
   moveTask,
@@ -30,7 +30,6 @@ import Button from '../button/button';
 import ToDoHeader from './todo-header';
 import ToDoList from './todo-list';
 import ModalAddList from './modal-add-list';
-import ModalAddTask from './modal-add-task';
 import ModalAddBoard from './modal-add-board';
 import ModalTaskInfo from './modal-task-info';
 import BoardsList from './boards-list';
@@ -51,13 +50,11 @@ const ToDo = (props) => {
   } = props;
   // tasks functions distructuring
   const {
-    addTask,
     removeTask,
     checkTask,
     moveTask,
     editTaskTitle,
     fetchTasks,
-    addTaskLocal,
     removeTaskLocal,
     checkTaskLocal,
     moveTaskLocal,
@@ -81,12 +78,9 @@ const ToDo = (props) => {
   } = props;
 
   const [isOpenModalAddList, setIsOpenModalAddList] = useState(false);
-  const [isOpenModalAddTask, setIsOpenModalAddTask] = useState(false);
   const [isOpenModalAddBoard, setIsOpenModalAddBoard] = useState(false);
   const [isOpenModalTaskInfo, setIsOpenModalTaskInfo] = useState(false);
-  const [isOpenModalListInfo, setIsOpenModalListInfo] = useState(false);
   const [currentTaskId, setCurrentTaskId] = useState(0);
-  const [currentListId, setCurrentListId] = useState(0);
   const [currentBoard, setCurrentBoard] = useState(0);
 
   useEffect(() => {
@@ -96,10 +90,8 @@ const ToDo = (props) => {
   }, []);
 
   const toggleModalAddListView = () => setIsOpenModalAddList(!isOpenModalAddList);
-  const toggleModalAddTaskView = () => setIsOpenModalAddTask(!isOpenModalAddTask);
   const toggleModalAddBoardView = () => setIsOpenModalAddBoard(!isOpenModalAddBoard);
   const toggleModalTaskInfoView = () => setIsOpenModalTaskInfo(!isOpenModalTaskInfo);
-  const toggleModalListInfoView = () => setIsOpenModalListInfo(!isOpenModalListInfo);
   const setItemListId = ({ itemId }, listId) => {
     const payload = {
       itemId,
@@ -109,10 +101,6 @@ const ToDo = (props) => {
     moveTaskLocal(payload);
   };
   const handleItemDrop = (item, listId) => setItemListId(item, listId);
-  const handleAddTask = (listId) => {
-    toggleModalAddTaskView();
-    setCurrentListId(listId);
-  };
   const handleAddBoard = () => {
     toggleModalAddBoardView();
   };
@@ -126,17 +114,6 @@ const ToDo = (props) => {
 
     addList({ ...payload, temporaryId: listId });
     addListLocal({ ...payload, listId });
-  };
-  const handleTaskModalAccept = (title) => {
-    // Генерирует временный id который изменится после добавления таски в бд
-    const id = String(Date.now());
-    const payload = {
-      listId: currentListId,
-      checked: false,
-      title,
-    };
-    addTask({ ...payload, temporaryId: id });
-    addTaskLocal({ ...payload, id });
   };
   const handleRemoveTask = (payload) => {
     removeTask(payload);
@@ -154,10 +131,6 @@ const ToDo = (props) => {
   const handleTaskClick = (id) => {
     setCurrentTaskId(id);
     toggleModalTaskInfoView();
-  };
-  const handleOpenListInfo = (id) => {
-    setCurrentListId(id);
-    toggleModalListInfoView();
   };
   const handleCheckTask = (payload) => {
     checkTask(payload);
@@ -193,12 +166,10 @@ const ToDo = (props) => {
                 title={list.title}
                 list={list}
                 tasks={tasks}
-                onAddTask={handleAddTask}
                 checkTask={handleCheckTask}
                 removeTask={handleRemoveTask}
                 onItemDrop={handleItemDrop}
                 onTaskClick={handleTaskClick}
-                onOpenListInfo={handleOpenListInfo}
               />
             ))}
         </div>
@@ -206,11 +177,6 @@ const ToDo = (props) => {
           isOpen={isOpenModalAddList}
           onAccept={handleListModalAccept}
           onCancel={toggleModalAddListView}
-        />
-        <ModalAddTask
-          isOpen={isOpenModalAddTask}
-          onAccept={handleTaskModalAccept}
-          onCancel={toggleModalAddTaskView}
         />
         <ModalAddBoard
           isOpen={isOpenModalAddBoard}
@@ -246,13 +212,11 @@ ToDo.propTypes = {
     PropTypes.object,
   ]))).isRequired,
   // functions prop types
-  addTask: PropTypes.func.isRequired,
   removeTask: PropTypes.func.isRequired,
   checkTask: PropTypes.func.isRequired,
   moveTask: PropTypes.func.isRequired,
   editTaskTitle: PropTypes.func.isRequired,
   fetchTasks: PropTypes.func.isRequired,
-  addTaskLocal: PropTypes.func.isRequired,
   removeTaskLocal: PropTypes.func.isRequired,
   checkTaskLocal: PropTypes.func.isRequired,
   moveTaskLocal: PropTypes.func.isRequired,
@@ -285,7 +249,6 @@ const mapStateToProps = ({
   currentList,
 });
 const mapTasksDispatchToProps = {
-  addTask,
   removeTask,
   checkTask,
   moveTask,
