@@ -3,20 +3,17 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import {
-  addTaskLocal,
   moveTaskLocal,
   deleteTasksLocal,
-  checkTaskLocal,
   addListLocal,
   addBoardLocal,
   removeBoardLocal,
 } from '../../actions/actionCreator';
 import {
-  checkTask, fetchTasks,
+  fetchTasks,
   addList, fetchLists,
   addBoard, removeBoard, fetchBoards,
   moveTask,
-  editTaskTitle,
 } from '../../utilities/api';
 
 // components imports
@@ -33,11 +30,7 @@ import './todo.css';
 
 const isSmallScreen = window.innerWidth < 375;
 const small = isSmallScreen ? 'small' : '';
-/*
-====================================================================
-    WARGNING: Это одна большая куча говнокода
-====================================================================
-*/
+
 const ToDo = (props) => {
   // data destructuringD
   const {
@@ -189,12 +182,8 @@ const mapStateToProps = ({
   user,
 });
 const mapTasksDispatchToProps = {
-  checkTask,
   moveTask,
   deleteTasksLocal,
-  editTaskTitle,
-  addTaskLocal,
-  checkTaskLocal,
   moveTaskLocal,
   fetchTasks,
 };
