@@ -19,8 +19,7 @@ const isSmallScreen = window.innerWidth < 375;
 const small = isSmallScreen ? 'small' : '';
 
 const ToDoList = ({
-  listId, title, tasks, list, removeTask, checkTask, onTaskClick,
-  onItemDrop,
+  listId, title, tasks, list, onItemDrop,
 }) => {
   const [isOpenInfoModal, setIsOpenInfoModal] = useState(false);
   const [isOpenAddTaskModal, setIsOpenAddTaskModal] = useState(false);
@@ -65,15 +64,13 @@ const ToDoList = ({
         <Button className="to-do-add-task" onClick={() => setIsOpenAddTaskModal(true)}>add task</Button>
         <Button className="to-do-remove-list" invert onClick={() => handleRemoveList(listId)}>remove list</Button>
       </div>
-      {tasks.filter(([, task]) => task.listId === listId).map(([id, { title, checked }]) => (
+      {tasks.filter(([, task]) => task.listId === listId).map(([id, task]) => (
         <ToDoItem
           id={id}
-          title={title}
+          title={task.title}
           key={id}
-          checked={checked}
-          removeTask={removeTask}
-          checkTask={checkTask}
-          onTaskClick={onTaskClick}
+          task={task}
+          checked={task.checked}
         />
       ))}
       {canDrop
@@ -100,10 +97,7 @@ ToDoList.propTypes = {
     PropTypes.string,
     PropTypes.object,
   ]))).isRequired,
-  removeTask: PropTypes.func.isRequired,
-  checkTask: PropTypes.func.isRequired,
   onItemDrop: PropTypes.func.isRequired,
-  onTaskClick: PropTypes.func.isRequired,
   list: PropTypes.shape({
     listId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     title: PropTypes.string,

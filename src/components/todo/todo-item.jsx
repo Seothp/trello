@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { useDrag } from 'react-dnd';
+import { useDispatch } from 'react-redux';
 
+import { editTaskTitle, removeTask, checkTask } from '../../utilities/api';
+import { editTaskTitleLocal, removeTaskLocal, checkTaskLocal } from '../../actions/actionCreator';
 import ItemTypes from '../../ItemTypes';
+import ModalTaskInfo from './modal-task-info';
 
 import './todo-item.css';
 
 const ToDoItem = ({
-  title, id, checked, checkTask, removeTask, onTaskClick,
+  title, id, checked, task,
 }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch = useDispatch();
   const classes = classNames(
     'to-do-item',
     { checked },
@@ -20,23 +26,44 @@ const ToDoItem = ({
       isDragging: monitor.isDragging(),
     }),
   });
+  const handleEditTaskTitle = (payload) => {
+    dispatch(editTaskTitle(payload));
+    dispatch(editTaskTitleLocal(payload));
+  };
+  const handleRemoveTask = (payload) => {
+    dispatch(removeTask(payload));
+    dispatch(removeTaskLocal(payload));
+  };
+  const handleCheckTask = (payload) => {
+    dispatch(checkTask(payload));
+    dispatch(checkTaskLocal(payload));
+  };
   const style = isDragging ? {
     opacity: 0.7,
   } : {};
   return (
     <div className={classes} ref={drag} style={style}>
-      <button className="to-do-item-check" type="button" onClick={() => checkTask({ id })}>check task</button>
-      <button className="to-do-item-text" type="button" onClick={() => onTaskClick(id)}>{title}</button>
-      <button className="to-do-item-delete" type="button" onClick={() => removeTask({ id })}>&#215;</button>
+      <button className="to-do-item-check" type="button" onClick={() => handleCheckTask({ id })}>check task</button>
+      <button className="to-do-item-text" type="button" onClick={() => setIsModalOpen(true)}>{title}</button>
+      <button className="to-do-item-delete" type="button" onClick={() => handleRemoveTask({ id })}>&#215;</button>
+      <ModalTaskInfo
+        isOpen={isModalOpen}
+        taskId={id}
+        onClose={() => setIsModalOpen(false)}
+        onEditTitle={handleEditTaskTitle}
+        task={task}
+      />
     </div>
   );
 };
 
 ToDoItem.propTypes = {
   id: PropTypes.string.isRequired,
-  checkTask: PropTypes.func.isRequired,
-  removeTask: PropTypes.func.isRequired,
-  onTaskClick: PropTypes.func.isRequired,
+  task: PropTypes.shape({
+    checkTask: PropTypes.bool,
+    listId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    title: PropTypes.string,
+  }).isRequired,
   title: PropTypes.string,
   checked: PropTypes.bool,
 };

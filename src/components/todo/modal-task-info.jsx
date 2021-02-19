@@ -1,22 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Modal from '../modal/modal';
 
 const ModalTaskInfo = ({
-  isOpen, taskId, onClose, onEditTitle, fetchTask, currentTask,
+  isOpen, taskId, onClose, onEditTitle, task,
 }) => {
-  const [title, setTitle] = useState(null);
-  useEffect(() => {
-    if (taskId) {
-      fetchTask({ taskId });
-    }
-  }, [taskId]);
-  useEffect(() => {
-    if (currentTask) {
-      setTitle(currentTask.title);
-    }
-  }, [currentTask]);
+  const [title, setTitle] = useState(task.title);
   const handleInputChange = ({ target: { value } }) => setTitle(value);
   const clearModal = () => setTitle('');
   const handleClick = () => {
@@ -44,8 +34,7 @@ ModalTaskInfo.propTypes = {
     PropTypes.number,
   ]).isRequired,
   onEditTitle: PropTypes.func.isRequired,
-  fetchTask: PropTypes.func.isRequired,
-  currentTask: PropTypes.objectOf(PropTypes.oneOfType([
+  task: PropTypes.objectOf(PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
     PropTypes.bool,

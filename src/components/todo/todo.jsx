@@ -4,22 +4,18 @@ import PropTypes from 'prop-types';
 
 import {
   addTaskLocal,
-  removeTaskLocal,
   moveTaskLocal,
   deleteTasksLocal,
   checkTaskLocal,
-  editTaskTitleLocal,
   addListLocal,
   addBoardLocal,
   removeBoardLocal,
 } from '../../actions/actionCreator';
 import {
-  removeTask, checkTask, fetchTasks,
+  checkTask, fetchTasks,
   addList, fetchLists,
   addBoard, removeBoard, fetchBoards,
   moveTask,
-  fetchTask,
-  fetchList,
   editTaskTitle,
 } from '../../utilities/api';
 
@@ -31,7 +27,6 @@ import ToDoHeader from './todo-header';
 import ToDoList from './todo-list';
 import ModalAddList from './modal-add-list';
 import ModalAddBoard from './modal-add-board';
-import ModalTaskInfo from './modal-task-info';
 import BoardsList from './boards-list';
 
 import './todo.css';
@@ -50,16 +45,9 @@ const ToDo = (props) => {
   } = props;
   // tasks functions distructuring
   const {
-    removeTask,
-    checkTask,
     moveTask,
-    editTaskTitle,
     fetchTasks,
-    removeTaskLocal,
-    checkTaskLocal,
     moveTaskLocal,
-    editTaskTitleLocal,
-    currentTask,
   } = props;
   // lists functions distructuring
   const {
@@ -74,13 +62,10 @@ const ToDo = (props) => {
     addBoard,
     removeBoard,
     fetchBoards,
-    fetchTask,
   } = props;
 
   const [isOpenModalAddList, setIsOpenModalAddList] = useState(false);
   const [isOpenModalAddBoard, setIsOpenModalAddBoard] = useState(false);
-  const [isOpenModalTaskInfo, setIsOpenModalTaskInfo] = useState(false);
-  const [currentTaskId, setCurrentTaskId] = useState(0);
   const [currentBoard, setCurrentBoard] = useState(0);
 
   useEffect(() => {
@@ -91,7 +76,6 @@ const ToDo = (props) => {
 
   const toggleModalAddListView = () => setIsOpenModalAddList(!isOpenModalAddList);
   const toggleModalAddBoardView = () => setIsOpenModalAddBoard(!isOpenModalAddBoard);
-  const toggleModalTaskInfoView = () => setIsOpenModalTaskInfo(!isOpenModalTaskInfo);
   const setItemListId = ({ itemId }, listId) => {
     const payload = {
       itemId,
@@ -115,10 +99,6 @@ const ToDo = (props) => {
     addList({ ...payload, temporaryId: listId });
     addListLocal({ ...payload, listId });
   };
-  const handleRemoveTask = (payload) => {
-    removeTask(payload);
-    removeTaskLocal(payload);
-  };
   const handleBoardModalAccept = (title) => {
     // Генерирует временный id который изменится после добавления доски в бд
     const id = String(Date.now());
@@ -128,24 +108,10 @@ const ToDo = (props) => {
     addBoardLocal({ ...boardBody, boardId: id });
     addBoard({ ...boardBody, temporaryId: id });
   };
-  const handleTaskClick = (id) => {
-    setCurrentTaskId(id);
-    toggleModalTaskInfoView();
-  };
-  const handleCheckTask = (payload) => {
-    checkTask(payload);
-    checkTaskLocal(payload);
-  };
-  const handleEditTaskTitle = (payload) => {
-    editTaskTitle(payload);
-    editTaskTitleLocal(payload);
-  };
   const handleRemoveBoard = (payload) => {
     removeBoard(payload);
     removeBoardLocal(payload);
   };
-  const handleCloseModalTaskInfo = () => toggleModalTaskInfoView();
-
   return (
     <div className="to-do-app">
       <BoardsList
@@ -166,10 +132,7 @@ const ToDo = (props) => {
                 title={list.title}
                 list={list}
                 tasks={tasks}
-                checkTask={handleCheckTask}
-                removeTask={handleRemoveTask}
                 onItemDrop={handleItemDrop}
-                onTaskClick={handleTaskClick}
               />
             ))}
         </div>
@@ -182,15 +145,6 @@ const ToDo = (props) => {
           isOpen={isOpenModalAddBoard}
           onAccept={handleBoardModalAccept}
           onCancel={toggleModalAddBoardView}
-        />
-        <ModalTaskInfo
-          isOpen={isOpenModalTaskInfo}
-          taskId={currentTaskId}
-          tasks={tasks}
-          onClose={handleCloseModalTaskInfo}
-          onEditTitle={handleEditTaskTitle}
-          fetchTask={fetchTask}
-          currentTask={currentTask}
         />
       </div>
     </div>
@@ -212,15 +166,9 @@ ToDo.propTypes = {
     PropTypes.object,
   ]))).isRequired,
   // functions prop types
-  removeTask: PropTypes.func.isRequired,
-  checkTask: PropTypes.func.isRequired,
   moveTask: PropTypes.func.isRequired,
-  editTaskTitle: PropTypes.func.isRequired,
   fetchTasks: PropTypes.func.isRequired,
-  removeTaskLocal: PropTypes.func.isRequired,
-  checkTaskLocal: PropTypes.func.isRequired,
   moveTaskLocal: PropTypes.func.isRequired,
-  editTaskTitleLocal: PropTypes.func.isRequired,
   addList: PropTypes.func.isRequired,
   fetchLists: PropTypes.func.isRequired,
   addListLocal: PropTypes.func.isRequired,
@@ -229,43 +177,30 @@ ToDo.propTypes = {
   addBoard: PropTypes.func.isRequired,
   removeBoard: PropTypes.func.isRequired,
   fetchBoards: PropTypes.func.isRequired,
-  fetchTask: PropTypes.func.isRequired,
   //  other prop types
-  currentTask: PropTypes.objectOf(PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-    PropTypes.bool,
-  ])).isRequired,
 };
 
 const mapStateToProps = ({
-  lists, tasks, boards, user, currentTask, currentList,
+  lists, tasks, boards, user,
 }) => ({
   lists,
   tasks,
   boards,
   user,
-  currentTask,
-  currentList,
 });
 const mapTasksDispatchToProps = {
-  removeTask,
   checkTask,
   moveTask,
   deleteTasksLocal,
   editTaskTitle,
   addTaskLocal,
-  removeTaskLocal,
   checkTaskLocal,
   moveTaskLocal,
-  editTaskTitleLocal,
   fetchTasks,
-  fetchTask,
 };
 const mapListsDispatchToProps = {
   addList,
   addListLocal,
-  fetchList,
   fetchLists,
 };
 const mapBoardsDispatchToProps = {
