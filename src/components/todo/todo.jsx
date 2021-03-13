@@ -31,6 +31,12 @@ import './todo.css';
 const isSmallScreen = window.innerWidth < 375;
 const small = isSmallScreen ? 'small' : '';
 
+/*
+  TODO:
+    1. Добавить обработку ошибок при аутентефикации.
+    2. Сообщение, которое отображается при отстутствии аутентефикации.
+*/
+
 const ToDo = (props) => {
   // data destructuringD
   const {
