@@ -1,3 +1,4 @@
+# Куча говнокода. Лень рефакторить.
 # cutted trello version
 Installing: 
 
